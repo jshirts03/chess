@@ -10,6 +10,8 @@ import java.util.Collection;
  */
 public class ChessPiece {
 
+    //class variable that's type, which is a Piece Type constant as defined below
+    //class variable pieceColor which is either WHITE or BLACK as found in the ChessGame.TeamColor variable
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
     }
 
@@ -46,6 +48,7 @@ public class ChessPiece {
      *
      * @return Collection of valid moves
      */
+    //returns an ArrayList of ChessMoves that a specific chess piece can move to. Should use the different generator classes.
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         throw new RuntimeException("Not implemented");
     }

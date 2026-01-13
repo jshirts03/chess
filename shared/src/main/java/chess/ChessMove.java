@@ -8,6 +8,7 @@ package chess;
  */
 public class ChessMove {
 
+    //has a startPosition and an endPosition variables, which are ChessPositions with rows and columns
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition,
                      ChessPiece.PieceType promotionPiece) {
     }

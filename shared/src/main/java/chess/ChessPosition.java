@@ -8,6 +8,7 @@ package chess;
  */
 public class ChessPosition {
 
+    // 2 class variables row and col that are both intergers, used on a 1 scale basis.
     public ChessPosition(int row, int col) {
     }
 
