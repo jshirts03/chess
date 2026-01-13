@@ -8,16 +8,21 @@ package chess;
  */
 public class ChessPosition {
 
+    private int row;
+    private int col;
     // 2 class variables row and col that are both intergers, used on a 1 scale basis.
     public ChessPosition(int row, int col) {
+        this.row = row;
+        this.col = col;
     }
+
 
     /**
      * @return which row this position is in
      * 1 codes for the bottom row
      */
     public int getRow() {
-        throw new RuntimeException("Not implemented");
+        return row;
     }
 
     /**
@@ -25,6 +30,7 @@ public class ChessPosition {
      * 1 codes for the left row
      */
     public int getColumn() {
-        throw new RuntimeException("Not implemented");
+
+        return col;
     }
 }
