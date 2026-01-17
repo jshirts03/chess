@@ -49,7 +49,7 @@ public class PawnGenerator extends MoveGenerator{
         if (board.getPiece(diagonalPosition) == null){
             return null;
         }
-        if (board.getPiece(diagonalPosition).getTeamColor() != ChessGame.TeamColor.BLACK){
+        if (board.getPiece(diagonalPosition).getTeamColor() == myColor){
             return null;
         }
         return new ChessMove(myPosition, diagonalPosition);
@@ -71,7 +71,10 @@ public class PawnGenerator extends MoveGenerator{
         if (diagonalPosition.getColumn() < 1 || diagonalPosition.getColumn() > 8){
             return null;
         }
-        if (board.getPiece(diagonalPosition).getTeamColor() != ChessGame.TeamColor.BLACK){
+        if (board.getPiece(diagonalPosition) == null){
+            return null;
+        }
+        if (board.getPiece(diagonalPosition).getTeamColor() == myColor){
             return null;
         }
         return new ChessMove(myPosition, diagonalPosition);
@@ -101,8 +104,16 @@ public class PawnGenerator extends MoveGenerator{
         }
 
         //If it's in starting row can move 2 forward
-        if (myPosition.getRow()==2){
+        if (myColor == ChessGame.TeamColor.WHITE && myPosition.getRow()==2){
             mover = new ChessPosition(mover.getRow()+1, mover.getColumn());
+            nextMove = checkForward(mover);
+            if (nextMove != null){
+                moves.add(nextMove);
+            }
+        }
+
+        if (myColor == ChessGame.TeamColor.BLACK && myPosition.getRow()==7){
+            mover = new ChessPosition(mover.getRow()-1, mover.getColumn());
             nextMove = checkForward(mover);
             if (nextMove != null){
                 moves.add(nextMove);
