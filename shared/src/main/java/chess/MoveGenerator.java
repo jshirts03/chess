@@ -1,18 +1,22 @@
 package chess;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class MoveGenerator
 {
     ChessBoard board;
     ChessPosition myPosition;
     ChessGame.TeamColor myColor;
+    ArrayList<ChessMove> moves = new ArrayList<ChessMove>();
 
-    MoveGenerator(ChessBoard board, ChessPosition myPosition){
+    public MoveGenerator(ChessBoard board, ChessPosition myPosition){
         this.board = board;
         this.myPosition = myPosition;
         this.myColor = board.getPiece(myPosition).getTeamColor();
     }
 
-    boolean isValidMove(ChessPosition position){
+    public boolean isValidMove(ChessPosition position){
         int row = position.getRow();
         int col = position.getColumn();
         if (row < 1 || row > 8 || col < 1 || col > 8){
@@ -23,5 +27,15 @@ public class MoveGenerator
             return false;
         }
         return true;
+    }
+
+    ChessMove checkForward(ChessPosition mover){
+        int row = mover.getRow();
+        int col = mover.getColumn();
+        ChessPosition forwardPosition = new ChessPosition(row+1, col);
+        if (isValidMove(forwardPosition)){
+            return new ChessMove(mover, forwardPosition);
+        }
+        return null;
     }
 }
