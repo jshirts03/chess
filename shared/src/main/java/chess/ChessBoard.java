@@ -52,14 +52,14 @@ public class ChessBoard {
     //resets the board to the standard chess board
     public void resetBoard() {
         //Set the entire board to null
-        for (int i=0; i<8; i++){
+        for (int i=0; i<=8; i++){
             for (int j=0; j<8; j++){
                 board[i][j] = null;
             }
         }
 
 //        Set up white pawns
-        for (int i=0; i<8; i++){
+        for (int i=0; i<=8; i++){
             board[0][i] = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
         }
     }
@@ -68,41 +68,47 @@ public class ChessBoard {
     public String toString() {
         StringBuilder string = new StringBuilder();
         string.append("Chess Board { \n");
-        for (int i=0; i<=8; i++){
-            for (int j=0; j<=8; j++){
+        for (int i=0; i<8; i++){
+            for (int j=0; j<8; j++){
                 ChessPiece piece = board[i][j];
-                ChessPiece.PieceType type = piece.getPieceType();
-                ChessGame.TeamColor color = piece.getTeamColor();
-                if (color == ChessGame.TeamColor.WHITE){
-                    string.append("[W");
+                if (piece != null){
+                    ChessPiece.PieceType type = piece.getPieceType();
+                    ChessGame.TeamColor color = piece.getTeamColor();
+                    if (color == ChessGame.TeamColor.WHITE){
+                        string.append("[W");
+                    }
+                    else{
+                        string.append("[B");
+                    }
+                    switch (type) {
+                        case PAWN:
+                            string.append("P]");
+                            break;
+                        case ROOK:
+                            string.append("R]");
+                            break;
+                        case KNIGHT:
+                            string.append("N]");
+                            break;
+                        case BISHOP:
+                            string.append("B]");
+                            break;
+                        case QUEEN:
+                            string.append("Q]");
+                            break;
+                        case KING:
+                            string.append("K]");
+                            break;
+                    }
                 }
                 else{
-                    string.append("[B");
-                }
-                switch (type) {
-                    case PAWN:
-                        string.append("P]");
-                        break;
-                    case ROOK:
-                        string.append("R]");
-                        break;
-                    case KNIGHT:
-                        string.append("N]");
-                        break;
-                    case BISHOP:
-                        string.append("B]");
-                        break;
-                    case QUEEN:
-                        string.append("Q]");
-                        break;
-                    case KING:
-                        string.append("K]");
-                        break;
+                    string.append("[  ]");
                 }
                 string.append(" ");
             }
             string.append("\n");
         }
+        string.append("}");
         return string.toString();
     }
 
