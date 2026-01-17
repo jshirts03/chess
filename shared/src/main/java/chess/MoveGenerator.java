@@ -30,7 +30,13 @@ public class MoveGenerator
     }
 
     ChessMove checkForward(ChessPosition mover){
-        ChessPosition forwardPosition = new ChessPosition(mover.getRow()+1, mover.getColumn());
+        ChessPosition forwardPosition = null;
+        if (myColor == ChessGame.TeamColor.WHITE){
+            forwardPosition = new ChessPosition(mover.getRow()+1, mover.getColumn());
+        }
+        else{
+            forwardPosition = new ChessPosition(mover.getRow()-1, mover.getColumn());
+        }
         if (isValidMove(forwardPosition)){
             return new ChessMove(myPosition, forwardPosition);
         }
@@ -38,7 +44,13 @@ public class MoveGenerator
     }
 
     ChessMove checkDiagonalLeft(ChessPosition mover){
-        ChessPosition diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()-1);
+        ChessPosition diagonalPosition = null;
+        if (myColor == ChessGame.TeamColor.WHITE){
+            diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()-1);
+        }
+        else{
+            diagonalPosition = new ChessPosition(mover.getRow()-1, mover.getColumn()+1);
+        }
         if (isValidMove(diagonalPosition)){
             return new ChessMove(myPosition, diagonalPosition);
         }
@@ -46,7 +58,13 @@ public class MoveGenerator
     }
 
     ChessMove checkDiagonalRight(ChessPosition mover){
-        ChessPosition diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()+1);
+        ChessPosition diagonalPosition = null;
+        if (myColor == ChessGame.TeamColor.WHITE){
+            diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()-1);
+        }
+        else{
+            diagonalPosition = new ChessPosition(mover.getRow()-1, mover.getColumn()+1);
+        }
         if (isValidMove(diagonalPosition)){
             return new ChessMove(myPosition, diagonalPosition);
         }

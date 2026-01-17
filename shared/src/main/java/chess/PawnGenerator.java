@@ -11,9 +11,13 @@ public class PawnGenerator extends MoveGenerator{
     //This overrides the checkForward function because Pawns cannot move on top of opposing pieces that are in front of them
     @Override
     public ChessMove checkForward(ChessPosition mover){
-        int row = mover.getRow();
-        int col = mover.getColumn();
-        ChessPosition forwardPosition = new ChessPosition(row+1, col);
+        ChessPosition forwardPosition = null;
+        if (myColor == ChessGame.TeamColor.WHITE){
+            forwardPosition = new ChessPosition(mover.getRow()+1, mover.getColumn());
+        }
+        else{
+            forwardPosition = new ChessPosition(mover.getRow()-1, mover.getColumn());
+        }
         if (forwardPosition.getRow() < 1 || forwardPosition.getRow() > 8){
             return null;
         }
@@ -29,7 +33,13 @@ public class PawnGenerator extends MoveGenerator{
     //Ovverride because it can only move diagonally if it is killing an enemy pawn
     @Override
     public ChessMove checkDiagonalRight(ChessPosition mover){
-        ChessPosition diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()+1);
+        ChessPosition diagonalPosition = null;
+        if (myColor == ChessGame.TeamColor.WHITE){
+            diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()-1);
+        }
+        else{
+            diagonalPosition = new ChessPosition(mover.getRow()-1, mover.getColumn()+1);
+        }
         if (diagonalPosition.getRow() < 1 || diagonalPosition.getRow() > 8){
             return null;
         }
@@ -48,7 +58,13 @@ public class PawnGenerator extends MoveGenerator{
     //Override because pawns can only move diagonal if they are killing enemy piece
     @Override
     public ChessMove checkDiagonalLeft(ChessPosition mover){
-        ChessPosition diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()-1);
+        ChessPosition diagonalPosition = null;
+        if (myColor == ChessGame.TeamColor.WHITE){
+            diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()-1);
+        }
+        else{
+            diagonalPosition = new ChessPosition(mover.getRow()-1, mover.getColumn()+1);
+        }
         if (diagonalPosition.getRow() < 1 || diagonalPosition.getRow() > 8){
             return null;
         }
