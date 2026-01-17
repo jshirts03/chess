@@ -12,7 +12,13 @@ public class ChessPiece {
 
     //class variable that's type, which is a Piece Type constant as defined below
     //class variable pieceColor which is either WHITE or BLACK as found in the ChessGame.TeamColor variable
+
+    ChessGame.TeamColor color;
+    ChessPiece.PieceType type;
+
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+        this.color = pieceColor;
+        this.type = type;
     }
 
     /**
@@ -31,14 +37,14 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        throw new RuntimeException("Not implemented");
+        return color;
     }
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
-        throw new RuntimeException("Not implemented");
+        return type;
     }
 
     /**
