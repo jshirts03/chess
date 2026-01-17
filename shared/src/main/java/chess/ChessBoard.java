@@ -58,25 +58,59 @@ public class ChessBoard {
             }
         }
 
-        //Set up white pawns
-//        for (int i=0; i<8; i++){
-//            board[0][i] = new ChessPiece(Whit)
-//        }
+//        Set up white pawns
+        for (int i=0; i<8; i++){
+            board[0][i] = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
+        }
     }
 
     @Override
     public String toString() {
-        return "ChessBoard{" +
-                "board=" + Arrays.toString(board) +
-                '}';
+        StringBuilder string = new StringBuilder();
+        string.append("Chess Board { \n");
+        for (int i=0; i<=8; i++){
+            for (int j=0; j<=8; j++){
+                ChessPiece piece = board[i][j];
+                ChessPiece.PieceType type = piece.getPieceType();
+                ChessGame.TeamColor color = piece.getTeamColor();
+                if (color == ChessGame.TeamColor.WHITE){
+                    string.append("[W");
+                }
+                else{
+                    string.append("[B");
+                }
+                switch (type) {
+                    case PAWN:
+                        string.append("P]");
+                        break;
+                    case ROOK:
+                        string.append("R]");
+                        break;
+                    case KNIGHT:
+                        string.append("N]");
+                        break;
+                    case BISHOP:
+                        string.append("B]");
+                        break;
+                    case QUEEN:
+                        string.append("Q]");
+                        break;
+                    case KING:
+                        string.append("K]");
+                        break;
+                }
+                string.append(" ");
+            }
+            string.append("\n");
+        }
+        return string.toString();
     }
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof ChessBoard that)) {
             return false;
         }
-        ChessBoard that = (ChessBoard) o;
         return Objects.deepEquals(board, that.board);
     }
 
