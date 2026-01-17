@@ -52,14 +52,14 @@ public class ChessBoard {
     //resets the board to the standard chess board
     public void resetBoard() {
         //Set the entire board to null
-        for (int i=0; i<=8; i++){
+        for (int i=0; i<8; i++){
             for (int j=0; j<8; j++){
                 board[i][j] = null;
             }
         }
 
 //        Set up white pawns
-        for (int i=0; i<=8; i++){
+        for (int i=0; i<8; i++){
             board[0][i] = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
         }
     }
@@ -68,7 +68,7 @@ public class ChessBoard {
     public String toString() {
         StringBuilder string = new StringBuilder();
         string.append("Chess Board { \n");
-        for (int i=0; i<8; i++){
+        for (int i=7; i>=0; i--){
             for (int j=0; j<8; j++){
                 ChessPiece piece = board[i][j];
                 if (piece != null){
