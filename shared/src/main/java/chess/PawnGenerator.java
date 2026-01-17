@@ -36,6 +36,9 @@ public class PawnGenerator extends MoveGenerator{
         if (diagonalPosition.getColumn() < 1 || diagonalPosition.getColumn() > 8){
             return null;
         }
+        if (board.getPiece(diagonalPosition) == null){
+            return null;
+        }
         if (board.getPiece(diagonalPosition).getTeamColor() != ChessGame.TeamColor.BLACK){
             return null;
         }
