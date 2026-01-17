@@ -60,7 +60,7 @@ public class ChessPiece {
         Collection<ChessMove> moves;
         switch (piece.type){
             case PAWN:
-                pawnGenerator = new PawnGenerator(board, myPosition);
+                PawnGenerator pawnGenerator = new PawnGenerator(board, myPosition);
                 moves = pawnGenerator.getMoves();
         }
     }
