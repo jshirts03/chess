@@ -52,4 +52,25 @@ public class ChessPiece {
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         throw new RuntimeException("Not implemented");
     }
+
+    //to check if there's one of your pieces in the way for your move (check the double array to see if a piece with your team's color is there)
+    //move calculator classes with a parent class that puts the common code in it
+    //depending on what the piecetype is, then
+
+    //ex. moveGenerator = new moveGenerator(ChessBoard, ChessPosition)
+    //    moves = moveGenerator.get_moves(ChessBoard, ChessPosition)
+
+            //get_moves method
+
+    // piece moves subclasses that create instances of each subclass depending on what it is.
+    //get the piece type of the piece at the chessposition on the board
+    //switch or if statement that will generate a generator instance depending on what type it is.
+
+    //ex. queenGenerator = new QueenGenerator(ChessBoard, ChessPosition)
+    //ex. moves = queenGenerator.get_moves()
+
+            //Queen generator get_moves()
+
+                //looks through the chess board and runs an algorithm according to the queen's movement rules
+                //returns an ArrayList of PieceMove objects with starting point, endpoint
 }
