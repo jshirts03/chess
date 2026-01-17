@@ -1,5 +1,7 @@
 package chess;
 
+import java.util.Arrays;
+
 /**
  * A chessboard that can hold and rearrange chess pieces.
  * <p>
@@ -8,8 +10,9 @@ package chess;
  */
 public class ChessBoard {
 //Data Structure: Probably an array of arrays, within which can be stored individual Chess Piece objects
+    ChessPiece[][] board;
     public ChessBoard() {
-        
+        this.board = new ChessPiece[8][8];
     }
 
     /**
@@ -26,7 +29,7 @@ public class ChessBoard {
     //Chess Position class contains 2 private integers, representing the row and column, stored in a 1-index pattern
     //The chessboard will be a 0 index array of arrays, so there must be a small adjustment when storing a ChessPiece object at a specific ChessPostion (-1)
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        throw new RuntimeException("Not implemented");
+        board[position.row - 1][position.col - 1] = piece;
     }
 
     /**
@@ -38,7 +41,7 @@ public class ChessBoard {
      */
     //returns the ChessPiece object at that location in the array of arrays, or null if there is none
     public ChessPiece getPiece(ChessPosition position) {
-        throw new RuntimeException("Not implemented");
+        return board[position.row -1][position.col -1];
     }
 
     /**
@@ -47,6 +50,23 @@ public class ChessBoard {
      */
     //resets the board to the standard chess board
     public void resetBoard() {
-        throw new RuntimeException("Not implemented");
+        //Set the entire board to null
+        for (int i=0; i<8; i++){
+            for (int j=0; j<8; j++){
+                board[i][j] = null;
+            }
+        }
+
+        //Set up white pawns
+//        for (int i=0; i<8; i++){
+//            board[0][i] = new ChessPiece(Whit)
+//        }
+    }
+
+    @Override
+    public String toString() {
+        return "ChessBoard{" +
+                "board=" + Arrays.toString(board) +
+                '}';
     }
 }

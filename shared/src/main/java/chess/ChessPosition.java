@@ -10,8 +10,8 @@ import java.util.Objects;
  */
 public class ChessPosition {
 
-    private int row;
-    private int col;
+    int row;
+    int col;
     // 2 class variables row and col that are both intergers, used on a 1 scale basis.
     public ChessPosition(int row, int col) {
         this.row = row;
