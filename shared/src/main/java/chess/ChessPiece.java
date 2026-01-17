@@ -56,7 +56,13 @@ public class ChessPiece {
      */
     //returns an ArrayList of ChessMoves that a specific chess piece can move to. Should use the different generator classes.
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        throw new RuntimeException("Not implemented");
+        ChessPiece piece = board.getPiece(myPosition);
+        Collection<ChessMove> moves;
+        switch (piece.type){
+            case PAWN:
+                pawnGenerator = new PawnGenerator(board, myPosition);
+                moves = pawnGenerator.getMoves();
+        }
     }
 
     //to check if there's one of your pieces in the way for your move (check the double array to see if a piece with your team's color is there)
