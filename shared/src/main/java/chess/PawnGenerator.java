@@ -1,11 +1,29 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class PawnGenerator extends MoveGenerator{
 
     public PawnGenerator(ChessBoard board, ChessPosition position){
         super(board, position);
+    }
+
+    public ArrayList<ChessMove> promotionChecker(ChessMove move){
+        ArrayList<ChessMove> promotionMoves = new ArrayList<ChessMove>();
+        if (myColor == ChessGame.TeamColor.WHITE && move.endPosition.getRow() == 8){
+            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.ROOK));
+            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.KNIGHT));
+            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.BISHOP));
+            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.QUEEN));
+        }
+        if (myColor == ChessGame.TeamColor.BLACK && move.endPosition.getRow() == 1){
+            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.ROOK));
+            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.KNIGHT));
+            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.BISHOP));
+            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.QUEEN));
+        }
+        return promotionMoves;
     }
 
     //This overrides the checkForward function because Pawns cannot move on top of opposing pieces that are in front of them
@@ -27,6 +45,7 @@ public class PawnGenerator extends MoveGenerator{
         if (board.getPiece(forwardPosition) != null){
             return null;
         }
+
         return new ChessMove(myPosition, forwardPosition);
     }
 
@@ -35,10 +54,10 @@ public class PawnGenerator extends MoveGenerator{
     public ChessMove checkDiagonalRight(ChessPosition mover){
         ChessPosition diagonalPosition = null;
         if (myColor == ChessGame.TeamColor.WHITE){
-            diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()-1);
+            diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()+1);
         }
         else{
-            diagonalPosition = new ChessPosition(mover.getRow()-1, mover.getColumn()+1);
+            diagonalPosition = new ChessPosition(mover.getRow()-1, mover.getColumn()-1);
         }
         if (diagonalPosition.getRow() < 1 || diagonalPosition.getRow() > 8){
             return null;
@@ -86,21 +105,44 @@ public class PawnGenerator extends MoveGenerator{
     // Generate moves
     Collection<ChessMove> getMoves(){
         ChessPosition mover = myPosition;
+        ArrayList<ChessMove> promotionMoves = null;
 
-        //Checks the diagonals
+        //Checks the diagonals, checking for promotion
         ChessMove nextMove = checkDiagonalLeft(mover);
         if (nextMove != null){
-            moves.add(nextMove);
-        }
-        nextMove = checkDiagonalRight(mover);
-        if (nextMove != null){
-            moves.add(nextMove);
+            promotionMoves = promotionChecker(nextMove);
+            if (!promotionMoves.isEmpty()){
+                moves.addAll(promotionMoves);
+            }
+            else{
+                moves.add(nextMove);
+            }
         }
 
-        //Checks 1 forward
+        nextMove = checkDiagonalRight(mover);
+        if (nextMove != null){
+            promotionMoves = promotionChecker(nextMove);
+            if (!promotionMoves.isEmpty()){
+                moves.addAll(promotionMoves);
+            }
+            else{
+                moves.add(nextMove);
+            }
+        }
+
+        //Checks 1 forward, checking for promotion
         nextMove = checkForward(mover);
         if (nextMove != null){
-            moves.add(nextMove);
+            promotionMoves = promotionChecker(nextMove);
+            if (!promotionMoves.isEmpty()){
+                moves.addAll(promotionMoves);
+            }
+            else{
+                moves.add(nextMove);
+            }
+        }
+        else{
+            return moves;
         }
 
         //If it's in starting row can move 2 forward
@@ -111,7 +153,6 @@ public class PawnGenerator extends MoveGenerator{
                 moves.add(nextMove);
             }
         }
-
         if (myColor == ChessGame.TeamColor.BLACK && myPosition.getRow()==7){
             mover = new ChessPosition(mover.getRow()-1, mover.getColumn());
             nextMove = checkForward(mover);
@@ -119,6 +160,7 @@ public class PawnGenerator extends MoveGenerator{
                 moves.add(nextMove);
             }
         }
+
 
         return moves;
     }
