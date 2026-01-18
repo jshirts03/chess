@@ -43,31 +43,37 @@ public class MoveGenerator
         return null;
     }
 
-    ChessMove checkDiagonalLeft(ChessPosition mover){
-        ChessPosition diagonalPosition = null;
-        if (myColor == ChessGame.TeamColor.WHITE){
-            diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()-1);
-        }
-        else{
-            diagonalPosition = new ChessPosition(mover.getRow()-1, mover.getColumn()+1);
-        }
+    ChessMove checkDiagonalUpLeft(ChessPosition mover){
+        ChessPosition diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()-1);
         if (isValidMove(diagonalPosition)){
             return new ChessMove(myPosition, diagonalPosition);
         }
         return null;
     }
 
-    ChessMove checkDiagonalRight(ChessPosition mover){
-        ChessPosition diagonalPosition = null;
-        if (myColor == ChessGame.TeamColor.WHITE){
-            diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()-1);
-        }
-        else{
-            diagonalPosition = new ChessPosition(mover.getRow()-1, mover.getColumn()+1);
-        }
+    ChessMove checkDiagonalUpRight(ChessPosition mover){
+        ChessPosition diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()-1);
         if (isValidMove(diagonalPosition)){
             return new ChessMove(myPosition, diagonalPosition);
         }
         return null;
     }
+
+    ChessMove checkDiagonalDownRight(ChessPosition mover){
+        ChessPosition diagonalPosition = new ChessPosition(mover.getRow()-1, mover.getColumn()+1);
+        if (isValidMove(diagonalPosition)){
+            return new ChessMove(myPosition, diagonalPosition);
+        }
+        return null;
+    }
+
+    ChessMove checkDiagonalDownLeft(ChessPosition mover){
+        ChessPosition diagonalPosition = new ChessPosition(mover.getRow()-1, mover.getColumn()-1);
+        if (isValidMove(diagonalPosition)){
+            return new ChessMove(myPosition, diagonalPosition);
+        }
+        return null;
+    }
+
+
 }

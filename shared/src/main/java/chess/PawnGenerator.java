@@ -51,7 +51,7 @@ public class PawnGenerator extends MoveGenerator{
 
     //Ovverride because it can only move diagonally if it is killing an enemy pawn
     @Override
-    public ChessMove checkDiagonalRight(ChessPosition mover){
+    public ChessMove checkDiagonalUpRight(ChessPosition mover){
         ChessPosition diagonalPosition = null;
         if (myColor == ChessGame.TeamColor.WHITE){
             diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()+1);
@@ -76,7 +76,7 @@ public class PawnGenerator extends MoveGenerator{
 
     //Override because pawns can only move diagonal if they are killing enemy piece
     @Override
-    public ChessMove checkDiagonalLeft(ChessPosition mover){
+    public ChessMove checkDiagonalUpLeft(ChessPosition mover){
         ChessPosition diagonalPosition = null;
         if (myColor == ChessGame.TeamColor.WHITE){
             diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()-1);
@@ -108,7 +108,7 @@ public class PawnGenerator extends MoveGenerator{
         ArrayList<ChessMove> promotionMoves = null;
 
         //Checks the diagonals, checking for promotion
-        ChessMove nextMove = checkDiagonalLeft(mover);
+        ChessMove nextMove = checkDiagonalUpLeft(mover);
         if (nextMove != null){
             promotionMoves = promotionChecker(nextMove);
             if (!promotionMoves.isEmpty()){
@@ -119,7 +119,7 @@ public class PawnGenerator extends MoveGenerator{
             }
         }
 
-        nextMove = checkDiagonalRight(mover);
+        nextMove = checkDiagonalUpRight(mover);
         if (nextMove != null){
             promotionMoves = promotionChecker(nextMove);
             if (!promotionMoves.isEmpty()){
