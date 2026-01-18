@@ -62,6 +62,9 @@ public class ChessPiece {
             case PAWN:
                 PawnGenerator pawnGenerator = new PawnGenerator(board, myPosition);
                 moves = pawnGenerator.getMoves();
+            case BISHOP:
+                BishopGenerator bishopGenerator = new BishopGenerator(board, myPosition);
+                moves = bishopGenerator.getMoves();
         }
         return moves;
     }
