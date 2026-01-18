@@ -16,7 +16,7 @@ public class MoveGenerator
         this.myColor = board.getPiece(myPosition).getTeamColor();
     }
 
-    //Used by subclasses to see if a chessmove is a capture, knowing when to stop while loops
+    //Used by subclasses to see if a chessmove is a capture(move ends on a chesspiece), knowing when to stop while loops
     public boolean isCapture(ChessMove move){
         ChessPiece targetPiece = board.getPiece(move.endPosition);
         if (targetPiece != null){
