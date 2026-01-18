@@ -18,13 +18,51 @@ public class BishopGenerator extends MoveGenerator{
             if (nextMove != null){
                 moves.add(nextMove);
                 mover = nextMove.endPosition;
+                if (isCapture(nextMove)){    // stops the loop if move captures an enemy piece
+                    nextMove = null;
+                }
             }
         }while(nextMove != null);
 
         //Up left checks
-//        do{
-//            nextMove = checkDiagonalUpLeft(mover);
-//        }
+        mover = myPosition;
+        do{
+            nextMove = checkDiagonalUpLeft(mover);
+            if (nextMove != null){
+                moves.add(nextMove);
+                mover = nextMove.endPosition;
+                if (isCapture(nextMove)){    // stops the loop if move captures an enemy piece
+                    nextMove = null;
+                }
+            }
+        }while(nextMove != null);
+
+        //Down Left Checks
+        mover = myPosition;
+        do{
+            nextMove = checkDiagonalDownLeft(mover);
+            if (nextMove != null){
+                moves.add(nextMove);
+                mover = nextMove.endPosition;
+                if (isCapture(nextMove)){    // stops the loop if move captures an enemy piece
+                    nextMove = null;
+                }
+            }
+
+        }while(nextMove != null);
+
+        //Down Right Checks
+        mover = myPosition;
+        do{
+            nextMove = checkDiagonalDownRight(mover);
+            if (nextMove != null){
+                moves.add(nextMove);
+                mover = nextMove.endPosition;
+                if (isCapture(nextMove)){    // stops the loop if move captures an enemy piece
+                    nextMove = null;
+                }
+            }
+        }while(nextMove != null);
 
         return moves;
 
