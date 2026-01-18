@@ -52,6 +52,30 @@ public class MoveGenerator
         return null;
     }
 
+    ChessMove checkBackward(ChessPosition mover){
+        ChessPosition forwardPosition = new ChessPosition(mover.getRow()-1, mover.getColumn());
+        if (isValidMove(forwardPosition)){
+            return new ChessMove(myPosition, forwardPosition);
+        }
+        return null;
+    }
+
+    ChessMove checkLeft(ChessPosition mover){
+        ChessPosition forwardPosition = new ChessPosition(mover.getRow(), mover.getColumn()-1);
+        if (isValidMove(forwardPosition)){
+            return new ChessMove(myPosition, forwardPosition);
+        }
+        return null;
+    }
+
+    ChessMove checkRight(ChessPosition mover){
+        ChessPosition forwardPosition = new ChessPosition(mover.getRow(), mover.getColumn()+1);
+        if (isValidMove(forwardPosition)){
+            return new ChessMove(myPosition, forwardPosition);
+        }
+        return null;
+    }
+
     ChessMove checkDiagonalUpLeft(ChessPosition mover){
         ChessPosition diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()-1);
         if (isValidMove(diagonalPosition)){
