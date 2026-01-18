@@ -63,21 +63,27 @@ public class ChessPiece {
             case PAWN:
                 PawnGenerator pawnGenerator = new PawnGenerator(board, myPosition);
                 moves = pawnGenerator.getMoves();
+                break;
             case BISHOP:
                 BishopGenerator bishopGenerator = new BishopGenerator(board, myPosition);
                 moves = bishopGenerator.getMoves();
+                break;
             case ROOK:
                 RookGenerator rookGenerator = new RookGenerator(board, myPosition);
                 moves = rookGenerator.getMoves();
+                break;
             case KING:
                 KingGenerator kingGenerator = new KingGenerator(board, myPosition);
                 moves = kingGenerator.getMoves();
+                break;
             case QUEEN:
                 QueenGenerator queenGenerator = new QueenGenerator(board, myPosition);
                 moves = queenGenerator.getMoves();
+                break;
             case KNIGHT:
                 KnightGenerator knightGenerator = new KnightGenerator(board, myPosition);
                 moves = knightGenerator.getMoves();
+                break;
 
         }
         return moves;
