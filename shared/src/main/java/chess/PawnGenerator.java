@@ -101,7 +101,6 @@ public class PawnGenerator extends MoveGenerator{
 
 
 
-
     // Generate moves
     Collection<ChessMove> getMoves(){
         ChessPosition mover = myPosition;

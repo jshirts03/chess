@@ -74,6 +74,10 @@ public class ChessPiece {
             case QUEEN:
                 QueenGenerator queenGenerator = new QueenGenerator(board, myPosition);
                 moves = queenGenerator.getMoves();
+            case KNIGHT:
+                KnightGenerator knightGenerator = new KnightGenerator(board, myPosition);
+                moves = knightGenerator.getMoves();
+
         }
         return moves;
     }
