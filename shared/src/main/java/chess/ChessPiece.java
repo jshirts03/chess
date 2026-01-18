@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Represents a single chess piece
@@ -81,6 +82,21 @@ public class ChessPiece {
         }
         return moves;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessPiece that = (ChessPiece) o;
+        return color == that.color && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, type);
+    }
+
 
     //to check if there's one of your pieces in the way for your move (check the double array to see if a piece with your team's color is there)
     //move calculator classes with a parent class that puts the common code in it
