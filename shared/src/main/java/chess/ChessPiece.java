@@ -68,6 +68,9 @@ public class ChessPiece {
             case ROOK:
                 RookGenerator rookGenerator = new RookGenerator(board, myPosition);
                 moves = rookGenerator.getMoves();
+            case KING:
+                KingGenerator kingGenerator = new KingGenerator(board, myPosition);
+                moves = kingGenerator.getMoves();
         }
         return moves;
     }
