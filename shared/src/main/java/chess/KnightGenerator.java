@@ -8,67 +8,58 @@ public class KnightGenerator extends MoveGenerator{
     }
 
     //Overriding these directions because different movement rules for Knights
-
-    @Override ChessMove checkForward(ChessPosition mover){
-        ChessPosition forwardPosition = new ChessPosition(mover.getRow()+2, mover.getColumn()+1);
+    ChessMove knightMove(ChessPosition mover, int forwardFactor, int lateralFactor){
+        ChessPosition forwardPosition = new ChessPosition(mover.getRow()+forwardFactor, mover.getColumn()+lateralFactor);
         if (isValidMove(forwardPosition)){
             return new ChessMove(myPosition, forwardPosition);
         }
         return null;
     }
 
-    @Override ChessMove checkLeft(ChessPosition mover){
-        ChessPosition forwardPosition = new ChessPosition(mover.getRow()-1, mover.getColumn()-2);
-        if (isValidMove(forwardPosition)){
-            return new ChessMove(myPosition, forwardPosition);
-        }
-        return null;
-    }
-
-    @Override ChessMove checkRight(ChessPosition mover){
-        ChessPosition forwardPosition = new ChessPosition(mover.getRow()-1, mover.getColumn()+2);
-        if (isValidMove(forwardPosition)){
-            return new ChessMove(myPosition, forwardPosition);
-        }
-        return null;
-    }
-
-    @Override ChessMove checkBackward(ChessPosition mover){
-        ChessPosition forwardPosition = new ChessPosition(mover.getRow()-2, mover.getColumn()-1);
-        if (isValidMove(forwardPosition)){
-            return new ChessMove(myPosition, forwardPosition);
-        }
-        return null;
-    }
 
     public Collection<ChessMove> getMoves(){
         ChessMove nextMove = null;
         ChessPosition mover = myPosition;
 
         //Forward
-        nextMove = checkForward(mover);
+        nextMove = knightMove(mover, 2, 1);
+        if (nextMove != null){
+            moves.add(nextMove);
+        }
+        nextMove = knightMove(mover, 2, -1);
         if (nextMove != null){
             moves.add(nextMove);
         }
 
         //Left
-        nextMove = checkLeft(mover);
+        nextMove = knightMove(mover, -1, -2);
+        if (nextMove != null){
+            moves.add(nextMove);
+        }
+        nextMove = knightMove(mover, 1, -2);
         if (nextMove != null){
             moves.add(nextMove);
         }
 
         //Right
-        nextMove = checkRight(mover);
+        nextMove = knightMove(mover, -1, +2);
+        if (nextMove != null){
+            moves.add(nextMove);
+        }
+        nextMove = knightMove(mover, 1, +2);
         if (nextMove != null){
             moves.add(nextMove);
         }
 
         //Backward
-        nextMove = checkBackward(mover);
+        nextMove = knightMove(mover, -2, +1);
         if (nextMove != null){
             moves.add(nextMove);
         }
-
+        nextMove = knightMove(mover, -2, -1);
+        if (nextMove != null){
+            moves.add(nextMove);
+        }
         return moves;
     }
 
