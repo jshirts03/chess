@@ -10,6 +10,9 @@ import java.util.Collection;
  */
 public class ChessGame {
 
+    private TeamColor teamTurn;
+    private ChessBoard board;
+
     public ChessGame() {
 
     }
@@ -45,6 +48,7 @@ public class ChessGame {
      * @return Set of valid moves for requested piece, or null if no piece at
      * startPosition
      */
+    //calls the getMoves on the specific piece, then verifies if any of those moves would put the King in check (throw error)
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         throw new RuntimeException("Not implemented");
     }
@@ -55,6 +59,9 @@ public class ChessGame {
      * @param move chess move to perform
      * @throws InvalidMoveException if move is invalid
      */
+    //this will call validMoves on the startPosition of the move
+    //then checks to make sure that the move is in the list of validated moves
+    //throws exception if it is not valid, else moves the specified piece to the specified location
     public void makeMove(ChessMove move) throws InvalidMoveException {
         throw new RuntimeException("Not implemented");
     }
@@ -65,6 +72,7 @@ public class ChessGame {
      * @param teamColor which team to check for check
      * @return True if the specified team is in check
      */
+
     public boolean isInCheck(TeamColor teamColor) {
         throw new RuntimeException("Not implemented");
     }
@@ -75,6 +83,9 @@ public class ChessGame {
      * @param teamColor which team to check for checkmate
      * @return True if the specified team is in checkmate
      */
+    // call isInCheck first
+    // then find the King's possible moves and call is in check on each of those moves
+    //
     public boolean isInCheckmate(TeamColor teamColor) {
         throw new RuntimeException("Not implemented");
     }
