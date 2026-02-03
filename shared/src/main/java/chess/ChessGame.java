@@ -143,6 +143,21 @@ public class ChessGame {
         return false;
     }
 
+
+
+    public boolean canMakeMove(ChessPiece searchPiece, ChessPosition searchPos, TeamColor teamColor){
+        if (searchPiece == null){
+            return false;
+        }
+        if (searchPiece.getTeamColor() != teamColor){
+            return false;
+        }
+        Collection<ChessMove> validMoves = validMoves(searchPos);
+        if (validMoves.isEmpty()){
+            return false;
+        }
+        return true;
+    }
     /**
      * Determines if the given team is in checkmate
      *
@@ -153,7 +168,19 @@ public class ChessGame {
     // then find the King's possible moves and call is in check on each of those moves
     //
     public boolean isInCheckmate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        if (!isInCheck(teamColor)){
+            return false;
+        }
+        for (int i=1; i<9; i++){
+            for (int j=1; j<9; j++){
+                ChessPosition searchPos = new ChessPosition(i,j);
+                ChessPiece searchPiece = board.getPiece(searchPos);
+                if (canMakeMove(searchPiece, searchPos, teamColor)){
+                    return false;
+                }
+            }
+        }
+        return true;
         //call valid moves on every single piece of that color, if it returns null for all, bro is in checkmate
     }
 
@@ -165,7 +192,16 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        for (int i=1; i<9; i++){
+            for (int j=1; j<9; j++){
+                ChessPosition searchPos = new ChessPosition(i,j);
+                ChessPiece searchPiece = board.getPiece(searchPos);
+                if (canMakeMove(searchPiece, searchPos, teamColor)){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
