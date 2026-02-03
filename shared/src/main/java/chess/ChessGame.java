@@ -68,6 +68,26 @@ public class ChessGame {
         throw new RuntimeException("Not implemented");
     }
 
+
+
+
+    public boolean isDangerous(ChessPiece searchPiece, ChessPosition searchPos, ChessPosition kingPosition, TeamColor teamColor){
+        if (searchPiece == null){
+            return false;
+        }
+        if (searchPiece.getTeamColor() == teamColor){
+            return false;
+        }
+        Collection<ChessMove> moves = searchPiece.pieceMoves(board, searchPos);
+        for (ChessMove move : moves){
+            if (move.getEndPosition().equals(kingPosition)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     /**
      * Determines if the given team is in check
      *
@@ -81,8 +101,16 @@ public class ChessGame {
         //if any of those are true, it is in Check
         KingFinder kingFinder = new KingFinder(teamColor, board);
         ChessPosition kingPosition = kingFinder.getKing();
-
-        ;
+        for (int i=1; i<9; i++){
+            for (int j=1; j<9; j++){
+                ChessPosition searchPos = new ChessPosition(i,j);
+                ChessPiece searchPiece = board.getPiece(searchPos);
+                if (isDangerous(searchPiece, searchPos, kingPosition, teamColor)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

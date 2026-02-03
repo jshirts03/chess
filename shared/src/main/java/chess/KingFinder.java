@@ -10,6 +10,9 @@ public class KingFinder {
     }
 
     boolean isKing(ChessPiece piece){
+        if (piece == null){
+            return false;
+        }
         return (piece.type == ChessPiece.PieceType.KING && piece.color == teamColor);
     }
 
