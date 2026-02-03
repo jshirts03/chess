@@ -207,6 +207,7 @@ public class ChessGame {
         }
         return true;
     }
+    //wohoo done!
 
     /**
      * Sets this game's chessboard with a given board
