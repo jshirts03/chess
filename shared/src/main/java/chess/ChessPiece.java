@@ -103,6 +103,10 @@ public class ChessPiece {
         return Objects.hash(color, type);
     }
 
+    @Override
+    public String toString() {
+        return "[" + color + type + "]";
+    }
 
     //to check if there's one of your pieces in the way for your move (check the double array to see if a piece with your team's color is there)
     //move calculator classes with a parent class that puts the common code in it
