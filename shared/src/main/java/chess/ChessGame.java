@@ -78,13 +78,24 @@ public class ChessGame {
     //then checks to make sure that the move is in the list of validated moves
     //throws exception if it is not valid, else moves the specified piece to the specified location
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        Collection<ChessMove> validMoves = validMoves(move.getStartPosition());
-        if (validMoves.contains(move)){
+        if (board.getPiece(move.getStartPosition()) == null){
             throw new InvalidMoveException();
         }
-        ChessPiece targetPiece = board.getPiece(move.getStartPosition());
+        Collection<ChessMove> validMoves = validMoves(move.getStartPosition());
+        ChessGame.TeamColor targetColor = board.getPiece(move.getStartPosition()).getTeamColor();
+        if (!validMoves.contains(move) || targetColor != teamTurn){
+            throw new InvalidMoveException();
+        }
+        ChessPiece targetPiece = null;
+        if (move.getPromotionPiece() != null){
+            targetPiece = new ChessPiece(targetColor, move.getPromotionPiece());
+        }
+        else{
+            targetPiece = board.getPiece(move.getStartPosition());
+        }
         board.addPiece(move.getEndPosition(), targetPiece);
         board.addPiece(move.getStartPosition(), null);
+        teamTurn = (teamTurn == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
     }
 
 
