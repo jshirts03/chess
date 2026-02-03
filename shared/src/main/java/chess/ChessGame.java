@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -50,9 +51,21 @@ public class ChessGame {
      * @return Set of valid moves for requested piece, or null if no piece at
      * startPosition
      */
-    //calls the getMoves on the specific piece, then verifies if any of those moves would put the King in check (throw error)
+    //calls the getMoves on the specific piece, then verifies if any of those moves would put the King in check, eliminate those moves
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        HashSet<ChessMove> validMoves = new HashSet<ChessMove>();
+        ChessPiece targetPiece = board.getPiece(startPosition);
+        Collection<ChessMove> moves = targetPiece.pieceMoves(board, startPosition);
+        SimulatedGame simGame = new SimulatedGame(board);
+        for (ChessMove move : moves){
+            simGame.simulateMove(move);
+            if (!simGame.isInCheck(targetPiece.getTeamColor())){
+                validMoves.add(move);
+            }
+            simGame.resetBoard();
+        }
+        return validMoves;
+
     }
 
     /**
@@ -65,7 +78,13 @@ public class ChessGame {
     //then checks to make sure that the move is in the list of validated moves
     //throws exception if it is not valid, else moves the specified piece to the specified location
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+        Collection<ChessMove> validMoves = validMoves(move.getStartPosition());
+        if (validMoves.contains(move)){
+            throw new InvalidMoveException();
+        }
+        ChessPiece targetPiece = board.getPiece(move.getStartPosition());
+        board.addPiece(move.getEndPosition(), targetPiece);
+        board.addPiece(move.getStartPosition(), null);
     }
 
 
@@ -124,6 +143,7 @@ public class ChessGame {
     //
     public boolean isInCheckmate(TeamColor teamColor) {
         throw new RuntimeException("Not implemented");
+        //call valid moves on every single piece of that color, if it returns null for all, bro is in checkmate
     }
 
     /**
