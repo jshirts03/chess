@@ -14,7 +14,9 @@ public class ChessGame {
     private ChessBoard board;
 
     public ChessGame() {
-
+        board = new ChessBoard();
+        board.resetBoard();
+        teamTurn = TeamColor.WHITE;
     }
 
     /**
@@ -74,7 +76,13 @@ public class ChessGame {
      */
 
     public boolean isInCheck(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        //find the king
+        //for each of the pieceMoves of the opposing team's pieces, check to see if the end position is the king's position
+        //if any of those are true, it is in Check
+        KingFinder kingFinder = new KingFinder(teamColor, board);
+        ChessPosition kingPosition = kingFinder.getKing();
+
+        ;
     }
 
     /**
@@ -107,7 +115,7 @@ public class ChessGame {
      * @param board the new board to use
      */
     public void setBoard(ChessBoard board) {
-        throw new RuntimeException("Not implemented");
+        this.board = board;
     }
 
     /**
@@ -116,6 +124,6 @@ public class ChessGame {
      * @return the chessboard
      */
     public ChessBoard getBoard() {
-        throw new RuntimeException("Not implemented");
+        return board;
     }
 }
