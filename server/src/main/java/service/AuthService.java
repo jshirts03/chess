@@ -9,4 +9,7 @@ public class AuthService {
         db = new MemoryAuthDAO();
     }
 
+    public void clear(){
+        db.clear();
+    }
 }
