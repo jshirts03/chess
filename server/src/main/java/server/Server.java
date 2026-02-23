@@ -1,14 +1,17 @@
 package server;
 
-import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import io.javalin.*;
 import io.javalin.http.Context;
-import service.handlers.ClearHandler;
+import service.LoginService;
+import service.GameService;
 
 public class Server {
 
     private final Javalin javalin;
+    private GameService gameService;
+    private LoginService loginService;
+    private AuthService authService;
 
     public Server() {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
@@ -25,9 +28,8 @@ public class Server {
 
 
     private void clearApplication(Context ctx) throws DataAccessException {
-        ClearResponse response = new ClearHandler(ctx).run();
         ctx.contentType("application/json");
-        ctx.result(new Gson().toJson(response));
+        ctx.result();
     }
 
     public int run(int desiredPort) {
