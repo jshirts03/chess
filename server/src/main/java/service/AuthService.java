@@ -1,9 +1,10 @@
 package service;
 
+import dataaccess.AuthDAO;
 import dataaccess.MemoryAuthDAO;
 
 public class AuthService {
-    private MemoryAuthDAO db;
+    private AuthDAO db;
     public AuthService () {
         db = new MemoryAuthDAO();
     }
