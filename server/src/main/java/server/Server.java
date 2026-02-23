@@ -11,14 +11,17 @@ import service.GameService;
 public class Server {
 
     private final Javalin javalin;
-    private GameService gameService;
-    private UserService userService;
-    private AuthService authService;
+    private final GameService gameService;
+    private final UserService userService;
+    private final AuthService authService;
 
     public Server() {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
 
         gameService = new GameService();
+        userService = new UserService();
+        authService = new AuthService();
+
         // Register your endpoints and exception handlers here
         javalin.delete("/db", this::clearApplication);
 
@@ -28,6 +31,8 @@ public class Server {
     private void clearApplication(Context ctx) {
         try{
             gameService.clear();
+            userService.clear();
+            authService.clear();
             ctx.contentType("application/json");
             ctx.status(200);
             ctx.result();
