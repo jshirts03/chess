@@ -7,7 +7,9 @@ import io.javalin.http.Context;
 import service.AuthService;
 import service.UserService;
 import service.GameService;
+import service.requests.LoginRequest;
 import service.responses.AuthResponse;
+import service.responses.LoginResponse;
 import service.responses.RegisterResponse;
 import service.requests.RegisterRequest;
 
@@ -57,7 +59,12 @@ public class Server {
     }
 
     public void loginUser(Context ctx){
-
+        try{
+            LoginResponse loginRes = userService.login(new Gson().fromJson(ctx.body(), LoginRequest.class));
+        }
+        catch (DataAccessException excpetion){
+            specificExceptionHandler(ctx, exception.getMessage());
+        }
     }
 
     public void successResponse(Context ctx, String message){

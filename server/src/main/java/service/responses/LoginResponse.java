@@ -1,4 +1,4 @@
 package service.responses;
 
-public record LoginResponse() {
+public record LoginResponse(String username, String authToken) {
 }
