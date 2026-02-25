@@ -19,6 +19,9 @@ public class UserService {
     }
 
     public RegisterResponse register(RegisterRequest request) throws DataAccessException {
+        if (request.username() == null || request.password() == null || request.email() == null){
+            throw new DataAccessException("Error: bad request");
+        }
         UserData user = db.getUser(request.username());
         if (user != null){
             throw new DataAccessException("Error: username already taken");

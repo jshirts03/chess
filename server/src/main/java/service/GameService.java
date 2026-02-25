@@ -10,7 +10,7 @@ public class GameService {
         db = new MemoryGameDAO();
     }
 
-    public void clear() throws DataAccessException {
+    public void clear() {
         db.clear();
     }
 }

@@ -30,23 +30,18 @@ public class Server {
         // Register your endpoints and exception handlers here
         javalin.delete("/db", this::clearApplication);
         javalin.post("/user", this::registerUser);
-
+        javalin.exception(Exception.class, this::exceptionHandler);
+        javalin.error(404, this::notFound);
     }
 
 
     private void clearApplication(Context ctx) {
         ctx.contentType("application/json");
-        try{
-            gameService.clear();
-            userService.clear();
-            authService.clear();
-            ctx.status(200);
-            ctx.result();
-        }
-        catch (DataAccessException exception){
-            ctx.status(500);
-            ctx.json(new Gson().toJson(exception));
-        }
+        gameService.clear();
+        userService.clear();
+        authService.clear();
+        ctx.status(200);
+        ctx.result();
     }
 
     private void registerUser(Context ctx){
@@ -62,14 +57,22 @@ public class Server {
             if (message.contains("bad")){
                 ctx.status(400);
             }
-            if (message.contains("taken")){
+            else{
                 ctx.status(403);
             }
-            else{
-                ctx.status(500);
-            }
-            ctx.json(new Gson().toJson(message));
+            ctx.json(new Gson().toJson(Map.of("message", message)));
         }
+    }
+
+    public void exceptionHandler(Exception e, Context context){
+        var body = new Gson().toJson(Map.of("message", String.format("Error: %s", e.getMessage()), "success", false));
+        context.status(500);
+        context.json(body);
+    }
+
+    private void notFound(Context context) {
+        String msg = String.format("[%s] %s not found", context.method(), context.path());
+        exceptionHandler(new Exception(msg), context);
     }
 
     public int run(int desiredPort) {
