@@ -19,12 +19,12 @@ public class UserService {
     }
 
     public RegisterResponse register(RegisterRequest request) throws DataAccessException {
-        UserData user = db.getUser();
-        if (user){
+        UserData user = db.getUser(request.username());
+        if (user != null){
             throw new DataAccessException("Error: username already taken");
         }
         user = new UserData(request.username(), request.password(), request.email());
-        db.createUser(user);
+//        db.createUser(user);
         return new RegisterResponse(user.username(), "");
     }
 }

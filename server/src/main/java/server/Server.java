@@ -52,9 +52,9 @@ public class Server {
         ctx.contentType("application/json");
         try{
             RegisterResponse registerRes = userService.register(new Gson().fromJson(ctx.body(), RegisterRequest.class));
-            AuthResponse authRes = authService.createAuth(registerRes);
+//            AuthResponse authRes = authService.createAuth(registerRes);
             ctx.status(200);
-            ctx.json(new Gson().toJson(authRes));
+            ctx.json(new Gson().toJson(registerRes));
         }
         catch (DataAccessException exception){
             String message = exception.getMessage();
