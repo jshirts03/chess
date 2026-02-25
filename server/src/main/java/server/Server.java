@@ -7,6 +7,7 @@ import io.javalin.http.Context;
 import service.AuthService;
 import service.UserService;
 import service.GameService;
+import service.responses.AuthResponse;
 import service.responses.RegisterResponse;
 import service.requests.RegisterRequest;
 
@@ -52,9 +53,9 @@ public class Server {
         ctx.contentType("application/json");
         try{
             RegisterResponse registerRes = userService.register(new Gson().fromJson(ctx.body(), RegisterRequest.class));
-//            AuthResponse authRes = authService.createAuth(registerRes);
+            AuthResponse authRes = authService.authorize(registerRes.username());
             ctx.status(200);
-            ctx.json(new Gson().toJson(registerRes));
+            ctx.json(new Gson().toJson(authRes));
         }
         catch (DataAccessException exception){
             String message = exception.getMessage();
@@ -67,7 +68,7 @@ public class Server {
             else{
                 ctx.status(500);
             }
-            ctx.json(new Gson().toJson(exception));
+            ctx.json(new Gson().toJson(message));
         }
     }
 

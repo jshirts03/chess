@@ -24,7 +24,7 @@ public class UserService {
             throw new DataAccessException("Error: username already taken");
         }
         user = new UserData(request.username(), request.password(), request.email());
-//        db.createUser(user);
+        db.createUser(user);
         return new RegisterResponse(user.username(), "");
     }
 }

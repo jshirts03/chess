@@ -24,6 +24,10 @@ public class MemoryUserDAO implements UserDAO{
         }
         return null;
     }
+
+    public void createUser(UserData data){
+        users.add(data);
+    }
     //insert methods here that manipulate the list of users stored in this DAO object
     //because there no DB, we just create one of these when the server starts up and then it will reset
 }
