@@ -51,9 +51,10 @@ public class Server {
     private void registerUser(Context ctx){
         ctx.contentType("application/json");
         try{
-            RegisterResponse response = userService.register(new Gson().fromJson(ctx.body(), RegisterRequest.class));
+            RegisterResponse registerRes = userService.register(new Gson().fromJson(ctx.body(), RegisterRequest.class));
+            AuthResponse authRes = authService.createAuth(registerRes);
             ctx.status(200);
-            ctx.json(new Gson().toJson(response));
+            ctx.json(new Gson().toJson(authRes));
         }
         catch (DataAccessException exception){
             String message = exception.getMessage();
