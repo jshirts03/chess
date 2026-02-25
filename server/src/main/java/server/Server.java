@@ -30,7 +30,8 @@ public class Server {
         // Register your endpoints and exception handlers here
         javalin.delete("/db", this::clearApplication);
         javalin.post("/user", this::registerUser);
-        javalin.exception(Exception.class, this::exceptionHandler);
+        javalin.post("/session", this::loginUser);
+        javalin.exception(Exception.class, this::generalExceptionHandler);
         javalin.error(404, this::notFound);
     }
 
@@ -45,26 +46,38 @@ public class Server {
     }
 
     private void registerUser(Context ctx){
-        ctx.contentType("application/json");
         try{
             RegisterResponse registerRes = userService.register(new Gson().fromJson(ctx.body(), RegisterRequest.class));
             AuthResponse authRes = authService.authorize(registerRes.username());
-            ctx.status(200);
-            ctx.json(new Gson().toJson(authRes));
+            successResponse(ctx, new Gson().toJson(authRes));
         }
         catch (DataAccessException exception){
-            String message = exception.getMessage();
-            if (message.contains("bad")){
-                ctx.status(400);
-            }
-            else{
-                ctx.status(403);
-            }
-            ctx.json(new Gson().toJson(Map.of("message", message)));
+            specificExceptionHandler(ctx, exception.getMessage());
         }
     }
 
-    public void exceptionHandler(Exception e, Context context){
+    public void loginUser(Context ctx){
+
+    }
+
+    public void successResponse(Context ctx, String message){
+        ctx.contentType("application/json");
+        ctx.status(200);
+        ctx.json(message);
+    }
+
+    public void specificExceptionHandler(Context ctx, String message){
+        ctx.contentType("application/json");
+        if (message.contains("bad")){
+            ctx.status(400);
+        }
+        else{
+            ctx.status(403);
+        }
+        ctx.json(new Gson().toJson(Map.of("message", message)));
+    }
+
+    public void generalExceptionHandler(Exception e, Context context){
         var body = new Gson().toJson(Map.of("message", String.format("Error: %s", e.getMessage()), "success", false));
         context.status(500);
         context.json(body);
@@ -72,7 +85,7 @@ public class Server {
 
     private void notFound(Context context) {
         String msg = String.format("[%s] %s not found", context.method(), context.path());
-        exceptionHandler(new Exception(msg), context);
+        generalExceptionHandler(new Exception(msg), context);
     }
 
     public int run(int desiredPort) {
