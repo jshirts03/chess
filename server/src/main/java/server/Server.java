@@ -33,6 +33,7 @@ public class Server {
         javalin.delete("/db", this::clearApplication);
         javalin.post("/user", this::registerUser);
         javalin.post("/session", this::loginUser);
+        javalin.delete("/session", this::logoutUser);
         javalin.exception(Exception.class, this::generalExceptionHandler);
         javalin.error(404, this::notFound);
     }
@@ -63,6 +64,15 @@ public class Server {
             LoginResponse loginRes = userService.login(new Gson().fromJson(ctx.body(), LoginRequest.class));
             AuthResponse authRes = authService.authorize(loginRes.username());
             successResponse(ctx, new Gson().toJson(authRes));
+        }
+        catch (DataAccessException exception){
+            specificExceptionHandler(ctx, exception.getMessage());
+        }
+    }
+
+    public void logoutUser(Context ctx){
+        try{
+            authService.deleteAuth(ctx.header("authorization"));
         }
         catch (DataAccessException exception){
             specificExceptionHandler(ctx, exception.getMessage());

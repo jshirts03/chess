@@ -1,6 +1,7 @@
 package service;
 
 import dataaccess.AuthDAO;
+import dataaccess.DataAccessException;
 import dataaccess.MemoryAuthDAO;
 import datatypes.AuthData;
 import service.responses.AuthResponse;
@@ -18,5 +19,10 @@ public class AuthService {
     public AuthResponse authorize(String username){
         AuthData auth = db.createAuth(username);
         return new AuthResponse(auth.username(), auth.authToken());
+    }
+
+
+    public void deleteAuth(String authToken) throws DataAccessException {
+        db.deleteAuth(authToken);
     }
 }
