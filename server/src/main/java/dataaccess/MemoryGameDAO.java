@@ -32,4 +32,8 @@ public class MemoryGameDAO implements GameDAO{
         }
         return false;
     }
+
+    public HashSet<GameData> getGames(){
+        return games;
+    }
 }

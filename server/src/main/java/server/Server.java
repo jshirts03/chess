@@ -2,6 +2,7 @@ package server;
 
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
+import datatypes.GameData;
 import io.javalin.*;
 import io.javalin.http.Context;
 import service.AuthService;
@@ -9,12 +10,10 @@ import service.UserService;
 import service.GameService;
 import service.requests.CreateGameRequest;
 import service.requests.LoginRequest;
-import service.responses.AuthResponse;
-import service.responses.LoginResponse;
-import service.responses.NewGameResponse;
-import service.responses.RegisterResponse;
+import service.responses.*;
 import service.requests.RegisterRequest;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Server {
@@ -37,6 +36,7 @@ public class Server {
         javalin.post("/session", this::loginUser);
         javalin.delete("/session", this::logoutUser);
         javalin.post("/game", this::createGame);
+        javalin.get("/game", this::listGames);
         javalin.exception(Exception.class, this::generalExceptionHandler);
         javalin.error(404, this::notFound);
     }
@@ -94,6 +94,24 @@ public class Server {
         }
     }
 
+    public void listGames(Context ctx){
+        try{
+            authService.verifyAuth(ctx.header("authorization"));
+            ListGamesResponse listGamesRes = gameService.listGames();
+            ArrayList<String> jsonGameList = new ArrayList<String>();
+            for (GameData game: listGamesRes.games()){
+                jsonGameList.add(jsonifyGames(game));
+            }
+            successResponse(ctx, new Gson().toJson(Map.of("games", jsonGameList)));
+
+        }
+        catch (DataAccessException exception){
+            specificExceptionHandler(ctx, exception.getMessage());
+        }
+    }
+
+    public String jsonifyGames(GameData game)
+
     public void successResponse(Context ctx, String message){
         ctx.contentType("application/json");
         ctx.status(200);
@@ -104,6 +122,9 @@ public class Server {
         ctx.contentType("application/json");
         if (message.contains("bad")){
             ctx.status(400);
+        }
+        if (message.contains("unauthorized")){
+            ctx.status(401);
         }
         else{
             ctx.status(403);
