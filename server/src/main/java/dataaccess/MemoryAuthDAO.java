@@ -25,10 +25,14 @@ public class MemoryAuthDAO implements AuthDAO{
     }
 
     public void deleteAuth(String authToken) throws DataAccessException{
+        AuthData data = verifyAuth(authToken);
+        authSet.remove(data);
+    }
+
+    public AuthData verifyAuth(String authToken) throws DataAccessException{
         for (AuthData data : authSet){
             if (data.authToken().equals(authToken)){
-                authSet.remove(data);
-                return;
+                return data;
             }
         }
         throw new DataAccessException("Error: unauthorized");

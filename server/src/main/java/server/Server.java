@@ -34,6 +34,7 @@ public class Server {
         javalin.post("/user", this::registerUser);
         javalin.post("/session", this::loginUser);
         javalin.delete("/session", this::logoutUser);
+        javalin.post("/game", this::createGame);
         javalin.exception(Exception.class, this::generalExceptionHandler);
         javalin.error(404, this::notFound);
     }
@@ -74,6 +75,16 @@ public class Server {
         try{
             authService.deleteAuth(ctx.header("authorization"));
             successResponse(ctx, "");
+        }
+        catch (DataAccessException exception){
+            specificExceptionHandler(ctx, exception.getMessage());
+        }
+    }
+
+    public void createGame(Context ctx){
+        try{
+            authService.verifyAuth(ctx.header("authorization"));
+            gameService.createGame();
         }
         catch (DataAccessException exception){
             specificExceptionHandler(ctx, exception.getMessage());

@@ -27,6 +27,6 @@ public class AuthService {
     }
 
     public void verifyAuth(String authToken) throws DataAccessException {
-        db.verifyAuth(authToken);
+        AuthData auth = db.verifyAuth(authToken);
     }
 }
