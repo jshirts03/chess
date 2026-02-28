@@ -7,9 +7,11 @@ import io.javalin.http.Context;
 import service.AuthService;
 import service.UserService;
 import service.GameService;
+import service.requests.CreateGameRequest;
 import service.requests.LoginRequest;
 import service.responses.AuthResponse;
 import service.responses.LoginResponse;
+import service.responses.NewGameResponse;
 import service.responses.RegisterResponse;
 import service.requests.RegisterRequest;
 
@@ -84,7 +86,8 @@ public class Server {
     public void createGame(Context ctx){
         try{
             authService.verifyAuth(ctx.header("authorization"));
-            gameService.createGame();
+            NewGameResponse newGameRes = gameService.createGame(new Gson().fromJson(ctx.body(), CreateGameRequest.class));
+            successResponse(ctx, new Gson().toJson(newGameRes));
         }
         catch (DataAccessException exception){
             specificExceptionHandler(ctx, exception.getMessage());

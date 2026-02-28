@@ -17,7 +17,7 @@ public class MemoryGameDAO implements GameDAO{
 
     public int createGame(String gameName){
         int gameId = (int)(Math.random() * 9000) + 1000;
-        while (!alreadyTaken(gameId)){
+        while (alreadyTaken(gameId)){
             gameId = (int)(Math.random() * 9000) + 1000;
         }
         games.add(new GameData(gameId, "", "",gameName, new ChessGame()));
