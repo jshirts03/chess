@@ -1,6 +1,8 @@
 package dataaccess;
 
 import datatypes.AuthData;
+import service.requests.JoinGameRequest;
+
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -37,4 +39,14 @@ public class MemoryAuthDAO implements AuthDAO{
         }
         throw new DataAccessException("Error: unauthorized");
     }
+
+    public String getUserWithAuth(String authToken){
+        for (AuthData auth: authSet){
+            if (auth.authToken().equals(authToken)){
+                return auth.username();
+            }
+        }
+        return null;
+    }
+
 }

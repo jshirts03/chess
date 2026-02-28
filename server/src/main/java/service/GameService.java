@@ -5,6 +5,7 @@ import dataaccess.GameDAO;
 import dataaccess.MemoryGameDAO;
 import datatypes.GameData;
 import service.requests.CreateGameRequest;
+import service.requests.JoinGameRequest;
 import service.responses.ListGameData;
 import service.responses.ListGamesResponse;
 import service.responses.NewGameResponse;
@@ -38,5 +39,12 @@ public class GameService {
             listedGames[i] = new ListGameData(game.gameID(), game.whiteUsername(), game.blackUsername(), game.gameName());
         }
         return new ListGamesResponse(listedGames);
+    }
+
+    public void joinGame(JoinGameRequest request) throws DataAccessException{
+        if (!request.playerColor().equals("WHITE") && !request.playerColor().equals("BLACK") ){
+            throw new DataAccessException("Error: bad request");
+        }
+        db.joinGame(request);
     }
 }

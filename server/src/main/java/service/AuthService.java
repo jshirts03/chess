@@ -29,4 +29,8 @@ public class AuthService {
     public void verifyAuth(String authToken) throws DataAccessException {
         AuthData auth = db.verifyAuth(authToken);
     }
+
+    public String getUserWithAuth(String authtoken){
+        return db.getUserWithAuth(authtoken);
+    }
 }

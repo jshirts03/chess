@@ -9,6 +9,7 @@ import service.AuthService;
 import service.UserService;
 import service.GameService;
 import service.requests.CreateGameRequest;
+import service.requests.JoinGameRequest;
 import service.requests.LoginRequest;
 import service.responses.*;
 import service.requests.RegisterRequest;
@@ -110,6 +111,7 @@ public class Server {
         try{
             authService.verifyAuth(ctx.header("authorization"));
             String username = authService.getUserWithAuth(ctx.header("authorization"));
+            gameService.joinGame(new Gson().fromJson(ctx.body(), JoinGameRequest.class));
         }
         catch (DataAccessException exception){
             specificExceptionHandler(ctx, exception.getMessage());
