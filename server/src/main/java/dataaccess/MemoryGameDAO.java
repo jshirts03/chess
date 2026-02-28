@@ -3,12 +3,13 @@ package dataaccess;
 import chess.ChessGame;
 import datatypes.GameData;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class MemoryGameDAO implements GameDAO{
-    HashSet<GameData> games;
+    ArrayList<GameData> games;
     public MemoryGameDAO(){
-        games = new HashSet<GameData>();
+        games = new ArrayList<GameData>();
     }
 
     public void clear(){
@@ -33,7 +34,7 @@ public class MemoryGameDAO implements GameDAO{
         return false;
     }
 
-    public HashSet<GameData> getGames(){
+    public ArrayList<GameData> getGames(){
         return games;
     }
 }

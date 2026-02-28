@@ -8,6 +8,7 @@ import service.requests.CreateGameRequest;
 import service.responses.ListGamesResponse;
 import service.responses.NewGameResponse;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class GameService {
@@ -29,7 +30,11 @@ public class GameService {
     }
 
     public ListGamesResponse listGames(){
-        HashSet<GameData> games = db.getGames();
-        return new ListGamesResponse(games);
+        ArrayList<GameData> games = db.getGames();
+        GameData[] listedGames = new GameData[games.size()];
+        for (int i=0; i<games.size(); i++){
+            listedGames[i] = games.get(i);
+        }
+        return new ListGamesResponse(listedGames);
     }
 }

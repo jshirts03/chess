@@ -2,10 +2,10 @@ package dataaccess;
 
 import datatypes.GameData;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public interface GameDAO {
     void clear();
     int createGame(String gameName);
-    HashSet<GameData> getGames();
+    ArrayList<GameData> getGames();
 }

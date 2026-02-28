@@ -98,19 +98,13 @@ public class Server {
         try{
             authService.verifyAuth(ctx.header("authorization"));
             ListGamesResponse listGamesRes = gameService.listGames();
-            ArrayList<String> jsonGameList = new ArrayList<String>();
-            for (GameData game: listGamesRes.games()){
-                jsonGameList.add(jsonifyGames(game));
-            }
-            successResponse(ctx, new Gson().toJson(Map.of("games", jsonGameList)));
-
+            successResponse(ctx, new Gson().toJson(Map.of("games", listGamesRes)));
         }
         catch (DataAccessException exception){
             specificExceptionHandler(ctx, exception.getMessage());
         }
     }
 
-    public String jsonifyGames(GameData game)
 
     public void successResponse(Context ctx, String message){
         ctx.contentType("application/json");
