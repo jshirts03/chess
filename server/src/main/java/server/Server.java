@@ -61,8 +61,10 @@ public class Server {
     public void loginUser(Context ctx){
         try{
             LoginResponse loginRes = userService.login(new Gson().fromJson(ctx.body(), LoginRequest.class));
+            AuthResponse authRes = authService.authorize(loginRes.username());
+            successResponse(ctx, new Gson().toJson(authRes));
         }
-        catch (DataAccessException excpetion){
+        catch (DataAccessException exception){
             specificExceptionHandler(ctx, exception.getMessage());
         }
     }
