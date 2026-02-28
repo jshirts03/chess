@@ -25,4 +25,8 @@ public class AuthService {
     public void deleteAuth(String authToken) throws DataAccessException {
         db.deleteAuth(authToken);
     }
+
+    public void verifyAuth(String authToken) throws DataAccessException {
+        db.verifyAuth(authToken);
+    }
 }
