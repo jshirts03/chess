@@ -5,6 +5,7 @@ import dataaccess.GameDAO;
 import dataaccess.MemoryGameDAO;
 import datatypes.GameData;
 import service.requests.CreateGameRequest;
+import service.responses.ListGameData;
 import service.responses.ListGamesResponse;
 import service.responses.NewGameResponse;
 
@@ -31,9 +32,10 @@ public class GameService {
 
     public ListGamesResponse listGames(){
         ArrayList<GameData> games = db.getGames();
-        GameData[] listedGames = new GameData[games.size()];
+        ListGameData[] listedGames = new ListGameData[games.size()];
         for (int i=0; i<games.size(); i++){
-            listedGames[i] = games.get(i);
+            GameData game = games.get(i);
+            listedGames[i] = new ListGameData(game.gameID(), game.whiteUsername(), game.blackUsername(), game.gameName());
         }
         return new ListGamesResponse(listedGames);
     }

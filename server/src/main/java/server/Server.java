@@ -37,6 +37,7 @@ public class Server {
         javalin.delete("/session", this::logoutUser);
         javalin.post("/game", this::createGame);
         javalin.get("/game", this::listGames);
+        javalin.put("/game", this::joinGame);
         javalin.exception(Exception.class, this::generalExceptionHandler);
         javalin.error(404, this::notFound);
     }
@@ -99,6 +100,16 @@ public class Server {
             authService.verifyAuth(ctx.header("authorization"));
             ListGamesResponse listGamesRes = gameService.listGames();
             successResponse(ctx, new Gson().toJson(Map.of("games", listGamesRes)));
+        }
+        catch (DataAccessException exception){
+            specificExceptionHandler(ctx, exception.getMessage());
+        }
+    }
+
+    public void joinGame(Context ctx){
+        try{
+            authService.verifyAuth(ctx.header("authorization"));
+            String username = authService.getUserWithAuth(ctx.header("authorization"));
         }
         catch (DataAccessException exception){
             specificExceptionHandler(ctx, exception.getMessage());
