@@ -73,6 +73,7 @@ public class Server {
     public void logoutUser(Context ctx){
         try{
             authService.deleteAuth(ctx.header("authorization"));
+            successResponse(ctx, "");
         }
         catch (DataAccessException exception){
             specificExceptionHandler(ctx, exception.getMessage());
