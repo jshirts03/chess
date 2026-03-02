@@ -42,7 +42,7 @@ public class GameService {
     }
 
     public void joinGame(JoinGameRequest request) throws DataAccessException{
-        if (!request.playerColor().equals("WHITE") && !request.playerColor().equals("BLACK") ){
+        if (request.playerColor() == null || (!request.playerColor().equals("WHITE") && !request.playerColor().equals("BLACK") )){
             throw new DataAccessException("Error: bad request");
         }
         db.joinGame(request);

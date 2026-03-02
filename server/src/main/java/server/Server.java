@@ -100,7 +100,7 @@ public class Server {
         try{
             authService.verifyAuth(ctx.header("authorization"));
             ListGamesResponse listGamesRes = gameService.listGames();
-            successResponse(ctx, new Gson().toJson(Map.of("games", listGamesRes)));
+            successResponse(ctx, new Gson().toJson(Map.of("games", listGamesRes.games())));
         }
         catch (DataAccessException exception){
             specificExceptionHandler(ctx, exception.getMessage());
@@ -111,7 +111,11 @@ public class Server {
         try{
             authService.verifyAuth(ctx.header("authorization"));
             String username = authService.getUserWithAuth(ctx.header("authorization"));
-            gameService.joinGame(new Gson().fromJson(ctx.body(), JoinGameRequest.class));
+            JoinGameRequest joinReq = new Gson().fromJson(ctx.body(), JoinGameRequest.class);
+            JoinGameRequest joinReqWithUsername = new JoinGameRequest(joinReq.playerColor(), joinReq.gameID(), username);
+            gameService.joinGame(joinReqWithUsername);
+            ctx.status(200);
+            ctx.result();
         }
         catch (DataAccessException exception){
             specificExceptionHandler(ctx, exception.getMessage());
@@ -133,7 +137,7 @@ public class Server {
         if (message.contains("unauthorized")){
             ctx.status(401);
         }
-        else{
+        if (message.contains("taken")){
             ctx.status(403);
         }
         ctx.json(new Gson().toJson(Map.of("message", message)));
