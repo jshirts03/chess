@@ -28,7 +28,8 @@ public class ChessBoard implements Cloneable{
 
 
     //Chess Position class contains 2 private integers, representing the row and column, stored in a 1-index pattern
-    //The chessboard will be a 0 index array of arrays, so there must be a small adjustment when storing a ChessPiece object at a specific ChessPostion (-1)
+    //The chessboard will be a 0 index array of arrays, so there must be a small adjustment when storing a ChessPiece
+    //object at a specific ChessPosition (-1)
     public void addPiece(ChessPosition position, ChessPiece piece) {
         board[position.row - 1][position.col - 1] = piece;
     }
