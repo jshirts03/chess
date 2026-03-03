@@ -49,16 +49,7 @@ public class PawnGenerator extends MoveGenerator{
         return new ChessMove(myPosition, forwardPosition);
     }
 
-    //Ovverride because it can only move diagonally if it is killing an enemy pawn
-    @Override
-    public ChessMove checkDiagonalUpRight(ChessPosition mover){
-        ChessPosition diagonalPosition = null;
-        if (myColor == ChessGame.TeamColor.WHITE){
-            diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()+1);
-        }
-        else{
-            diagonalPosition = new ChessPosition(mover.getRow()-1, mover.getColumn()-1);
-        }
+    public ChessMove diagonalChecker(ChessPosition diagonalPosition){
         if (diagonalPosition.getRow() < 1 || diagonalPosition.getRow() > 8){
             return null;
         }
@@ -74,6 +65,19 @@ public class PawnGenerator extends MoveGenerator{
         return new ChessMove(myPosition, diagonalPosition);
     }
 
+    //Ovverride because it can only move diagonally if it is killing an enemy pawn
+    @Override
+    public ChessMove checkDiagonalUpRight(ChessPosition mover){
+        ChessPosition diagonalPosition = null;
+        if (myColor == ChessGame.TeamColor.WHITE){
+            diagonalPosition = new ChessPosition(mover.getRow()+1, mover.getColumn()+1);
+        }
+        else{
+            diagonalPosition = new ChessPosition(mover.getRow()-1, mover.getColumn()-1);
+        }
+        return diagonalChecker(diagonalPosition);
+    }
+
     //Override because pawns can only move diagonal if they are killing enemy piece
     @Override
     public ChessMove checkDiagonalUpLeft(ChessPosition mover){
@@ -84,19 +88,7 @@ public class PawnGenerator extends MoveGenerator{
         else{
             diagonalPosition = new ChessPosition(mover.getRow()-1, mover.getColumn()+1);
         }
-        if (diagonalPosition.getRow() < 1 || diagonalPosition.getRow() > 8){
-            return null;
-        }
-        if (diagonalPosition.getColumn() < 1 || diagonalPosition.getColumn() > 8){
-            return null;
-        }
-        if (board.getPiece(diagonalPosition) == null){
-            return null;
-        }
-        if (board.getPiece(diagonalPosition).getTeamColor() == myColor){
-            return null;
-        }
-        return new ChessMove(myPosition, diagonalPosition);
+        return diagonalChecker(diagonalPosition);
     }
 
 
