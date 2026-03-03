@@ -9,19 +9,20 @@ public class PawnGenerator extends MoveGenerator{
         super(board, position);
     }
 
+    public void addPromotionPieces(ArrayList<ChessMove> promotionMoves, ChessMove move){
+        promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.ROOK));
+        promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.KNIGHT));
+        promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.BISHOP));
+        promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.QUEEN));
+    }
+
     public ArrayList<ChessMove> promotionChecker(ChessMove move){
         ArrayList<ChessMove> promotionMoves = new ArrayList<ChessMove>();
         if (myColor == ChessGame.TeamColor.WHITE && move.endPosition.getRow() == 8){
-            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.ROOK));
-            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.KNIGHT));
-            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.BISHOP));
-            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.QUEEN));
+            addPromotionPieces(promotionMoves, move);
         }
         if (myColor == ChessGame.TeamColor.BLACK && move.endPosition.getRow() == 1){
-            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.ROOK));
-            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.KNIGHT));
-            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.BISHOP));
-            promotionMoves.add(new ChessMove(myPosition, move.endPosition, ChessPiece.PieceType.QUEEN));
+            addPromotionPieces(promotionMoves, move);
         }
         return promotionMoves;
     }
