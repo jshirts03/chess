@@ -4,6 +4,7 @@ import dataaccess.DataAccessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.requests.CreateGameRequest;
+import service.requests.JoinGameRequest;
 import service.requests.LoginRequest;
 import service.requests.RegisterRequest;
 import service.responses.*;
@@ -126,7 +127,19 @@ public class MyUnitTests {
     }
 
     @Test
-    public void listGamesFail()
+    public void joinGameSuccess() throws DataAccessException{
+        NewGameResponse gameRes = gameService.createGame(new CreateGameRequest("Joe's Game"));
+        int id = gameRes.gameID();
+        assertDoesNotThrow(() -> gameService.joinGame(new JoinGameRequest("WHITE", id, "Joe")));
+        ListGamesResponse listGameRes = gameService.listGames();
+        assertEquals("Joe", listGameRes.games()[0].whiteUsername());
+    }
+
+    @Test
+    public void joinGameFail(){
+        assertThrows(DataAccessException.class, () -> gameService.joinGame(new JoinGameRequest("GREEN", 0000, null)));
+        assertThrows(DataAccessException.class, () -> gameService.joinGame(new JoinGameRequest("BLACK", 23456, "Joe")));
+    }
 
 
 
