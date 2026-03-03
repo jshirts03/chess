@@ -62,7 +62,7 @@ public class MyUnitTests {
         RegisterResponse registerRes = userService.register(testRegister);
         LoginResponse loginRes = userService.login(new LoginRequest("Joe", "1234"));
         assertEquals("Joe", loginRes.username());
-        assertNull(loginRes.authToken());
+        assertEquals("",loginRes.authToken());
     }
 
     @Test
