@@ -21,6 +21,10 @@ public class DatabaseManager {
      */
     static public void createDatabase() throws DataAccessException {
         var statement = "CREATE DATABASE IF NOT EXISTS " + databaseName;
+    }
+
+
+    public void executeStatement(String statement) throws DataAccessException {
         try (var conn = DriverManager.getConnection(connectionUrl, dbUsername, dbPassword);
              var preparedStatement = conn.prepareStatement(statement)) {
             preparedStatement.executeUpdate();
@@ -45,29 +49,34 @@ public class DatabaseManager {
     //Game Table
         // Id, GameData (JSON string)
 
-    static public void createTable(String tableName) throws DataAccessExcpetion{
-        String statement;
-        switch (tableName){
-            case "user":
-                statement = """
-                        CREATE TABLE IF NOT EXISTS user(
-                        id INT NOT NULL AUTO_INCREMENT,
-                        username VARCHAR(255) NOT NULL,
-                        email VARCHAR(255) NOT NULL,
-                        password VARCHAR(255) NOT NULL,
-                        PRIMARY KEY (id)
-                        """;
-            case "auth":
-                statement = """
-                        CREATE TABLE IF NOT EXISTS auth(
-                        id INT NOT NULL AUTO_INCREMENT,
-                        userid INT NOT NULL,
-                        authtoken VARCHAR(255) NOT NULL,
-                        PRIMARY KEY (id)
-                        FOREIGN KEY (userid) REFERENCES user(id)
-                        """;
-            case "game":
+    static public void createTables() throws DataAccessExcpetion{
+        var createUserTableStatement = """
+                CREATE TABLE IF NOT EXISTS user(
+                id INT NOT NULL AUTO_INCREMENT,
+                username VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                PRIMARY KEY (id)
+                """;
+        var createAuthTableStatement = """
+                CREATE TABLE IF NOT EXISTS auth(
+                id INT NOT NULL AUTO_INCREMENT,
+                userid INT NOT NULL,
+                authtoken VARCHAR(255) NOT NULL,
+                PRIMARY KEY (id)
+                FOREIGN KEY (userid) REFERENCES user(id)
+                """;
+        var createGameTableStatement = """
+                CREATE TABLE IF NOT EXISTS auth(
+                gameid INT NOT NULL AUTO_INCREMENT,
+                whiteusername VARCHAR(255),
+                blackusername VARCHAR(255),
+                gamename VARCHAR(255) NOT NUll,
+                PRIMARY KEY (gameid)
+                """;
         }
+        executeStatement(createUserTableStatement);
+
     }
 
     /**
