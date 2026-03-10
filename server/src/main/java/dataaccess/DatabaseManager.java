@@ -29,6 +29,47 @@ public class DatabaseManager {
         }
     }
 
+
+    // Create tables if not exist
+    // Once service boots up, create a DB manager object, create database if not exists (first)
+    // create table as part of constructor as well, but that's a method in this class, with table name as parameter
+    // THIS IS IN THE CONSTRUCTOR OF DAO's ^^^
+    //
+    // create table method
+    //Auth Table
+        // Id, UserId (linked), AuthToken
+
+    //User Table
+        // Id, Username, email, password(hashed)
+
+    //Game Table
+        // Id, GameData (JSON string)
+
+    static public void createTable(String tableName) throws DataAccessExcpetion{
+        String statement;
+        switch (tableName){
+            case "user":
+                statement = """
+                        CREATE TABLE IF NOT EXISTS user(
+                        id INT NOT NULL AUTO_INCREMENT,
+                        username VARCHAR(255) NOT NULL,
+                        email VARCHAR(255) NOT NULL,
+                        password VARCHAR(255) NOT NULL,
+                        PRIMARY KEY (id)
+                        """;
+            case "auth":
+                statement = """
+                        CREATE TABLE IF NOT EXISTS auth(
+                        id INT NOT NULL AUTO_INCREMENT,
+                        userid INT NOT NULL,
+                        authtoken VARCHAR(255) NOT NULL,
+                        PRIMARY KEY (id)
+                        FOREIGN KEY (userid) REFERENCES user(id)
+                        """;
+            case "game":
+        }
+    }
+
     /**
      * Create a connection to the database and sets the catalog based upon the
      * properties specified in db.properties. Connections to the database should
