@@ -6,7 +6,7 @@ public class SQLUserDAO extends UserDAO{
 
     public SQLUserDAO() throws DataAccessException{
         DatabaseManager.createDatabase();
-        DatabaseManager.createTable("user");
+        DatabaseManager.createTables();
     }
 
     public void clear(){};

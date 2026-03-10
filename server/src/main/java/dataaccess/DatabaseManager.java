@@ -21,10 +21,11 @@ public class DatabaseManager {
      */
     static public void createDatabase() throws DataAccessException {
         var statement = "CREATE DATABASE IF NOT EXISTS " + databaseName;
+        executeStatement(statement);
     }
 
 
-    public void executeStatement(String statement) throws DataAccessException {
+    public static void executeStatement(String statement) throws DataAccessException {
         try (var conn = DriverManager.getConnection(connectionUrl, dbUsername, dbPassword);
              var preparedStatement = conn.prepareStatement(statement)) {
             preparedStatement.executeUpdate();
@@ -41,16 +42,16 @@ public class DatabaseManager {
     //
     // create table method
     //Auth Table
-        // Id, UserId (linked), AuthToken
+    // Id, UserId (linked), AuthToken
 
     //User Table
-        // Id, Username, email, password(hashed)
+    // Id, Username, email, password(hashed)
 
     //Game Table
-        // Id, GameData (JSON string)
+    // Id, GameData (JSON string)
 
-    static public void createTables() throws DataAccessExcpetion{
-        var createUserTableStatement = """
+    public static void createTables() throws DataAccessException {
+        String createUserTableStatement = """
                 CREATE TABLE IF NOT EXISTS user(
                 id INT NOT NULL AUTO_INCREMENT,
                 username VARCHAR(255) NOT NULL,
@@ -58,7 +59,7 @@ public class DatabaseManager {
                 password VARCHAR(255) NOT NULL,
                 PRIMARY KEY (id)
                 """;
-        var createAuthTableStatement = """
+        String createAuthTableStatement = """
                 CREATE TABLE IF NOT EXISTS auth(
                 id INT NOT NULL AUTO_INCREMENT,
                 userid INT NOT NULL,
@@ -66,7 +67,7 @@ public class DatabaseManager {
                 PRIMARY KEY (id)
                 FOREIGN KEY (userid) REFERENCES user(id)
                 """;
-        var createGameTableStatement = """
+        String createGameTableStatement = """
                 CREATE TABLE IF NOT EXISTS auth(
                 gameid INT NOT NULL AUTO_INCREMENT,
                 whiteusername VARCHAR(255),
@@ -74,8 +75,9 @@ public class DatabaseManager {
                 gamename VARCHAR(255) NOT NUll,
                 PRIMARY KEY (gameid)
                 """;
-        }
         executeStatement(createUserTableStatement);
+        executeStatement(createAuthTableStatement);
+        executeStatement(createGameTableStatement);
 
     }
 
@@ -124,4 +126,5 @@ public class DatabaseManager {
         var port = Integer.parseInt(props.getProperty("db.port"));
         connectionUrl = String.format("jdbc:mysql://%s:%d", host, port);
     }
+
 }
