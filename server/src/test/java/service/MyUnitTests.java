@@ -1,6 +1,8 @@
 package service;
 
 import dataaccess.DataAccessException;
+import datatypes.UserData;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.requests.CreateGameRequest;
@@ -24,6 +26,17 @@ public class MyUnitTests {
         gameService = new GameService();
         userService = new UserService();
         testRegister = new RegisterRequest("Joe", "1234", "joe@joe.com");
+    }
+
+    @AfterEach
+    public void clearDB(){
+        try{
+            authService.clear();
+            gameService.clear();
+            userService.clear();
+        } catch (DataAccessException e){
+            System.out.println("Uh oh, there was an issue with the Db");
+        }
     }
 
     public RegisterResponse registerUser() throws DataAccessException{
@@ -73,14 +86,24 @@ public class MyUnitTests {
 
     @Test
     public void authorizeSuccess(){
-        AuthResponse authRes = authService.authorize("Joe");
-        assertEquals("Joe", authRes.username());
-        assertNotNull(authRes.authToken());
+        try{
+            AuthResponse authRes = authService.authorize("Joe");
+            assertEquals("Joe", authRes.username());
+            assertNotNull(authRes.authToken());
+        }
+        catch (DataAccessException e){
+            fail("There was a problem with DB");
+        }
     }
 
     public String authorize(){
-        AuthResponse authRes = authService.authorize("Joe");
-        return authRes.authToken();
+        try{
+            AuthResponse authRes = authService.authorize("Joe");
+            return authRes.authToken();
+        }
+        catch (DataAccessException e){
+            return null;
+        }
     }
 
     @Test
