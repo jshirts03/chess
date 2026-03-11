@@ -52,33 +52,32 @@ public class DatabaseManager {
 
     public static void createTables() throws DataAccessException {
         String createUserTableStatement = """
-                CREATE TABLE IF NOT EXISTS user(
+                CREATE TABLE IF NOT EXISTS chess.users(
                 id INT NOT NULL AUTO_INCREMENT,
                 username VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
                 password VARCHAR(255) NOT NULL,
-                PRIMARY KEY (id)
+                PRIMARY KEY (id));
                 """;
         String createAuthTableStatement = """
-                CREATE TABLE IF NOT EXISTS auth(
+                CREATE TABLE IF NOT EXISTS chess.auth(
                 id INT NOT NULL AUTO_INCREMENT,
                 userid INT NOT NULL,
                 authtoken VARCHAR(255) NOT NULL,
-                PRIMARY KEY (id)
-                FOREIGN KEY (userid) REFERENCES user(id)
+                PRIMARY KEY (id),
+                FOREIGN KEY (userid) REFERENCES chess.users(id));
                 """;
         String createGameTableStatement = """
-                CREATE TABLE IF NOT EXISTS auth(
+                CREATE TABLE IF NOT EXISTS chess.games(
                 gameid INT NOT NULL AUTO_INCREMENT,
                 whiteusername VARCHAR(255),
                 blackusername VARCHAR(255),
                 gamename VARCHAR(255) NOT NUll,
-                PRIMARY KEY (gameid)
+                PRIMARY KEY (gameid));
                 """;
         executeStatement(createUserTableStatement);
         executeStatement(createAuthTableStatement);
         executeStatement(createGameTableStatement);
-
     }
 
     /**

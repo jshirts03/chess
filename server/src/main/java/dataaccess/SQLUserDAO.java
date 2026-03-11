@@ -2,7 +2,7 @@ package dataaccess;
 
 import datatypes.UserData;
 
-public class SQLUserDAO extends UserDAO{
+public class SQLUserDAO implements UserDAO {
 
     public SQLUserDAO() throws DataAccessException{
         DatabaseManager.createDatabase();
@@ -10,6 +10,6 @@ public class SQLUserDAO extends UserDAO{
     }
 
     public void clear(){};
-    public UserData getUser(String username){};
+    public UserData getUser(String username){return new UserData("joe", "12345", "hi@gmail.com");};
     public void createUser(UserData user){};
 }

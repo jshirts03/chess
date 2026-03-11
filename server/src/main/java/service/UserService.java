@@ -2,6 +2,7 @@ package service;
 
 import dataaccess.DataAccessException;
 import dataaccess.MemoryUserDAO;
+import dataaccess.SQLUserDAO;
 import dataaccess.UserDAO;
 import datatypes.UserData;
 import service.requests.LoginRequest;
@@ -13,7 +14,12 @@ public class UserService {
     private UserDAO db;
 
     public UserService(){
-        db = new MemoryUserDAO();
+        try {
+            db = new SQLUserDAO();
+        } catch (DataAccessException e){
+            db = new MemoryUserDAO();
+        }
+
     }
 
     public void clear(){
