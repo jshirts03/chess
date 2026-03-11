@@ -3,7 +3,7 @@ package dataaccess;
 import datatypes.UserData;
 
 public interface UserDAO {
-    void clear();
+    void clear() throws DataAccessException;
     UserData getUser(String username, String password);
     void createUser(UserData user);
 }

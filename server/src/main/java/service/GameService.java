@@ -25,7 +25,7 @@ public class GameService {
 
     }
 
-    public void clear() {
+    public void clear() throws DataAccessException{
         db.clear();
     }
 

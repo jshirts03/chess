@@ -18,7 +18,7 @@ public class AuthService {
 
     }
 
-    public void clear(){
+    public void clear() throws DataAccessException{
         db.clear();
     }
 

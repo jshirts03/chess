@@ -16,12 +16,13 @@ public class SQLGameDAO implements GameDAO{
         DatabaseManager.createTables();
     }
 
-    public void clear(){
+    public void clear() throws DataAccessException{
         String statement = "DROP TABLE IF EXISTS chess.games";
         try{
             DatabaseManager.executeStatement(statement);
             DatabaseManager.createTables();
         } catch (DataAccessException e){
+            throw new DataAccessException("Error: server error");
         }
     };
 
@@ -109,7 +110,7 @@ public class SQLGameDAO implements GameDAO{
             if (e.getMessage().contains("taken")){
                 throw new DataAccessException("Error: already taken");
             }
-            throw new DataAccessException("Error: bad request");
+            throw new DataAccessException("Error: service error");
         }
 
     };

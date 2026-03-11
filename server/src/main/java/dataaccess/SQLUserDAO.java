@@ -15,12 +15,13 @@ public class SQLUserDAO implements UserDAO {
         DatabaseManager.createTables();
     }
 
-    public void clear(){
+    public void clear() throws DataAccessException{
         String statement = "DROP TABLE IF EXISTS chess.users";
         try{
             DatabaseManager.executeStatement(statement);
             DatabaseManager.createTables();
         } catch (DataAccessException e){
+            throw new DataAccessException("Error: server error");
         }
     };
 

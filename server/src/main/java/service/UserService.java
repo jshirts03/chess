@@ -22,7 +22,7 @@ public class UserService {
 
     }
 
-    public void clear(){
+    public void clear() throws DataAccessException{
         db.clear();
     }
 

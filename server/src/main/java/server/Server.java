@@ -46,11 +46,16 @@ public class Server {
 
     private void clearApplication(Context ctx) {
         ctx.contentType("application/json");
-        gameService.clear();
-        userService.clear();
-        authService.clear();
-        ctx.status(200);
-        ctx.result();
+        try{
+            gameService.clear();
+            userService.clear();
+            authService.clear();
+            ctx.status(200);
+            ctx.result();
+        } catch (DataAccessException exception){
+            specificExceptionHandler(ctx, exception.getMessage());
+        }
+
     }
 
     private void registerUser(Context ctx){
@@ -139,6 +144,9 @@ public class Server {
         }
         if (message.contains("taken")){
             ctx.status(403);
+        }
+        if (message.contains("server")){
+            ctx.status(500);
         }
         ctx.json(new Gson().toJson(Map.of("message", message)));
     }

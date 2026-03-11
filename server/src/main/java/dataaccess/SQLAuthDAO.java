@@ -13,12 +13,13 @@ public class SQLAuthDAO implements AuthDAO{
         DatabaseManager.createTables();
     }
 
-    public void clear(){
+    public void clear() throws DataAccessException{
         String statement = "DROP TABLE IF EXISTS chess.auth";
         try{
             DatabaseManager.executeStatement(statement);
             DatabaseManager.createTables();
         } catch (DataAccessException e){
+            throw new DataAccessException("Error: server error");
         }
     };
 
