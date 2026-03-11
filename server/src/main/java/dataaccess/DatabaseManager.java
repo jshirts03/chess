@@ -34,7 +34,6 @@ public class DatabaseManager {
         }
     }
 
-
     // Create tables if not exist
     // Once service boots up, create a DB manager object, create database if not exists (first)
     // create table as part of constructor as well, but that's a method in this class, with table name as parameter
