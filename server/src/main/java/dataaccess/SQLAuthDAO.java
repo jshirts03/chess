@@ -2,6 +2,9 @@ package dataaccess;
 
 import datatypes.AuthData;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.UUID;
 
 public class SQLAuthDAO implements AuthDAO{
@@ -30,10 +33,33 @@ public class SQLAuthDAO implements AuthDAO{
         }
     };
 
+    public void deleteAuth(String authToken) throws DataAccessException{
+        verifyAuth(authToken);
+        String statement = String.format("DELETE FROM chess.auth WHERE authtoken = '%s'", authToken);
+        DatabaseManager.executeStatement(statement);
+    };
 
-    ;
-    public void deleteAuth(String authToken) throws DataAccessException{};
-    public AuthData verifyAuth(String authToken) throws DataAccessException{ return new AuthData("hello", "jimmy");};
+
+    public AuthData verifyAuth(String authToken) throws DataAccessException{
+        String statement = String.format("SELECT username, authtoken FROM chess.auth WHERE authtoken = '%s'", authToken);
+        try (Connection conn = DatabaseManager.getConnection()) {
+            try (PreparedStatement ps = conn.prepareStatement(statement)) {
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()){
+                        String username = rs.getString("username");
+                        String dbToken = rs.getString("authtoken");
+                        return new AuthData(dbToken, username);
+                    }
+                    else{
+                        throw new DataAccessException("Error: unauthorized");
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+            throw new DataAccessException("Error: unauthorized");
+        }
+    };
     public String getUserWithAuth(String authToken){return "12345";};
 
 }
