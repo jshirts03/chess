@@ -11,7 +11,7 @@ public class SQLUserDAO implements UserDAO {
     }
 
     public void clear(){
-        String statement = "DROP TABLE IF EXISTS users.chess";
+        String statement = "DROP TABLE IF EXISTS chess.users";
         try{
             DatabaseManager.executeStatement(statement);
             DatabaseManager.createTables();

@@ -8,7 +8,14 @@ public class SQLAuthDAO implements AuthDAO{
         DatabaseManager.createTables();
     }
 
-    public void clear(){};
+    public void clear(){
+        String statement = "DROP TABLE IF EXISTS chess.auth";
+        try{
+            DatabaseManager.executeStatement(statement);
+            DatabaseManager.createTables();
+        } catch (DataAccessException e){
+        }
+    };
     public AuthData createAuth(String username){return new AuthData("hello", "jimmy");};
     public void deleteAuth(String authToken) throws DataAccessException{};
     public AuthData verifyAuth(String authToken) throws DataAccessException{ return new AuthData("hello", "jimmy");};

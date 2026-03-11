@@ -10,7 +10,16 @@ public class SQLGameDAO implements GameDAO{
         DatabaseManager.createDatabase();
         DatabaseManager.createTables();
     }
-    public void clear(){};
+
+    public void clear(){
+        String statement = "DROP TABLE IF EXISTS chess.games";
+        try{
+            DatabaseManager.executeStatement(statement);
+            DatabaseManager.createTables();
+        } catch (DataAccessException e){
+        }
+    };
+
     public int createGame(String gameName){return 1;};
     public ArrayList<GameData> getGames(){return new ArrayList<GameData>();};
     public void joinGame(JoinGameRequest request) throws DataAccessException{};
