@@ -24,7 +24,6 @@ public class DatabaseManager {
         executeStatement(statement);
     }
 
-
     public static void executeStatement(String statement) throws DataAccessException {
         try (var conn = DriverManager.getConnection(connectionUrl, dbUsername, dbPassword);
              var preparedStatement = conn.prepareStatement(statement)) {
@@ -72,7 +71,7 @@ public class DatabaseManager {
                 whiteusername VARCHAR(255),
                 blackusername VARCHAR(255),
                 gamename VARCHAR(255) NOT NULL,
-                game VARCHAR(255) NOT NULL,
+                game TEXT NOT NULL,
                 PRIMARY KEY (id));
                 """;
         executeStatement(createUserTableStatement);
