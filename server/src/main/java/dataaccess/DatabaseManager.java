@@ -67,7 +67,8 @@ public class DatabaseManager {
                 """;
         String createGameTableStatement = """
                 CREATE TABLE IF NOT EXISTS chess.games(
-                gameid INT NOT NULL AUTO_INCREMENT,
+                id INT NOT NULL AUTO_INCREMENT,
+                gameid INT NOT NULL,
                 whiteusername VARCHAR(255),
                 blackusername VARCHAR(255),
                 gamename VARCHAR(255) NOT NUll,
