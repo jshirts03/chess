@@ -23,15 +23,11 @@ public class SQLAuthDAO implements AuthDAO{
         }
     };
 
-    public AuthData createAuth(String username){
+    public AuthData createAuth(String username) throws DataAccessException{
         String token = UUID.randomUUID().toString();
         String statement = "INSERT INTO chess.auth VALUES(null, '" + username + "', '" + token + "')";
-        try{
-            DatabaseManager.executeStatement(statement);
-            return new AuthData(token, username);
-        } catch (DataAccessException e){
-            return null;
-        }
+        DatabaseManager.executeStatement(statement);
+        return new AuthData(token, username);
     };
 
     public void deleteAuth(String authToken) throws DataAccessException{

@@ -22,7 +22,7 @@ public class AuthService {
         db.clear();
     }
 
-    public AuthResponse authorize(String username){
+    public AuthResponse authorize(String username) throws DataAccessException{
         AuthData auth = db.createAuth(username);
         return new AuthResponse(auth.username(), auth.authToken());
     }

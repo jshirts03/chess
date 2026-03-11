@@ -5,7 +5,7 @@ import service.requests.JoinGameRequest;
 
 public interface AuthDAO {
     void clear() throws DataAccessException;
-    AuthData createAuth(String username);
+    AuthData createAuth(String username) throws DataAccessException;
     void deleteAuth(String authToken) throws DataAccessException;
     AuthData verifyAuth(String authToken) throws DataAccessException;
     String getUserWithAuth(String authToken);

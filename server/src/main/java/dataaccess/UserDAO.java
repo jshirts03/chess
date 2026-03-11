@@ -5,5 +5,5 @@ import datatypes.UserData;
 public interface UserDAO {
     void clear() throws DataAccessException;
     UserData getUser(String username, String password) throws DataAccessException;
-    void createUser(UserData user);
+    void createUser(UserData user) throws DataAccessException;
 }

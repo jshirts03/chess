@@ -60,6 +60,7 @@ public class MyUnitTests {
 
     @Test
     public void registerSuccess() throws DataAccessException{
+        userService.clear();
         RegisterResponse registerRes = userService.register(testRegister);
         assertEquals("Joe", registerRes.username());
     }

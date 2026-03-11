@@ -1,0 +1,160 @@
+package database;
+
+import dataaccess.DataAccessException;
+import dataaccess.SQLAuthDAO;
+import dataaccess.SQLGameDAO;
+import dataaccess.SQLUserDAO;
+import datatypes.AuthData;
+import datatypes.UserData;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class DBUnitTests {
+    SQLAuthDAO authdb;
+    SQLGameDAO gamedb;
+    SQLUserDAO userdb;
+    UserData testUser;
+
+    @BeforeEach
+    public void setupDB(){
+        try {
+            authdb = new SQLAuthDAO();
+            gamedb = new SQLGameDAO();
+            userdb = new SQLUserDAO();
+            testUser = new UserData("joe", "1234", "joe@joe.com");
+        } catch(DataAccessException e){
+            System.out.println("Uh oh, looks like the DB is down");
+        }
+    }
+
+    @AfterEach
+    public void clearDB(){
+        try{
+            authdb.clear();
+            userdb.clear();
+            gamedb.clear();
+        } catch (DataAccessException e){
+            System.out.println("Uh oh, could not clear the DB after test");
+        }
+
+    }
+
+    @Test
+    public void clearUserDb(){
+        assertDoesNotThrow(() -> userdb.clear());
+    }
+
+    @Test
+    public void clearAuthDb(){
+        assertDoesNotThrow(() -> authdb.clear());
+    }
+
+    @Test
+    public void clearGameDb(){
+        assertDoesNotThrow(() -> gamedb.clear());
+    }
+
+    @Test
+    public void createUser(){
+        assertDoesNotThrow(() -> userdb.createUser(testUser));
+    }
+
+    @Test
+    public void createUserFail(){
+        assertThrows(DataAccessException.class, () -> userdb.createUser(new UserData(null, null, null)));
+    }
+
+    @Test
+    public void getUserSuccess(){
+        try{
+            userdb.createUser(testUser);
+            UserData user = userdb.getUser("joe", "1234");
+            assertEquals(user.username(), testUser.username());
+        }
+        catch (DataAccessException e){
+            fail("There was a problem with DB");
+        }
+    }
+
+    @Test
+    public void getUserFail(){
+        try{
+            UserData user = userdb.getUser("joe", "1234");
+            assertNull(user);
+        }
+        catch (DataAccessException e){
+            fail("There was a problem with DB");
+        }
+    }
+
+    @Test
+    public void createAuthSuccess(){
+        try{
+            AuthData auth = authdb.createAuth("joe");
+            assertNotNull(auth.authToken());
+            assertEquals("joe", auth.username());
+        }
+        catch (DataAccessException e){
+            fail("There was a problem with DB");
+        }
+    }
+
+
+    @Test
+    public void verifyAuthSuccess(){
+        try{
+            AuthData auth = authdb.createAuth("joe");
+            AuthData verified = authdb.verifyAuth(auth.authToken());
+            assertEquals(auth.username(), verified.username());
+            assertEquals(auth.authToken(), verified.authToken());
+        }
+        catch (DataAccessException e){
+            fail("There was a problem with DB");
+        }
+    }
+
+    @Test
+    public void verifyAuthFail(){
+        assertThrows(DataAccessException.class, () -> authdb.verifyAuth("1234"));
+    }
+
+    @Test
+    public void getUserWithAuthSuccess(){
+        try{
+            AuthData auth = authdb.createAuth("joe");
+            String username = authdb.getUserWithAuth(auth.authToken());
+            assertEquals("joe", username);
+        }
+        catch (DataAccessException e){
+            fail("There was a problem with DB");
+        }
+    }
+
+    @Test
+    public void getUserWithAuthFail(){
+        String username = authdb.getUserWithAuth("1234");
+        assertNull(username);
+    }
+
+    @Test
+    public void deleteAuthSuccess(){
+        try{
+            AuthData auth = authdb.createAuth("joe");
+            assertDoesNotThrow(() -> authdb.deleteAuth(auth.authToken()));
+        }
+        catch (DataAccessException e){
+            fail("There was a problem with DB");
+        }
+    }
+
+    @Test
+    public void deleteAuthFail(){
+        assertThrows(DataAccessException.class, () -> authdb.deleteAuth("1234"));
+    }
+
+
+
+}

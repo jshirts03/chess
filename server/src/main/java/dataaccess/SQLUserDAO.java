@@ -54,15 +54,12 @@ public class SQLUserDAO implements UserDAO {
     };
 
 
-    public void createUser(UserData user){
+    public void createUser(UserData user) throws DataAccessException{
         String statement = String.format("INSERT INTO chess.users VALUES (null, '%s', '%s',",
                 user.username(),
                 user.email());
         String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
         statement = statement + " '" + hashedPassword + "')";
-        try{
-            DatabaseManager.executeStatement(statement);
-        } catch (DataAccessException e){
-        }
+        DatabaseManager.executeStatement(statement);
     };
 }
