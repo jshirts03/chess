@@ -66,7 +66,7 @@ public class SQLGameDAO implements GameDAO{
             String gameName = rs.getString("gamename");
             String gameJson = rs.getString("game");
             ChessGame game = new Gson().fromJson(gameJson, ChessGame.class);
-            return new GameData(gameId, whiteUsername, blackUsername, gameName, game)
+            return new GameData(gameId, whiteUsername, blackUsername, gameName, game);
         } catch (SQLException e){
             throw new DataAccessException("failed to format game");
         }
@@ -92,6 +92,7 @@ public class SQLGameDAO implements GameDAO{
     };
 
     public void joinGame(JoinGameRequest request) throws DataAccessException{
+        String statement = String.format("SELECT * from chess.games WHERE gameid = %d", request.gameID());
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement(statement)) {
                 try (ResultSet rs = ps.executeQuery()) {
@@ -99,15 +100,44 @@ public class SQLGameDAO implements GameDAO{
                         GameData game = formatGame(rs);
                         insertJoinedPlayer(request, game);
                     }
+                    else{
+                        throw new DataAccessException("Error: bad request");
+                    }
                 }
             }
         } catch (Exception e) {
+            if (e.getMessage().contains("taken")){
+                throw new DataAccessException("Error: already taken");
+            }
             throw new DataAccessException("Error: bad request");
         }
 
     };
 
-    public void gameAlreadyTaken(JoinGameRequest request, GameData game) throws DataAccessException{
+    public void checkGameAlreadyTaken(JoinGameRequest request, GameData game) throws DataAccessException{
+        if (request.playerColor().equals("WHITE") && game.whiteUsername() != null){
+            throw new DataAccessException("Error: already taken");
+        }
+        if (request.playerColor().equals("BLACK") && game.blackUsername() != null){
+            throw new DataAccessException("Error: already taken");
+        }
+    }
+
+    public void insertJoinedPlayer(JoinGameRequest request, GameData game) throws DataAccessException{
+        checkGameAlreadyTaken(request, game);
+        String statement;
+        if (request.playerColor().equals("WHITE")){
+            statement = String.format("UPDATE chess.games SET whiteusername = '%s' WHERE gameid = '%d'"
+            ,request.username()
+            ,request.gameID());
+            DatabaseManager.executeStatement(statement);
+        }
+        if (request.playerColor().equals("BLACK")){
+            statement = String.format("UPDATE chess.games SET blackusername = '%s' WHERE gameid = '%d'"
+                    ,request.username()
+                    ,request.gameID());
+            DatabaseManager.executeStatement(statement);
+        }
 
     }
 
