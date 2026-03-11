@@ -60,6 +60,14 @@ public class SQLAuthDAO implements AuthDAO{
             throw new DataAccessException("Error: unauthorized");
         }
     };
-    public String getUserWithAuth(String authToken){return "12345";};
+
+    public String getUserWithAuth(String authToken){
+        try{
+            AuthData user = verifyAuth(authToken);
+            return user.username();
+        } catch (DataAccessException e){
+            return null;
+        }
+    };
 
 }
