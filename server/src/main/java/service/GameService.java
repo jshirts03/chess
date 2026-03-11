@@ -3,6 +3,7 @@ package service;
 import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import dataaccess.MemoryGameDAO;
+import dataaccess.SQLGameDAO;
 import datatypes.GameData;
 import service.requests.CreateGameRequest;
 import service.requests.JoinGameRequest;
@@ -16,7 +17,12 @@ import java.util.HashSet;
 public class GameService {
     private GameDAO db;
     public GameService() {
-        db = new MemoryGameDAO();
+        try{
+            db = new SQLGameDAO();
+        } catch (DataAccessException e){
+            db = new MemoryGameDAO();
+        }
+
     }
 
     public void clear() {

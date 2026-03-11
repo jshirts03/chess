@@ -3,13 +3,19 @@ package service;
 import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.MemoryAuthDAO;
+import dataaccess.SQLAuthDAO;
 import datatypes.AuthData;
 import service.responses.AuthResponse;
 
 public class AuthService {
     private AuthDAO db;
     public AuthService () {
-        db = new MemoryAuthDAO();
+        try {
+            db = new SQLAuthDAO();
+        } catch (DataAccessException e){
+            db = new MemoryAuthDAO();
+        }
+
     }
 
     public void clear(){
