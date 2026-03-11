@@ -71,9 +71,9 @@ public class DatabaseManager {
                 gameid INT NOT NULL,
                 whiteusername VARCHAR(255),
                 blackusername VARCHAR(255),
-                gamename VARCHAR(255) NOT NUll,
+                gamename VARCHAR(255) NOT NULL,
                 game VARCHAR(255) NOT NULL,
-                PRIMARY KEY (gameid));
+                PRIMARY KEY (id));
                 """;
         executeStatement(createUserTableStatement);
         executeStatement(createAuthTableStatement);
