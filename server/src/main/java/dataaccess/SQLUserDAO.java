@@ -25,7 +25,7 @@ public class SQLUserDAO implements UserDAO {
         }
     };
 
-    public UserData getUser(String username, String password){
+    public UserData getUser(String username, String password) throws DataAccessException{
         String statement = String.format("SELECT username, password, email FROM chess.users WHERE username = '%s'",
                 username);
         try (Connection conn = DatabaseManager.getConnection()) {
@@ -49,7 +49,7 @@ public class SQLUserDAO implements UserDAO {
                 }
             }
         } catch (Exception e) {
-            return null;
+            throw new DataAccessException("Error: server error");
         }
     };
 

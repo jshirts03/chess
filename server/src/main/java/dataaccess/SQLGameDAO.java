@@ -74,7 +74,7 @@ public class SQLGameDAO implements GameDAO{
 
     }
 
-    public ArrayList<GameData> getGames(){
+    public ArrayList<GameData> getGames() throws DataAccessException{
         ArrayList<GameData> gamesList = new ArrayList<GameData>();
         String statement = "SELECT * FROM chess.games";
         try (Connection conn = DatabaseManager.getConnection()) {
@@ -88,7 +88,7 @@ public class SQLGameDAO implements GameDAO{
                 }
             }
         } catch (Exception e) {
-            return null;
+            throw new DataAccessException("Error: server error");
         }
     };
 

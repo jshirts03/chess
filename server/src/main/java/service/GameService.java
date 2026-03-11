@@ -37,7 +37,7 @@ public class GameService {
         return new NewGameResponse(gameId);
     }
 
-    public ListGamesResponse listGames(){
+    public ListGamesResponse listGames() throws DataAccessException{
         ArrayList<GameData> games = db.getGames();
         ListGameData[] listedGames = new ListGameData[games.size()];
         for (int i=0; i<games.size(); i++){
