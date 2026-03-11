@@ -1,6 +1,7 @@
 package dataaccess;
 
 import datatypes.UserData;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class SQLUserDAO implements UserDAO {
 
@@ -9,7 +10,25 @@ public class SQLUserDAO implements UserDAO {
         DatabaseManager.createTables();
     }
 
-    public void clear(){};
-    public UserData getUser(String username){return new UserData("joe", "12345", "hi@gmail.com");};
-    public void createUser(UserData user){};
+    public void clear(){
+        String statement = "DROP TABLE IF EXISTS users.chess";
+        try{
+            DatabaseManager.executeStatement(statement);
+            DatabaseManager.createTables();
+        } catch (DataAccessException e){
+        }
+    };
+
+    public UserData getUser(String username){return null;};
+
+
+    public void createUser(UserData user){
+        String statement = String.format("INSERT INTO chess.users VALUES (null, '%s', '%s',", user.username(), user.email());
+        String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
+        statement = statement + " '" + hashedPassword + "')";
+        try{
+            DatabaseManager.executeStatement(statement);
+        } catch (DataAccessException e){
+        }
+    };
 }
