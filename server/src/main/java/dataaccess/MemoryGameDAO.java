@@ -62,7 +62,6 @@ public class MemoryGameDAO implements GameDAO{
             games.add(joinedGame);
         }
 
-
     }
 
     public void checkAlreadyTaken(JoinGameRequest request, GameData game)throws DataAccessException{
