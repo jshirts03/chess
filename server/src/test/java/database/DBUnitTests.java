@@ -155,6 +155,22 @@ public class DBUnitTests {
         assertThrows(DataAccessException.class, () -> authdb.deleteAuth("1234"));
     }
 
+    @Test
+    public void createGameSuccess(){
+        try{
+            int gameid = gamedb.createGame("JoeGame");
+            assertNotNull(gameid);
+        }
+        catch (DataAccessException e){
+            fail("There was a problem with DB");
+        }
+    }
+
+    @Test
+    public void createGameFail(){
+        assertThrows(DataAccessException.class, () -> gamedb.createGame(null));
+    }
+
 
 
 }

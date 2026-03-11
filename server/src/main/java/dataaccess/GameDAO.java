@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public interface GameDAO {
     void clear() throws DataAccessException;
-    int createGame(String gameName);
+    int createGame(String gameName) throws DataAccessException;
     ArrayList<GameData> getGames() throws DataAccessException;
     void joinGame(JoinGameRequest request) throws DataAccessException;
 }

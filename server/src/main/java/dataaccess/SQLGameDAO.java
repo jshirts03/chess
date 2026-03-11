@@ -26,7 +26,7 @@ public class SQLGameDAO implements GameDAO{
         }
     };
 
-    public boolean idAlreadyTaken(int gameId){
+    boolean idAlreadyTaken(int gameId){
         String statement = String.format("SELECT id FROM chess.games WHERE gameid = '%d'", gameId);
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -39,7 +39,7 @@ public class SQLGameDAO implements GameDAO{
         }
     }
 
-    public int createGame(String gameName){
+    public int createGame(String gameName) throws DataAccessException{
         int gameId = (int)(Math.random() * 9000) + 1000;
         while (idAlreadyTaken(gameId)){
             gameId = (int)(Math.random() * 9000) + 1000;
@@ -55,11 +55,11 @@ public class SQLGameDAO implements GameDAO{
             preparedStatement.executeUpdate();
             return gameId;
         } catch (Exception e){
-            return 0;
+            throw new DataAccessException("Error: server error");
         }
     };
 
-    public GameData formatGame(ResultSet rs) throws DataAccessException{
+    GameData formatGame(ResultSet rs) throws DataAccessException{
         try{
             int gameId = rs.getInt("gameid");
             String whiteUsername = rs.getString("whiteusername");
@@ -115,7 +115,7 @@ public class SQLGameDAO implements GameDAO{
 
     };
 
-    public void checkGameAlreadyTaken(JoinGameRequest request, GameData game) throws DataAccessException{
+    void checkGameAlreadyTaken(JoinGameRequest request, GameData game) throws DataAccessException{
         if (request.playerColor().equals("WHITE") && game.whiteUsername() != null){
             throw new DataAccessException("Error: already taken");
         }
@@ -124,7 +124,7 @@ public class SQLGameDAO implements GameDAO{
         }
     }
 
-    public void insertJoinedPlayer(JoinGameRequest request, GameData game) throws DataAccessException{
+    void insertJoinedPlayer(JoinGameRequest request, GameData game) throws DataAccessException{
         checkGameAlreadyTaken(request, game);
         String statement;
         if (request.playerColor().equals("WHITE")){
