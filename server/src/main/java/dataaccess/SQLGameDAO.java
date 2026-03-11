@@ -25,7 +25,7 @@ public class SQLGameDAO implements GameDAO{
         }
     };
 
-    public boolean alreadyTaken(int gameId){
+    public boolean idAlreadyTaken(int gameId){
         String statement = String.format("SELECT id FROM chess.games WHERE gameid = '%d'", gameId);
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -40,7 +40,7 @@ public class SQLGameDAO implements GameDAO{
 
     public int createGame(String gameName){
         int gameId = (int)(Math.random() * 9000) + 1000;
-        while (alreadyTaken(gameId)){
+        while (idAlreadyTaken(gameId)){
             gameId = (int)(Math.random() * 9000) + 1000;
         }
         ChessGame game = new ChessGame();
@@ -58,6 +58,21 @@ public class SQLGameDAO implements GameDAO{
         }
     };
 
+    public GameData formatGame(ResultSet rs) throws DataAccessException{
+        try{
+            int gameId = rs.getInt("gameid");
+            String whiteUsername = rs.getString("whiteusername");
+            String blackUsername = rs.getString("blackusername");
+            String gameName = rs.getString("gamename");
+            String gameJson = rs.getString("game");
+            ChessGame game = new Gson().fromJson(gameJson, ChessGame.class);
+            return new GameData(gameId, whiteUsername, blackUsername, gameName, game)
+        } catch (SQLException e){
+            throw new DataAccessException("failed to format game");
+        }
+
+    }
+
     public ArrayList<GameData> getGames(){
         ArrayList<GameData> gamesList = new ArrayList<GameData>();
         String statement = "SELECT * FROM chess.games";
@@ -65,13 +80,8 @@ public class SQLGameDAO implements GameDAO{
             try (PreparedStatement ps = conn.prepareStatement(statement)) {
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()){
-                        int gameId = rs.getInt("gameid");
-                        String whiteUsername = rs.getString("whiteusername");
-                        String blackUsername = rs.getString("blackusername");
-                        String gameName = rs.getString("gamename");
-                        String gameJson = rs.getString("game");
-                        ChessGame game = new Gson().fromJson(gameJson, ChessGame.class);
-                        gamesList.add(new GameData(gameId, whiteUsername, blackUsername, gameName, game));
+                        GameData game = formatGame(rs);
+                        gamesList.add(game);
                     }
                     return gamesList;
                 }
@@ -81,6 +91,27 @@ public class SQLGameDAO implements GameDAO{
         }
     };
 
-    public void joinGame(JoinGameRequest request) throws DataAccessException{};
+    public void joinGame(JoinGameRequest request) throws DataAccessException{
+        try (Connection conn = DatabaseManager.getConnection()) {
+            try (PreparedStatement ps = conn.prepareStatement(statement)) {
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()){
+                        GameData game = formatGame(rs);
+                        insertJoinedPlayer(request, game);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new DataAccessException("Error: bad request");
+        }
+
+    };
+
+    public void gameAlreadyTaken(JoinGameRequest request, GameData game) throws DataAccessException{
+
+    }
+
+
+
 
 }
