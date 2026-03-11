@@ -16,7 +16,7 @@ public class MemoryUserDAO implements UserDAO{
         users.clear();
     }
 
-    public UserData getUser(String username){
+    public UserData getUser(String username, String password){
         for (UserData user : users){
             if (user.username().equals(username)) {
                 return user;

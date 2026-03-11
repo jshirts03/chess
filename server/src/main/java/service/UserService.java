@@ -30,7 +30,7 @@ public class UserService {
         if (request.username() == null || request.password() == null || request.email() == null){
             throw new DataAccessException("Error: bad request");
         }
-        UserData user = db.getUser(request.username());
+        UserData user = db.getUser(request.username(), request.password());
         if (user != null){
             throw new DataAccessException("Error: username already taken");
         }
@@ -43,7 +43,7 @@ public class UserService {
         if (request.username() == null || request.password() == null){
             throw new DataAccessException("Error: bad request");
         }
-        UserData user = db.getUser(request.username());
+        UserData user = db.getUser(request.username(), request.password());
         if (user == null || !user.password().equals(request.password())){
             throw new DataAccessException("Error: unauthorized");
         }
