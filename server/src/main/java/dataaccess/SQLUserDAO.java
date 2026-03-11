@@ -25,7 +25,8 @@ public class SQLUserDAO implements UserDAO {
     };
 
     public UserData getUser(String username, String password){
-        String statement = String.format("SELECT username, password, email FROM chess.users WHERE username = '%s'", username);
+        String statement = String.format("SELECT username, password, email FROM chess.users WHERE username = '%s'",
+                username);
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement(statement)) {
                 try (ResultSet rs = ps.executeQuery()) {
@@ -53,7 +54,9 @@ public class SQLUserDAO implements UserDAO {
 
 
     public void createUser(UserData user){
-        String statement = String.format("INSERT INTO chess.users VALUES (null, '%s', '%s',", user.username(), user.email());
+        String statement = String.format("INSERT INTO chess.users VALUES (null, '%s', '%s',",
+                user.username(),
+                user.email());
         String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
         statement = statement + " '" + hashedPassword + "')";
         try{
