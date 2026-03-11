@@ -72,6 +72,7 @@ public class DatabaseManager {
                 whiteusername VARCHAR(255),
                 blackusername VARCHAR(255),
                 gamename VARCHAR(255) NOT NUll,
+                game VARCHAR(255) NOT NULL,
                 PRIMARY KEY (gameid));
                 """;
         executeStatement(createUserTableStatement);
