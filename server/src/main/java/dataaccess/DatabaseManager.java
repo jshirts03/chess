@@ -63,7 +63,7 @@ public class DatabaseManager {
                 id INT NOT NULL AUTO_INCREMENT,
                 username VARCHAR(255) NOT NULL,
                 authtoken VARCHAR(255) NOT NULL,
-                PRIMARY KEY (id);
+                PRIMARY KEY (id));
                 """;
         String createGameTableStatement = """
                 CREATE TABLE IF NOT EXISTS chess.games(
