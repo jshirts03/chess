@@ -5,10 +5,14 @@ import dataaccess.SQLAuthDAO;
 import dataaccess.SQLGameDAO;
 import dataaccess.SQLUserDAO;
 import datatypes.AuthData;
+import datatypes.GameData;
 import datatypes.UserData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import service.requests.JoinGameRequest;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -171,6 +175,59 @@ public class DBUnitTests {
         assertThrows(DataAccessException.class, () -> gamedb.createGame(null));
     }
 
+    @Test
+    public void getGamesSuccess(){
+        try{
+            gamedb.createGame("JoeGame");
+            gamedb.createGame("JoeGame2");
+            gamedb.createGame("JoeGame3");
+            ArrayList<GameData> games = gamedb.getGames();
+            assertEquals("JoeGame",games.get(0).gameName());
+            assertEquals("JoeGame2",games.get(1).gameName());
+            assertEquals("JoeGame3",games.get(2).gameName());
+        }
+        catch (DataAccessException e){
+            fail("There was a problem with DB");
+        }
+    }
+
+    @Test
+    public void getGamesNoGames(){
+        try{
+            ArrayList<GameData> games = gamedb.getGames();
+            assertEquals(0, games.size());
+        }
+        catch (DataAccessException e){
+            fail("There was a problem with DB");
+        }
+    }
+
+    @Test
+    public void joinGameSuccess(){
+        try{
+            int gameId = gamedb.createGame("JoeGame");
+            JoinGameRequest req = new JoinGameRequest("WHITE", gameId, "Joe");
+            gamedb.joinGame(req);
+            GameData game = gamedb.getGames().get(0);
+            assertEquals("Joe", game.whiteUsername());
+        }
+        catch (DataAccessException e){
+            fail("There was a problem with DB");
+        }
+    }
+
+    @Test
+    public void joinGameAlreadyTaken(){
+        try{
+            int gameId = gamedb.createGame("JoeGame");
+            JoinGameRequest req = new JoinGameRequest("WHITE", gameId, "Joe");
+            gamedb.joinGame(req);
+            assertThrows(DataAccessException.class, () -> gamedb.joinGame(req));
+        }
+        catch (DataAccessException e){
+            fail("There was a problem with DB");
+        }
+    }
 
 
 }
