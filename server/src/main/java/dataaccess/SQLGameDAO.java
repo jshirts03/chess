@@ -17,7 +17,7 @@ public class SQLGameDAO implements GameDAO{
     }
 
     public void clear() throws DataAccessException{
-        String statement = "DROP TABLE IF EXISTS chess.games";
+        String statement = "DROP TABLE IF EXISTS games";
         try{
             DatabaseManager.executeStatement(statement);
             DatabaseManager.createTables();
@@ -27,7 +27,7 @@ public class SQLGameDAO implements GameDAO{
     };
 
     boolean idAlreadyTaken(int gameId){
-        String statement = String.format("SELECT id FROM chess.games WHERE gameid = '%d'", gameId);
+        String statement = String.format("SELECT id FROM games WHERE gameid = '%d'", gameId);
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement(statement)) {
                 try (ResultSet rs = ps.executeQuery()) {
@@ -46,7 +46,7 @@ public class SQLGameDAO implements GameDAO{
         }
         ChessGame game = new ChessGame();
         String gameJson = new Gson().toJson(game);
-        String statement = "INSERT INTO chess.games (gameid, gamename, game) VALUES(?,?,?)";
+        String statement = "INSERT INTO games (gameid, gamename, game) VALUES(?,?,?)";
         try (var conn = DatabaseManager.getConnection();
              var preparedStatement = conn.prepareStatement(statement)) {
             preparedStatement.setInt(1, gameId);
@@ -76,7 +76,7 @@ public class SQLGameDAO implements GameDAO{
 
     public ArrayList<GameData> getGames() throws DataAccessException{
         ArrayList<GameData> gamesList = new ArrayList<GameData>();
-        String statement = "SELECT * FROM chess.games";
+        String statement = "SELECT * FROM games";
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement(statement)) {
                 try (ResultSet rs = ps.executeQuery()) {
@@ -93,7 +93,7 @@ public class SQLGameDAO implements GameDAO{
     };
 
     public void joinGame(JoinGameRequest request) throws DataAccessException{
-        String statement = String.format("SELECT * from chess.games WHERE gameid = %d", request.gameID());
+        String statement = String.format("SELECT * from games WHERE gameid = %d", request.gameID());
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement(statement)) {
                 try (ResultSet rs = ps.executeQuery()) {
@@ -120,13 +120,13 @@ public class SQLGameDAO implements GameDAO{
         checkGameAlreadyTaken(request, game);
         String statement;
         if (request.playerColor().equals("WHITE")){
-            statement = String.format("UPDATE chess.games SET whiteusername = '%s' WHERE gameid = '%d'"
+            statement = String.format("UPDATE games SET whiteusername = '%s' WHERE gameid = '%d'"
             ,request.username()
             ,request.gameID());
             DatabaseManager.executeStatement(statement);
         }
         if (request.playerColor().equals("BLACK")){
-            statement = String.format("UPDATE chess.games SET blackusername = '%s' WHERE gameid = '%d'"
+            statement = String.format("UPDATE games SET blackusername = '%s' WHERE gameid = '%d'"
                     ,request.username()
                     ,request.gameID());
             DatabaseManager.executeStatement(statement);

@@ -14,7 +14,7 @@ public class SQLAuthDAO implements AuthDAO{
     }
 
     public void clear() throws DataAccessException{
-        String statement = "DROP TABLE IF EXISTS chess.auth";
+        String statement = "DROP TABLE IF EXISTS auth";
         try{
             DatabaseManager.executeStatement(statement);
             DatabaseManager.createTables();
@@ -25,20 +25,20 @@ public class SQLAuthDAO implements AuthDAO{
 
     public AuthData createAuth(String username) throws DataAccessException{
         String token = UUID.randomUUID().toString();
-        String statement = "INSERT INTO chess.auth VALUES(null, '" + username + "', '" + token + "')";
+        String statement = "INSERT INTO auth VALUES(null, '" + username + "', '" + token + "')";
         DatabaseManager.executeStatement(statement);
         return new AuthData(token, username);
     };
 
     public void deleteAuth(String authToken) throws DataAccessException{
         verifyAuth(authToken);
-        String statement = String.format("DELETE FROM chess.auth WHERE authtoken = '%s'", authToken);
+        String statement = String.format("DELETE FROM auth WHERE authtoken = '%s'", authToken);
         DatabaseManager.executeStatement(statement);
     };
 
 
     public AuthData verifyAuth(String authToken) throws DataAccessException{
-        String statement = String.format("SELECT username, authtoken FROM chess.auth WHERE authtoken = '%s'", authToken);
+        String statement = String.format("SELECT username, authtoken FROM auth WHERE authtoken = '%s'", authToken);
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement(statement)) {
                 try (ResultSet rs = ps.executeQuery()) {

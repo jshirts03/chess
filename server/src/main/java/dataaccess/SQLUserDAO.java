@@ -16,7 +16,7 @@ public class SQLUserDAO implements UserDAO {
     }
 
     public void clear() throws DataAccessException{
-        String statement = "DROP TABLE IF EXISTS chess.users";
+        String statement = "DROP TABLE IF EXISTS users";
         try{
             DatabaseManager.executeStatement(statement);
             DatabaseManager.createTables();
@@ -36,7 +36,7 @@ public class SQLUserDAO implements UserDAO {
 
 
     public UserData getUser(String username, String password) throws DataAccessException{
-        String statement = String.format("SELECT username, password, email FROM chess.users WHERE username = '%s'",
+        String statement = String.format("SELECT username, password, email FROM users WHERE username = '%s'",
                 username);
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement(statement)) {
@@ -60,7 +60,7 @@ public class SQLUserDAO implements UserDAO {
 
 
     public void createUser(UserData user) throws DataAccessException{
-        String statement = String.format("INSERT INTO chess.users VALUES (null, '%s', '%s',",
+        String statement = String.format("INSERT INTO users VALUES (null, '%s', '%s',",
                 user.username(),
                 user.email());
         String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
