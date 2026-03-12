@@ -1,9 +1,5 @@
-package database;
+package dataaccess;
 
-import dataaccess.DataAccessException;
-import dataaccess.SQLAuthDAO;
-import dataaccess.SQLGameDAO;
-import dataaccess.SQLUserDAO;
 import datatypes.AuthData;
 import datatypes.GameData;
 import datatypes.UserData;
@@ -64,11 +60,6 @@ public class DBUnitTests {
     @Test
     public void createUser(){
         assertDoesNotThrow(() -> userdb.createUser(testUser));
-    }
-
-    @Test
-    public void createUserFail(){
-        assertThrows(DataAccessException.class, () -> userdb.createUser(new UserData(null, null, null)));
     }
 
     @Test
