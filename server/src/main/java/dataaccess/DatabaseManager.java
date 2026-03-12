@@ -20,8 +20,10 @@ public class DatabaseManager {
      * Creates the database if it does not already exist.
      */
     static public void createDatabase() throws DataAccessException {
+        loadPropertiesFromResources();
         var statement = "CREATE DATABASE IF NOT EXISTS " + databaseName;
         executeStatement(statement);
+        connectionUrl = connectionUrl + "/" + databaseName;
     }
 
     public static void executeStatement(String statement) throws DataAccessException {
