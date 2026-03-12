@@ -25,6 +25,16 @@ public class SQLUserDAO implements UserDAO {
         }
     };
 
+    public UserData checkPassword(String dbUsername, String password, String email, String dbPassword){
+        if (BCrypt.checkpw(password, dbPassword)){
+            return new UserData(dbUsername, password, email);
+        }
+        else{
+            return null;
+        }
+    }
+
+
     public UserData getUser(String username, String password) throws DataAccessException{
         String statement = String.format("SELECT username, password, email FROM chess.users WHERE username = '%s'",
                 username);
@@ -35,12 +45,7 @@ public class SQLUserDAO implements UserDAO {
                         String dbUsername = rs.getString("username");
                         String dbPassword = rs.getString("password");
                         String email = rs.getString("email");
-                        if (BCrypt.checkpw(password, dbPassword)){
-                            return new UserData(dbUsername, password, email);
-                        }
-                        else{
-                            return null;
-                        }
+                        return checkPassword(dbUsername, password, email, dbPassword);
                     }
                     else{
                         return null;

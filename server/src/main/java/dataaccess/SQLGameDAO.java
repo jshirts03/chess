@@ -115,14 +115,6 @@ public class SQLGameDAO implements GameDAO{
 
     };
 
-    void checkGameAlreadyTaken(JoinGameRequest request, GameData game) throws DataAccessException{
-        if (request.playerColor().equals("WHITE") && game.whiteUsername() != null){
-            throw new DataAccessException("Error: already taken");
-        }
-        if (request.playerColor().equals("BLACK") && game.blackUsername() != null){
-            throw new DataAccessException("Error: already taken");
-        }
-    }
 
     void insertJoinedPlayer(JoinGameRequest request, GameData game) throws DataAccessException{
         checkGameAlreadyTaken(request, game);

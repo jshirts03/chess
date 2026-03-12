@@ -52,7 +52,7 @@ public class MemoryGameDAO implements GameDAO{
     }
 
     public void insertJoinedPlayer(JoinGameRequest request, GameData game) throws DataAccessException {
-        checkAlreadyTaken(request, game);
+        checkGameAlreadyTaken(request, game);
         if (request.playerColor().equals("WHITE")){
             GameData joinedGame = new GameData(game.gameID(), request.username(), game.blackUsername(), game.gameName(), game.game());
             games.add(joinedGame);
@@ -62,14 +62,5 @@ public class MemoryGameDAO implements GameDAO{
             games.add(joinedGame);
         }
 
-    }
-
-    public void checkAlreadyTaken(JoinGameRequest request, GameData game)throws DataAccessException{
-        if (request.playerColor().equals("WHITE") && game.whiteUsername() != null){
-            throw new DataAccessException("Error: already taken");
-        }
-        if (request.playerColor().equals("BLACK") && game.blackUsername() != null){
-            throw new DataAccessException("Error: already taken");
-        }
     }
 }

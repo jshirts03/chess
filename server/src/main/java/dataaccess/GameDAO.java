@@ -10,4 +10,13 @@ public interface GameDAO {
     int createGame(String gameName) throws DataAccessException;
     ArrayList<GameData> getGames() throws DataAccessException;
     void joinGame(JoinGameRequest request) throws DataAccessException;
+
+    default void checkGameAlreadyTaken(JoinGameRequest request, GameData game) throws DataAccessException{
+        if (request.playerColor().equals("WHITE") && game.whiteUsername() != null){
+            throw new DataAccessException("Error: already taken");
+        }
+        if (request.playerColor().equals("BLACK") && game.blackUsername() != null){
+            throw new DataAccessException("Error: already taken");
+        }
+    }
 }
