@@ -110,6 +110,9 @@ public class SQLGameDAO implements GameDAO{
             if (e.getMessage().contains("taken")){
                 throw new DataAccessException("Error: already taken");
             }
+            if (e.getMessage().contains("bad")){
+                throw new DataAccessException("Error: bad request");
+            }
             throw new DataAccessException("Error: service error");
         }
 

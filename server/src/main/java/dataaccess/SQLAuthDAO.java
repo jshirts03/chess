@@ -54,6 +54,9 @@ public class SQLAuthDAO implements AuthDAO{
                 }
             }
         } catch (Exception e) {
+            if (e.getMessage().contains("unauthorized")){
+                throw new DataAccessException("Error: unauthorized");
+            }
             throw new DataAccessException("Error: server error");
         }
     };
