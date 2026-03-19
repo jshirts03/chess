@@ -26,10 +26,10 @@ import java.util.Locale;
 public class ClientMain {
 
     public static void main(String[] args) {
-        String authToken = "1234";
-        while (!authToken.equals(null)) {
+        String authToken = null;
+        while (authToken == null) {
             authToken = new PreLoginMenu().run();
-            if (!authToken.equals(null)) {
+            if (!authToken.equals("Quit")) {
                 //new PostLoginMenu().run();
             }
         }

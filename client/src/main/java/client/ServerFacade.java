@@ -5,4 +5,8 @@ package client;
 // or the correct info
 
 public class ServerFacade {
+
+    public String login(String username, String password){
+        return "Login Successful!";
+    }
 }

@@ -5,18 +5,18 @@ import java.util.List;
 import java.util.Scanner;
 
 public class PreLoginMenu {
-    String authToken = "placeholder";
+    String authToken = null;
     ServerFacade serverF = new ServerFacade();
 
     //run will run the input loop to have the menu options
     public String run(){
-        while (authToken.equals("placeholder")){
+        while (authToken == null ){
             System.out.print("""
-                    Welcome to Chess!%n
+                    Welcome to Chess!
                     1) Help
                     2) Login
                     3) Register
-                    4) Quit%n
+                    4) Quit
                     Please select a menu number >>> """);
             Scanner scanner = new Scanner(System.in);
             String selection = scanner.nextLine();
@@ -36,17 +36,20 @@ public class PreLoginMenu {
         switch (menuNumber){
             case 1:
                 System.out.println("YAYY help");
+                break;
             case 2:
                 System.out.println("YAYY login");
-                authToken = "1234";
-                //loginUser();
+                authToken = loginUser();
+                break;
             case 3:
                 System.out.println("YAYY register");
                 authToken = "1234";
                 //registerUser();
+                break;
             case 4:
                 System.out.println("Goodbye");
-                authToken = null;
+                authToken = "Quit";
+                break;
             default:
                 printInputError();
         }
@@ -88,7 +91,7 @@ public class PreLoginMenu {
                     return null;
                 }
             }
-            return loginRes;
         }
+        return loginRes;
     }
 }
