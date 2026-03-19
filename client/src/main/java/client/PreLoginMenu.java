@@ -43,8 +43,7 @@ public class PreLoginMenu {
                 break;
             case 3:
                 System.out.println("YAYY register");
-                authToken = "1234";
-                //registerUser();
+                authToken = registerUser();
                 break;
             case 4:
                 System.out.println("Goodbye");
