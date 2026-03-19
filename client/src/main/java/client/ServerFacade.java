@@ -7,6 +7,10 @@ package client;
 public class ServerFacade {
 
     public String login(String username, String password){
-        return "Login Successful!";
+        return "Error: Login Unsuccessful!";
+    }
+
+    public String register(String email, String username, String password){
+        return "Successful registration!";
     }
 }

@@ -17,7 +17,7 @@ public class PreLoginMenu {
                     2) Login
                     3) Register
                     4) Quit
-                    Please select a menu number >>> """);
+                    Please select a menu number >>> \s""");
             Scanner scanner = new Scanner(System.in);
             String selection = scanner.nextLine();
             selectionHandler(selection);
@@ -70,15 +70,16 @@ public class PreLoginMenu {
         return retryRes.equals("Y");
     }
 
+
     public String loginUser(){
         String loginRes = null;
         Scanner scanner = new Scanner(System.in);
         while (loginRes == null){
             System.out.print("""
                     Login
-                    Username >>> """);
+                    Username >>> \s""");
             String username = scanner.nextLine();
-            System.out.print("Password >>> ");
+            System.out.print("Password >>>  ");
             String password = scanner.nextLine();
 
             loginRes = serverF.login(username, password);
@@ -93,5 +94,30 @@ public class PreLoginMenu {
             }
         }
         return loginRes;
+    }
+
+    public String registerUser() {
+        String registerRes = null;
+        Scanner scanner = new Scanner(System.in);
+        while (registerRes == null) {
+            System.out.print("""
+                    Register
+                    Email >>> \s""");
+            String email = scanner.nextLine();
+            System.out.print("Username >>>  ");
+            String username = scanner.nextLine();
+            System.out.print("Password >>>  ");
+            String password = scanner.nextLine();
+            registerRes = serverF.register(email, username, password);
+            if (registerRes.contains("Error")) {
+                System.out.print(registerRes);
+                if (retry()) {
+                    registerRes = null;
+                } else {
+                    return null;
+                }
+            }
+        }
+        return registerRes;
     }
 }
