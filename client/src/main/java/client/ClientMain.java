@@ -30,7 +30,7 @@ public class ClientMain {
         while (!authToken.equals(null)) {
             authToken = new PreLoginMenu().run();
             if (!authToken.equals(null)) {
-                new PostLoginMenu().run();
+                //new PostLoginMenu().run();
             }
         }
     }
