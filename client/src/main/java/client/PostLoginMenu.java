@@ -63,8 +63,18 @@ public class PostLoginMenu implements Menu{
     public void printInputError(){
         System.out.print("""
                 Error: Invalid Input
-                Please enter a valid number (1,2,3,4)
+                Please enter a valid number (1,2,3,4,5,6)
                 """);
+    }
+
+    public String checkForServerErrors(String response){
+        if (response.contains("Error")) {
+            System.out.print(response);
+            if (retry()) {
+                return null;
+            }
+        }
+        return response;
     }
 
     public void createGame(){
@@ -77,13 +87,34 @@ public class PostLoginMenu implements Menu{
             String gameName = scanner.nextLine();
 
             createRes = serverF.createGame(gameName);
-
-            if (createRes.contains("Error")) {
-                System.out.print(createRes);
-                if (retry()) {
-                    createRes = null;
-                }
-            }
+            createRes = checkForServerErrors(createRes);
         }
     }
+
+    public void listGames(){
+        String listRes = serverF.listGames();
+        listRes = checkForServerErrors(listRes);
+        if (listRes != null){
+            System.out.print(listRes);
+        }
+    }
+
+    public void playGame(){
+        String joinRes = null;
+        Scanner scanner = new Scanner(System.in);
+        while (joinRes == null) {
+            System.out.print("""
+                    Play Game
+                    Game # >>> \s""");
+            String gameNumberString = scanner.nextLine();
+            System.out.print("Team Color (W or B) >>> ");
+            String teamColor = scanner.nextLine();
+            joinRes = serverF.joinGame(gameNumberString, teamColor);
+            joinRes = checkForServerErrors(joinRes);
+        }
+    }
+
+
+
+
 }

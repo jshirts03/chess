@@ -17,4 +17,14 @@ public class ServerFacade {
     public String createGame(String gameName){
         return "Successful creation";
     }
+
+    //This method will be in charge of keeping record of all of the game mappings to display to the user
+    public String listGames(){
+        return "GAME 1";
+    }
+
+    //In charge of making sure that gameId is actually valid, return an error message if not
+    public String joinGame(String gameId, String teamColor){
+        return "Successfully joined";
+    }
 }
