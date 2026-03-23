@@ -2,11 +2,12 @@ package client;
 
 import java.util.Scanner;
 
-public class PostLoginMenu {
+public class PostLoginMenu implements Menu{
 
     boolean shouldContinue = true;
+    ServerFacade serverF = new ServerFacade();
 
-    public String run(){
+    public void run(){
         while (shouldContinue){
             System.out.print("""
                     Welcome Chess Player!
@@ -21,7 +22,6 @@ public class PostLoginMenu {
             String selection = scanner.nextLine();
             selectionHandler(selection);
         }
-        return authToken;
     }
 
     public void selectionHandler(String selection){
@@ -37,16 +37,22 @@ public class PostLoginMenu {
                 System.out.println("YAYY help");
                 break;
             case 2:
-                System.out.println("YAYY login");
-                authToken = loginUser();
+                System.out.println("YAYY create game");
+                //authToken = loginUser();
                 break;
             case 3:
-                System.out.println("YAYY register");
-                authToken = registerUser();
+                System.out.println("YAYY list game");
+                //authToken = registerUser();
                 break;
             case 4:
-                System.out.println("Goodbye");
-                authToken = "Quit";
+                System.out.println("YAYYY play game");
+                //authToken = "Quit";
+                break;
+            case 5:
+                System.out.println("YAYYY observe game");
+                break;
+            case 6:
+                System.out.println("YAYYY logout");
                 break;
             default:
                 printInputError();
@@ -59,5 +65,25 @@ public class PostLoginMenu {
                 Error: Invalid Input
                 Please enter a valid number (1,2,3,4)
                 """);
+    }
+
+    public void createGame(){
+        String createRes = null;
+        Scanner scanner = new Scanner(System.in);
+        while (createRes == null) {
+            System.out.print("""
+                    Create Game
+                    Game Name >>> \s""");
+            String gameName = scanner.nextLine();
+
+            createRes = serverF.createGame(gameName);
+
+            if (createRes.contains("Error")) {
+                System.out.print(createRes);
+                if (retry()) {
+                    createRes = null;
+                }
+            }
+        }
     }
 }

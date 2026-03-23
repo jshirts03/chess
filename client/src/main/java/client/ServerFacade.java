@@ -13,4 +13,8 @@ public class ServerFacade {
     public String register(String email, String username, String password){
         return "Successful registration!";
     }
+
+    public String createGame(String gameName){
+        return "Successful creation";
+    }
 }

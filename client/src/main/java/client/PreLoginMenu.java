@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class PreLoginMenu {
+public class PreLoginMenu implements Menu {
     String authToken = null;
     ServerFacade serverF = new ServerFacade();
 
@@ -60,13 +60,6 @@ public class PreLoginMenu {
                 Error: Invalid Input
                 Please enter a valid number (1,2,3,4)
                 """);
-    }
-
-    public boolean retry(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Try again? (Y N) >>> ");
-        String retryRes = scanner.nextLine();
-        return retryRes.equals("Y");
     }
 
 
