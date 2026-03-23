@@ -114,6 +114,19 @@ public class PostLoginMenu implements Menu{
         }
     }
 
+    public void observeGame(){
+        String observeRes = null;
+        Scanner scanner = new Scanner(System.in);
+        while (observeRes == null) {
+            System.out.print("""
+                    Observe Game
+                    Game # >>> \s""");
+            String gameNumberString = scanner.nextLine();
+            observeRes = serverF.observeGame(gameNumberString);
+            observeRes = checkForServerErrors(observeRes);
+        }
+    }
+
 
 
 

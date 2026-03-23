@@ -27,4 +27,9 @@ public class ServerFacade {
     public String joinGame(String gameId, String teamColor){
         return "Successfully joined";
     }
+
+    //This should make sure that a gameId is valid as well
+    public String observeGame(String gameId){
+        return "Successfully observing";
+    }
 }
