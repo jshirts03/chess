@@ -110,5 +110,32 @@ public class ServerFacadeTests {
         assertTrue(joinRes.message().contains("Error"));
     }
 
+    @Test
+    public void observeGameSuccess() {
+        String authToken = registerJoe();
+        facade.createGame("COOL GAME", authToken);
+        String observeRes = facade.observeGame("1");
+        assertNull(observeRes);
+    }
+
+    @Test
+    public void observeGameFail() {
+        String observeRes = facade.observeGame("45");
+        assertTrue(observeRes.contains("Error"));
+    }
+
+    @Test
+    public void logoutSuccess() {
+        String authToken = registerJoe();
+        var logoutRes = facade.logout(authToken);
+        assertNull(logoutRes);
+    }
+
+    @Test
+    public void logoutFail() {
+        var logoutRes = facade.logout("2");
+        assertTrue(logoutRes.message().contains("Error"));
+    }
+
 
 }
