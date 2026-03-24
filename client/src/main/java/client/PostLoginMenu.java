@@ -137,14 +137,14 @@ public class PostLoginMenu implements Menu{
             if (joinRes == null){
                 System.out.printf("Successfully joined game #%s \n", gameNumberString);
                 joinRes = "Success";
+                if (teamColor.equals("WHITE")){
+                    new BoardPrinter().printWhite();
+                }
+                else{
+                    new BoardPrinter().printBlack();
+                }
             }
             joinRes = checkForServerErrors(joinRes);
-        }
-        if (teamColor.equals("WHITE")){
-            new BoardPrinter().printWhite();
-        }
-        else{
-            new BoardPrinter().printBlack();
         }
     }
 
@@ -159,10 +159,10 @@ public class PostLoginMenu implements Menu{
             observeRes = serverF.observeGame(gameNumberString);
             if (observeRes == null){
                 observeRes = "Success";
+                new BoardPrinter().printWhite();
             }
             observeRes = checkForServerErrors(observeRes);
         }
-        new BoardPrinter().printWhite();
     }
 
     public void logout(){

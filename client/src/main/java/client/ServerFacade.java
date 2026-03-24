@@ -99,10 +99,10 @@ public class ServerFacade {
             gameListString.append(targetGame.gameName());
             gameListString.append(" ");
             gameListString.append(EscapeSequences.BLACK_PAWN);
-            gameListString.append(targetGame.blackUsername());
+            gameListString.append(targetGame.whiteUsername());
             gameListString.append(" ");
             gameListString.append(EscapeSequences.WHITE_PAWN);
-            gameListString.append(targetGame.whiteUsername());
+            gameListString.append(targetGame.blackUsername());
             gameListString.append("\n");
         }
         gameListString.append("\n");
