@@ -38,14 +38,15 @@ public class PreLoginMenu implements Menu {
         }
         switch (menuNumber){
             case 1:
-                System.out.println("YAYY help");
+                System.out.print("""
+                        Login: provide a username and password to login
+                        Register: provide email, username, and password. will create new account and log you in
+                        Quit: Exit program""");
                 break;
             case 2:
-                System.out.println("YAYY login");
                 authToken = loginUser();
                 break;
             case 3:
-                System.out.println("YAYY register");
                 authToken = registerUser();
                 break;
             case 4:

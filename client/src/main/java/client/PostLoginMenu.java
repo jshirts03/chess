@@ -46,6 +46,13 @@ public class PostLoginMenu implements Menu{
         }
         switch (menuNumber){
             case 1:
+                System.out.print("""
+                        Create game: makes a new chess game for you to join
+                        List games: displays a list of all active games
+                        Play game: allows you to join an existing game (see list games menu for game number)
+                        Observe game: allows you to spectate an existing game (see list games menu for game number)
+                        Logout: return to the login menu
+                        Valid inputs are (1,2,3,4,5,or 6)""");
                 break;
             case 2:
                 createGame();
