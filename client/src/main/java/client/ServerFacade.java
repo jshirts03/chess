@@ -7,12 +7,10 @@ package client;
 //It will also handle the mapping of chess games to the menu items
 
 import client.requests.CreateGameRequest;
+import client.requests.JoinGameRequest;
 import client.requests.LoginRequest;
 import client.requests.RegisterRequest;
-import client.responses.CreateGameResponse;
-import client.responses.ListGamesResponse;
-import client.responses.LoginResponse;
-import client.responses.RegisterResponse;
+import client.responses.*;
 import com.google.gson.Gson;
 import ui.EscapeSequences;
 
@@ -50,6 +48,7 @@ public class ServerFacade {
     }
 
     public CreateGameResponse createGame(String gameName, String authToken){
+        String listGamesRes = listGames(authToken);
         CreateGameRequest body = new CreateGameRequest(gameName);
         HttpRequest req = serverCall.prepareRequest("/game", "POST", body, authToken);
         try {
@@ -97,8 +96,28 @@ public class ServerFacade {
     }
 
     //In charge of making sure that gameId is actually valid, return an error message if not
-    public String joinGame(String gameId, String teamColor, String authToken){
-        return "Successfully joined";
+    public JoinGameResponse joinGame(String gameNumberString, String teamColor, String authToken){
+        String listGamesRes = listGames(authToken);
+        String inputError = "Error: please enter a valid game number";
+        int gameNumberInt = 0;
+        try{
+            gameNumberInt = Integer.parseInt(gameNumberString);
+            if (gameNumberInt <= 0 || gameNumberInt > gameList.size()){
+                return new JoinGameResponse(inputError);
+            }
+        } catch (Exception e){
+            return new JoinGameResponse(inputError);
+        }
+
+        JoinGameRequest body = new JoinGameRequest(gameList.get(gameNumberInt - 1).gameID(), teamColor);
+        HttpRequest req = serverCall.prepareRequest("/game", "PUT", body, authToken);
+        try {
+            HttpResponse<String> res = serverCall.sendRequest(req);
+            return new Gson().fromJson(res.body(), JoinGameResponse.class);
+        } catch (ResponseException ex){
+            return new JoinGameResponse(ex.getMessage());
+        }
+
     }
 
     //This should make sure that a gameId is valid as well

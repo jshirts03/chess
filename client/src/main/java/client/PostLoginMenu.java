@@ -1,6 +1,7 @@
 package client;
 
 import client.responses.CreateGameResponse;
+import client.responses.JoinGameResponse;
 
 import java.util.Scanner;
 
@@ -96,6 +97,7 @@ public class PostLoginMenu implements Menu{
 
             createRes = serverF.createGame(gameName, authToken).message();
             if (createRes == null){
+                System.out.printf("Successfully created game titled %s \n", gameName);
                 createRes = "Success";
             }
             createRes = checkForServerErrors(createRes);
@@ -118,9 +120,16 @@ public class PostLoginMenu implements Menu{
                     Play Game
                     Game # >>> \s""");
             String gameNumberString = scanner.nextLine();
-            System.out.print("Team Color (W or B) >>> ");
+            System.out.print("Team Color (WHITE or BLACK) >>> ");
             String teamColor = scanner.nextLine();
-            joinRes = serverF.joinGame(gameNumberString, teamColor, authToken);
+            JoinGameResponse joinGameRes = serverF.joinGame(gameNumberString, teamColor, authToken);
+            if (joinGameRes != null){
+                joinRes = joinGameRes.message();
+            }
+            if (joinRes == null){
+                System.out.printf("Successfully joined game #%s \n", gameNumberString);
+                joinRes = "Success";
+            }
             joinRes = checkForServerErrors(joinRes);
         }
     }
@@ -136,6 +145,11 @@ public class PostLoginMenu implements Menu{
             observeRes = serverF.observeGame(gameNumberString, authToken);
             observeRes = checkForServerErrors(observeRes);
         }
+    }
+
+    public void logout(String authToken){
+        LougoutResponse logoutRes = serverf.logout(authToken);
+        checkServerErrors(logoutRes.message());
     }
 
 
