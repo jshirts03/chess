@@ -1,5 +1,8 @@
 package client;
 
+import client.responses.LoginResponse;
+import client.responses.RegisterResponse;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -64,7 +67,7 @@ public class PreLoginMenu implements Menu {
 
 
     public String loginUser(){
-        String loginRes = null;
+        LoginResponse loginRes = null;
         Scanner scanner = new Scanner(System.in);
         while (loginRes == null){
             System.out.print("""
@@ -75,8 +78,8 @@ public class PreLoginMenu implements Menu {
             String password = scanner.nextLine();
 
             loginRes = serverF.login(username, password);
-            if (loginRes.contains("Error")){
-                System.out.print(loginRes);
+            if (loginRes.message() != null){
+                System.out.print(loginRes.message());
                 if (retry()){
                     loginRes = null;
                 }
@@ -85,11 +88,11 @@ public class PreLoginMenu implements Menu {
                 }
             }
         }
-        return loginRes;
+        return loginRes.authToken();
     }
 
     public String registerUser() {
-        String registerRes = null;
+        RegisterResponse registerRes = null;
         Scanner scanner = new Scanner(System.in);
         while (registerRes == null) {
             System.out.print("""
@@ -101,8 +104,8 @@ public class PreLoginMenu implements Menu {
             System.out.print("Password >>>  ");
             String password = scanner.nextLine();
             registerRes = serverF.register(email, username, password);
-            if (registerRes.contains("Error")) {
-                System.out.print(registerRes);
+            if (registerRes.message() != null) {
+                System.out.print(registerRes.message());
                 if (retry()) {
                     registerRes = null;
                 } else {
@@ -110,6 +113,6 @@ public class PreLoginMenu implements Menu {
                 }
             }
         }
-        return registerRes;
+        return registerRes.authToken();
     }
 }
