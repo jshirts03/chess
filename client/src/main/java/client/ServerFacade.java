@@ -7,6 +7,8 @@ package client;
 //It will also handle the mapping of chess games to the menu items
 
 import client.requests.LoginRequest;
+import client.responses.LoginResponse;
+import com.google.gson.Gson;
 
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -17,19 +19,19 @@ public class ServerFacade {
     HashSet<Integer> gameMap = new HashSet<>();
     ServerCaller serverCall = new ServerCaller("http://localhost:8080");
 
-    public String login(String username, String password){
+    public LoginResponse login(String username, String password){
         LoginRequest body = new LoginRequest(username, password);
         HttpRequest req = serverCall.prepareRequest("/session", "POST", body);
         try {
             HttpResponse<String> res = serverCall.sendRequest(req);
-            return res.body();
+            return new Gson().fromJson(res.body(), LoginResponse.class);
         } catch (ResponseException ex){
-            return ex.getMessage();
+            return new LoginResponse(null, null, ex.getMessage());
         }
     }
 
-    public String register(String email, String username, String password){
-        return "Successful registration!";
+    public RegisterResponse register(String email, String username, String password){
+        ;
     }
 
     public String createGame(String gameName){
