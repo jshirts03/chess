@@ -13,9 +13,11 @@ public class PostLoginMenu implements Menu{
 
     PostLoginMenu(String authToken){
         this.authToken = authToken;
+        this.serverF = new ServerFacade(authToken);
     }
     boolean shouldContinue = true;
-    ServerFacade serverF = new ServerFacade();
+    ServerFacade serverF;
+
 
     public void run(){
         while (shouldContinue){
@@ -147,7 +149,10 @@ public class PostLoginMenu implements Menu{
                     Observe Game
                     Game # >>> \s""");
             String gameNumberString = scanner.nextLine();
-            observeRes = serverF.observeGame(gameNumberString, authToken);
+            observeRes = serverF.observeGame(gameNumberString);
+            if (observeRes == null){
+                observeRes = "Success";
+            }
             observeRes = checkForServerErrors(observeRes);
         }
         new BoardPrinter().printWhite();

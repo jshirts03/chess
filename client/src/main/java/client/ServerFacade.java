@@ -25,6 +25,12 @@ public class ServerFacade {
     ArrayList<GameData> gameList = new ArrayList<>();
     ServerCaller serverCall = new ServerCaller("http://localhost:8080");
 
+    public ServerFacade(String authToken){
+        listGames(authToken);
+    }
+
+    public ServerFacade(){};
+
     public LoginResponse login(String username, String password){
         LoginRequest body = new LoginRequest(username, password);
         HttpRequest req = serverCall.prepareRequest("/session", "POST", body, null);
@@ -48,7 +54,6 @@ public class ServerFacade {
     }
 
     public CreateGameResponse createGame(String gameName, String authToken){
-        String listGamesRes = listGames(authToken);
         CreateGameRequest body = new CreateGameRequest(gameName);
         HttpRequest req = serverCall.prepareRequest("/game", "POST", body, authToken);
         try {
@@ -97,7 +102,6 @@ public class ServerFacade {
 
     //In charge of making sure that gameId is actually valid, return an error message if not
     public JoinGameResponse joinGame(String gameNumberString, String teamColor, String authToken){
-        String listGamesRes = listGames(authToken);
         String inputError = "Error: please enter a valid game number";
         int gameNumberInt = 0;
         try{
@@ -121,8 +125,18 @@ public class ServerFacade {
     }
 
     //This should make sure that a gameId is valid as well
-    public String observeGame(String gameId, String authToken){
-        return "Successfully observing";
+    public String observeGame(String gameId){
+        String inputError = "Error: please enter a valid game number";
+        int gameNumberInt = 0;
+        try{
+            gameNumberInt = Integer.parseInt(gameId);
+            if (gameNumberInt <= 0 || gameNumberInt > gameList.size()){
+                return inputError;
+            }
+        } catch (Exception e){
+            return inputError;
+        }
+        return null;
     }
 
     public LogoutResponse logout(String authToken){
