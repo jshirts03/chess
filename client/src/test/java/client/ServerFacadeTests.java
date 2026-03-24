@@ -74,6 +74,21 @@ public class ServerFacadeTests {
         assertTrue(gameRes.message().contains("Error"));
     }
 
+    @Test
+    public void listGamesSuccess() {
+        String authToken = registerJoe();
+        var gameRes = facade.createGame("Joe's game", authToken);
+        String games = facade.listGames(authToken);
+        assertTrue(games.contains("Joe's game"));
+    }
+
+    @Test
+    public void listGamesFail() {
+        String games = facade.listGames("1234");
+        assertTrue(games.contains("Error"));
+    }
+
+    @Test
 
 
 }

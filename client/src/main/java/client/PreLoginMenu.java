@@ -78,6 +78,7 @@ public class PreLoginMenu implements Menu {
             String password = scanner.nextLine();
 
             loginRes = serverF.login(username, password);
+
             if (loginRes.message() != null){
                 System.out.print(loginRes.message());
                 if (retry()){
