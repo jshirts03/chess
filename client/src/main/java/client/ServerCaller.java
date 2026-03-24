@@ -12,7 +12,7 @@ import java.util.Locale;
 
 public class ServerCaller {
 
-    private static final HttpClient httpClient = HttpClient.newHttpClient();
+    private static final HttpClient MY_CLIENT = HttpClient.newHttpClient();
     private final String serverUrl;
 
     public ServerCaller(String serverUrl) {
@@ -42,7 +42,7 @@ public class ServerCaller {
 
     public HttpResponse<String> sendRequest(HttpRequest request) throws ResponseException{
         try{
-            return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            return MY_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception ex) {
             throw new ResponseException("Error: there was a problem connecting to the server");
         }
