@@ -19,12 +19,15 @@ public class ServerCaller {
         this.serverUrl = serverUrl;
     }
 
-    public HttpRequest prepareRequest(String path, String method, Object body) {
+    public HttpRequest prepareRequest(String path, String method, Object body, String authToken) {
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + path))
                 .method(method, makeRequestBody(body));
         if (body != null){
             request.setHeader("Content-Type", "application/json");
+        }
+        if (authToken != null){
+            request.setHeader("authorization", authToken);
         }
         return request.build();
     }

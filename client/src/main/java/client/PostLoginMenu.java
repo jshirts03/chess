@@ -1,9 +1,16 @@
 package client;
 
+import client.responses.CreateGameResponse;
+
 import java.util.Scanner;
 
 public class PostLoginMenu implements Menu{
 
+    private String authToken;
+
+    PostLoginMenu(String authToken){
+        this.authToken = authToken;
+    }
     boolean shouldContinue = true;
     ServerFacade serverF = new ServerFacade();
 
@@ -87,13 +94,16 @@ public class PostLoginMenu implements Menu{
                     Game Name >>> \s""");
             String gameName = scanner.nextLine();
 
-            createRes = serverF.createGame(gameName);
+            createRes = serverF.createGame(gameName, authToken).message();
+            if (createRes == null){
+                createRes = "Success";
+            }
             createRes = checkForServerErrors(createRes);
         }
     }
 
     public void listGames(){
-        String listRes = serverF.listGames();
+        String listRes = serverF.listGames(authToken);
         listRes = checkForServerErrors(listRes);
         if (listRes != null){
             System.out.print(listRes);
@@ -110,7 +120,7 @@ public class PostLoginMenu implements Menu{
             String gameNumberString = scanner.nextLine();
             System.out.print("Team Color (W or B) >>> ");
             String teamColor = scanner.nextLine();
-            joinRes = serverF.joinGame(gameNumberString, teamColor);
+            joinRes = serverF.joinGame(gameNumberString, teamColor, authToken);
             joinRes = checkForServerErrors(joinRes);
         }
     }
@@ -123,7 +133,7 @@ public class PostLoginMenu implements Menu{
                     Observe Game
                     Game # >>> \s""");
             String gameNumberString = scanner.nextLine();
-            observeRes = serverF.observeGame(gameNumberString);
+            observeRes = serverF.observeGame(gameNumberString, authToken);
             observeRes = checkForServerErrors(observeRes);
         }
     }
