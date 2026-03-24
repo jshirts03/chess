@@ -3,8 +3,7 @@ package client;
 import org.junit.jupiter.api.*;
 import server.Server;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ServerFacadeTests {
@@ -30,8 +29,9 @@ public class ServerFacadeTests {
         facade.clear();
     }
 
-    public void registerJoe(){
-        facade.register("joe@joe.com", "joe", "1234");
+    public String registerJoe() {
+        var authData = facade.register("joe@joe.com", "joe", "1234");
+        return authData.authToken();
     }
 
     @Test
@@ -60,5 +60,20 @@ public class ServerFacadeTests {
         var authData = facade.login("NotJoe", "password");
         assertTrue(authData.message().contains("Error"));
     }
+
+    @Test
+    public void createGameSuccess() {
+        String authToken = registerJoe();
+        var gameRes = facade.createGame("Joe's game", authToken);
+        assertNull(gameRes.message());
+    }
+
+    @Test
+    public void createGameFail() {
+        var gameRes = facade.createGame("Joe's bad game", "1234");
+        assertTrue(gameRes.message().contains("Error"));
+    }
+
+
 
 }
