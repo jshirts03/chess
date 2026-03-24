@@ -154,4 +154,16 @@ public class ServerFacade {
             return new LogoutResponse(ex.getMessage());
         }
     }
+
+    public void clear(){
+        HttpRequest req = serverCall.prepareRequest("/db", "DELETE", null, null);
+        try {
+            HttpResponse<String> res = serverCall.sendRequest(req);
+            if (res.statusCode() > 300) {
+                System.out.print("ERROR");
+            }
+        } catch (ResponseException ex){
+            System.out.print(ex.getMessage());
+        }
+    }
 }

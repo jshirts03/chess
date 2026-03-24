@@ -4,6 +4,7 @@ import org.junit.jupiter.api.*;
 import server.Server;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class ServerFacadeTests {
@@ -24,6 +25,11 @@ public class ServerFacadeTests {
         server.stop();
     }
 
+    @AfterEach
+    public void clearDb() {
+        facade.clear();
+    }
+
     public void registerJoe(){
         facade.register("joe@joe.com", "joe", "1234");
     }
@@ -32,6 +38,27 @@ public class ServerFacadeTests {
     public void registerSuccess() {
         var authData = facade.register("joe@joe.com", "joe", "1234");
         assertEquals("joe", authData.username());
+    }
+
+    @Test
+    public void registerFail() {
+        facade.register("joe@joe.com", "joe", "1234");
+        var authData = facade.register("joe@joe.com", "joe", "1234");
+        assertTrue(authData.message().contains("Error"));
+    }
+
+    @Test
+    public void loginSuccess() {
+        registerJoe();
+        var authData = facade.login("joe", "1234");
+        assertTrue(authData.authToken().length() > 10);
+        assertEquals("joe", authData.username());
+    }
+
+    @Test
+    public void loginFail() {
+        var authData = facade.login("NotJoe", "password");
+        assertTrue(authData.message().contains("Error"));
     }
 
 }
