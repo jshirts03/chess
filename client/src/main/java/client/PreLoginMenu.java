@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class PreLoginMenu implements Menu {
     String authToken = null;
-    ServerFacade serverF = new ServerFacade();
+    ServerFacade serverF = new ServerFacade(8080);
 
     //run will run the input loop to have the menu options
     public String run(){

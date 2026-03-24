@@ -13,7 +13,7 @@ public class PostLoginMenu implements Menu{
 
     PostLoginMenu(String authToken){
         this.authToken = authToken;
-        this.serverF = new ServerFacade(authToken);
+        this.serverF = new ServerFacade(8080,authToken);
     }
     boolean shouldContinue = true;
     ServerFacade serverF;

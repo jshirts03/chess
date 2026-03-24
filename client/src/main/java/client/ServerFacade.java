@@ -23,13 +23,19 @@ import java.util.List;
 public class ServerFacade {
 
     ArrayList<GameData> gameList = new ArrayList<>();
-    ServerCaller serverCall = new ServerCaller("http://localhost:8080");
+    String serverURL;
+    ServerCaller serverCall;
 
-    public ServerFacade(String authToken){
+    public ServerFacade(int port, String authToken){
+        serverURL = String.format("http://localhost:%d", port);
+        serverCall = new ServerCaller(serverURL);
         listGames(authToken);
     }
 
-    public ServerFacade(){};
+    public ServerFacade(int port){
+        serverURL = String.format("http://localhost:%d", port);
+        serverCall = new ServerCaller(serverURL);
+    };
 
     public LoginResponse login(String username, String password){
         LoginRequest body = new LoginRequest(username, password);
