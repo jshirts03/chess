@@ -124,4 +124,14 @@ public class ServerFacade {
     public String observeGame(String gameId, String authToken){
         return "Successfully observing";
     }
+
+    public LogoutResponse logout(String authToken){
+        HttpRequest req = serverCall.prepareRequest("/session", "DELETE", null, authToken);
+        try {
+            HttpResponse<String> res = serverCall.sendRequest(req);
+            return new Gson().fromJson(res.body(), LogoutResponse.class);
+        } catch (ResponseException ex){
+            return new LogoutResponse(ex.getMessage());
+        }
+    }
 }

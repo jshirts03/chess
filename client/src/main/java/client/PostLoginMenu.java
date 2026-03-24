@@ -2,6 +2,7 @@ package client;
 
 import client.responses.CreateGameResponse;
 import client.responses.JoinGameResponse;
+import client.responses.LogoutResponse;
 
 import java.util.Scanner;
 
@@ -42,27 +43,23 @@ public class PostLoginMenu implements Menu{
         }
         switch (menuNumber){
             case 1:
-                System.out.println("YAYY help");
                 break;
             case 2:
-                System.out.println("YAYY create game");
                 createGame();
                 break;
             case 3:
-                System.out.println("YAYY list game");
                 listGames();
                 break;
             case 4:
-                System.out.println("YAYYY play game");
                 playGame();
                 break;
             case 5:
-                System.out.println("YAYYY observe game");
                 observeGame();
                 break;
             case 6:
-                System.out.println("YAYYY logout");
+                logout();
                 shouldContinue = false;
+                break;
             default:
                 printInputError();
         }
@@ -147,9 +144,11 @@ public class PostLoginMenu implements Menu{
         }
     }
 
-    public void logout(String authToken){
-        LougoutResponse logoutRes = serverf.logout(authToken);
-        checkServerErrors(logoutRes.message());
+    public void logout(){
+        LogoutResponse logoutRes = serverF.logout(authToken);
+        if (logoutRes != null){
+            checkForServerErrors(logoutRes.message());
+        }
     }
 
 
