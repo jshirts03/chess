@@ -3,6 +3,7 @@ package client;
 import client.responses.CreateGameResponse;
 import client.responses.JoinGameResponse;
 import client.responses.LogoutResponse;
+import ui.BoardPrinter;
 
 import java.util.Scanner;
 
@@ -110,6 +111,7 @@ public class PostLoginMenu implements Menu{
     }
 
     public void playGame(){
+        String teamColor = "BLUE";
         String joinRes = null;
         Scanner scanner = new Scanner(System.in);
         while (joinRes == null) {
@@ -118,7 +120,7 @@ public class PostLoginMenu implements Menu{
                     Game # >>> \s""");
             String gameNumberString = scanner.nextLine();
             System.out.print("Team Color (WHITE or BLACK) >>> ");
-            String teamColor = scanner.nextLine();
+            teamColor = scanner.nextLine();
             JoinGameResponse joinGameRes = serverF.joinGame(gameNumberString, teamColor, authToken);
             if (joinGameRes != null){
                 joinRes = joinGameRes.message();
@@ -128,6 +130,12 @@ public class PostLoginMenu implements Menu{
                 joinRes = "Success";
             }
             joinRes = checkForServerErrors(joinRes);
+        }
+        if (teamColor.equals("WHITE")){
+            new BoardPrinter().printWhite();
+        }
+        else{
+            new BoardPrinter().printBlack();
         }
     }
 
@@ -142,6 +150,7 @@ public class PostLoginMenu implements Menu{
             observeRes = serverF.observeGame(gameNumberString, authToken);
             observeRes = checkForServerErrors(observeRes);
         }
+        new BoardPrinter().printWhite();
     }
 
     public void logout(){
