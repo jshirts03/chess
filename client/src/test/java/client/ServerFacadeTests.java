@@ -89,6 +89,26 @@ public class ServerFacadeTests {
     }
 
     @Test
+    public void joinGameSuccess() {
+        String authToken = registerJoe();
+        facade.createGame("COOL GAME", authToken);
+        var joinRes = facade.joinGame("1", "WHITE", authToken);
+        assertNull(joinRes);
+        String games = facade.listGames(authToken);
+        assertTrue(games.contains("joe"));
+    }
+
+    @Test
+    public void joinGameFail() {
+        String authToken = registerJoe();
+        facade.createGame("COOL GAME", authToken);
+        var joinRes = facade.joinGame("1", "WHITE", "1234");
+        assertTrue(joinRes.message().contains("Error"));
+        joinRes = facade.joinGame("3", "WHITE", authToken);
+        assertTrue(joinRes.message().contains("Error"));
+        joinRes = facade.joinGame("1", "GREEN", authToken);
+        assertTrue(joinRes.message().contains("Error"));
+    }
 
 
 }

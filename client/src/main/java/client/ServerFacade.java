@@ -64,6 +64,7 @@ public class ServerFacade {
         HttpRequest req = serverCall.prepareRequest("/game", "POST", body, authToken);
         try {
             HttpResponse<String> res = serverCall.sendRequest(req);
+            listGames(authToken);
             return new Gson().fromJson(res.body(), CreateGameResponse.class);
         } catch (ResponseException ex){
             return new CreateGameResponse(ex.getMessage());
@@ -88,7 +89,7 @@ public class ServerFacade {
         }
     }
 
-    public String formatGames(){
+    private String formatGames(){
         StringBuilder gameListString = new StringBuilder();
         for (int i=0; i < gameList.size(); i++){
             GameData targetGame = gameList.get(i);
@@ -100,7 +101,7 @@ public class ServerFacade {
             gameListString.append(targetGame.blackUsername());
             gameListString.append(" ");
             gameListString.append(EscapeSequences.WHITE_PAWN);
-            gameListString.append(targetGame.blackUsername());
+            gameListString.append(targetGame.whiteUsername());
             gameListString.append("\n");
         }
         return gameListString.toString();
