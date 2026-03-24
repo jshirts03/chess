@@ -4,10 +4,20 @@ package client;
 //This class will simply take requests and return the modified nice error message
 // or the correct info
 
+//It will also handle the mapping of chess games to the menu items
+
+import java.net.http.HttpResponse;
+import java.util.HashSet;
+
 public class ServerFacade {
 
+    HashSet<Integer> gameMap = new HashSet<>();
+    ServerCaller serverCall = new ServerCaller("http://localhost:3000");
+
     public String login(String username, String password){
-        return "Error: Login Unsuccessful!";
+
+        HttpResponse<String> res = serverCall.prepareRequest("/session", "POST", );
+
     }
 
     public String register(String email, String username, String password){

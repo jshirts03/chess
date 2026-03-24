@@ -38,22 +38,23 @@ public class PostLoginMenu implements Menu{
                 break;
             case 2:
                 System.out.println("YAYY create game");
-                //authToken = loginUser();
+                createGame();
                 break;
             case 3:
                 System.out.println("YAYY list game");
-                //authToken = registerUser();
+                listGames();
                 break;
             case 4:
                 System.out.println("YAYYY play game");
-                //authToken = "Quit";
+                playGame();
                 break;
             case 5:
                 System.out.println("YAYYY observe game");
+                observeGame();
                 break;
             case 6:
                 System.out.println("YAYYY logout");
-                break;
+                shouldContinue = false;
             default:
                 printInputError();
         }
