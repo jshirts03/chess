@@ -14,10 +14,12 @@ import client.responses.ListGamesResponse;
 import client.responses.LoginResponse;
 import client.responses.RegisterResponse;
 import com.google.gson.Gson;
+import ui.EscapeSequences;
 
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ServerFacade {
@@ -68,23 +70,28 @@ public class ServerFacade {
                 return listGamesRes.message();
             }
             else{
-                return formatGames(listGamesRes);
+                gameList = listGamesRes.games();
+                return formatGames();
             }
         } catch (ResponseException ex){
             return ex.getMessage();
         }
     }
 
-    public String formatGames(ListGamesResponse listGamesRes){
-        gameList = new ArrayList<GameData>();
-        for (String game : listGamesRes.games()){
-            gameList.add(new Gson().fromJson(game, GameData.class));
-        }
+    public String formatGames(){
         StringBuilder gameListString = new StringBuilder();
         for (int i=0; i < gameList.size(); i++){
             GameData targetGame = gameList.get(i);
-            gameListString.append(i);
+            gameListString.append(i+1);
             gameListString.append(") ");
+            gameListString.append(targetGame.gameName());
+            gameListString.append(" ");
+            gameListString.append(EscapeSequences.BLACK_PAWN);
+            gameListString.append(targetGame.blackUsername());
+            gameListString.append(" ");
+            gameListString.append(EscapeSequences.WHITE_PAWN);
+            gameListString.append(targetGame.blackUsername());
+            gameListString.append("\n");
         }
         return gameListString.toString();
     }

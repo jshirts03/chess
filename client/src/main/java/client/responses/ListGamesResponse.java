@@ -1,4 +1,9 @@
 package client.responses;
 
-public record ListGamesResponse(String[] games, String message) {
+import client.GameData;
+
+import java.util.ArrayList;
+
+public record ListGamesResponse(
+        ArrayList<GameData> games, String message) {
 }
