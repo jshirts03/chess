@@ -22,7 +22,7 @@ public class PostLoginMenu implements Menu{
     public void run(){
         while (shouldContinue){
             System.out.print("""
-                    Welcome Chess Player!
+                    \n Welcome Chess Player!
                     1) Help
                     2) Create Game
                     3) List Games

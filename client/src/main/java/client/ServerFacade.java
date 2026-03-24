@@ -91,6 +91,7 @@ public class ServerFacade {
 
     private String formatGames(){
         StringBuilder gameListString = new StringBuilder();
+        gameListString.append("\n");
         for (int i=0; i < gameList.size(); i++){
             GameData targetGame = gameList.get(i);
             gameListString.append(i+1);
@@ -104,6 +105,7 @@ public class ServerFacade {
             gameListString.append(targetGame.whiteUsername());
             gameListString.append("\n");
         }
+        gameListString.append("\n");
         return gameListString.toString();
     }
 

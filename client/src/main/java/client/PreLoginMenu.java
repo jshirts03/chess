@@ -41,7 +41,7 @@ public class PreLoginMenu implements Menu {
                 System.out.print("""
                         Login: provide a username and password to login
                         Register: provide email, username, and password. will create new account and log you in
-                        Quit: Exit program""");
+                        Quit: Exit program \n""");
                 break;
             case 2:
                 authToken = loginUser();
