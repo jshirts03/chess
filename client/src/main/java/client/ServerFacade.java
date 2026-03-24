@@ -6,18 +6,26 @@ package client;
 
 //It will also handle the mapping of chess games to the menu items
 
+import client.requests.LoginRequest;
+
+import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashSet;
 
 public class ServerFacade {
 
     HashSet<Integer> gameMap = new HashSet<>();
-    ServerCaller serverCall = new ServerCaller("http://localhost:3000");
+    ServerCaller serverCall = new ServerCaller("http://localhost:8080");
 
     public String login(String username, String password){
-
-        HttpResponse<String> res = serverCall.prepareRequest("/session", "POST", );
-
+        LoginRequest body = new LoginRequest(username, password);
+        HttpRequest req = serverCall.prepareRequest("/session", "POST", body);
+        try {
+            HttpResponse<String> res = serverCall.sendRequest(req);
+            return res.body();
+        } catch (ResponseException ex){
+            return ex.getMessage();
+        }
     }
 
     public String register(String email, String username, String password){

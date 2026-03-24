@@ -22,7 +22,6 @@ import java.util.Locale;
 //      UserInfo = postlogin.run(userInfo)  method ends while loop when logout method selected (returns userInfo of null)
 
 
-
 public class ClientMain {
 
     public static void main(String[] args) {

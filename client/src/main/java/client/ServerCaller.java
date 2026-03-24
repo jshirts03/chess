@@ -13,7 +13,7 @@ import java.util.Locale;
 public class ServerCaller {
 
     private static final HttpClient httpClient = HttpClient.newHttpClient();
-    private String serverUrl;
+    private final String serverUrl;
 
     public ServerCaller(String serverUrl) {
         this.serverUrl = serverUrl;
@@ -41,7 +41,7 @@ public class ServerCaller {
         try{
             return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception ex) {
-
+            throw new ResponseException("Error: there was a problem connecting to the server");
         }
     }
 

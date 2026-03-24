@@ -7,6 +7,7 @@ import server.Server;
 public class ServerFacadeTests {
 
     private static Server server;
+    private ServerFacade facade = new ServerFacade();
 
     @BeforeAll
     public static void init() {
@@ -23,7 +24,7 @@ public class ServerFacadeTests {
 
     @Test
     public void sampleTest() {
-        Assertions.assertTrue(true);
+        var authData = facade.login("player1", "password");;
     }
 
 }
