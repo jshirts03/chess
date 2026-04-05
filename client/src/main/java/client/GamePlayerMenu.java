@@ -1,27 +1,91 @@
 package client;
 
+import java.util.Scanner;
+
 public class GamePlayerMenu {
     NotificationHandler notificationHandler;
     WebSocketFacade webSocketF;
     int gameId;
-    int authToken;
+    String authToken;
+    boolean isInGame;
 
     //on connection (run), add a
-    public GamePlayerMenu(int gameId, int authToken){
+    public GamePlayerMenu(int gameId, String authToken){
+        this.isInGame = true;
         this.gameId = gameId;
         this.authToken = authToken;
         this.notificationHandler = new NotificationHandler();
         this.webSocketF = new WebSocketFacade(notificationHandler);
     }
 
-    public void run(){
-        webSocketF.joinGame(gameId, authToken);
+    public void run() {
+        try {
+            webSocketF.joinGame(gameId, authToken);
+        } catch (Exception e) {
+            return;
+        }
+
         //joins game on the server side
         //server will send a render game message that will render the board (done in the message handler)
         //you don't need to know if it's your turn on the client side. that is stored in the chess game in the server
         //Just loop through the UI options and the server will send back an error message if it's not your turn or if move is invalid
         //this class only will run the
 
+        while (isInGame) {
+            System.out.print("""
+                    [ACTIONS]
+                    1) Help
+                    2) Redraw Board
+                    3) Highlight Legal Moves
+                    4) Make Move
+                    5) Resign
+                    6) Leave
+                    """);
+            Scanner scanner = new Scanner(System.in);
+            String selection = scanner.nextLine();
+            selectionHandler(selection);
+        }
+    }
+
+    public void selectionHandler(String selection){
+        int menuNumber = 0;
+        try{
+            menuNumber = Integer.parseInt(selection);
+        } catch (Exception e){
+            printInputError();
+            return;
+        }
+        switch (menuNumber){
+            case 1:
+                System.out.print("""
+                    Create game: makes a new chess game for you to join
+                    List games: displays a list of all active games
+                    Play game: allows you to join an existing game (see list games menu for game number)
+                    Observe game: allows you to spectate an existing game (see list games menu for game number)
+                    Logout: return to the login menu
+                    Valid inputs are (1,2,3,4,5,or 6)""");
+                break;
+            case 2:
+                redrawBoard();
+                break;
+            case 3:
+                highlightLegalMoves();
+                break;
+            case 4:
+                makeMove();
+                break;
+            case 5:
+                resign();
+                break;
+            case 6:
+                leave();
+                isInGame = false;
+                break;
+            default:
+                printInputError();
+        }
+
+    }
         //help
         //prints help instructions
 

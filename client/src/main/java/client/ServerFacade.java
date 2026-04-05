@@ -133,6 +133,10 @@ public class ServerFacade {
 
     }
 
+    public int getGameId(int gameNumber){
+        return gameList.get(gameNumber - 1).gameID();
+    }
+
     //This should make sure that a gameId is valid as well
     public String observeGame(String gameId){
         String inputError = "Error: please enter a valid game number";

@@ -136,16 +136,13 @@ public class PostLoginMenu implements Menu{
             }
             if (joinRes == null){
                 System.out.printf("Successfully joined game #%s \n", gameNumberString);
-//                joinRes = "Success";
-//                if (teamColor.equals("WHITE")){
-//                    new BoardPrinter().printWhite();
-//                }
-//                else{
-//                    new BoardPrinter().printBlack();
-//                }
+                joinRes = "Success";
+                int gameId = serverF.getGameId(Integer.parseInt(gameNumberString));
+                new GamePlayerMenu(gameId, authToken).run();
             }
             joinRes = checkForServerErrors(joinRes);
         }
+
     }
 
     public void observeGame(){
@@ -159,7 +156,8 @@ public class PostLoginMenu implements Menu{
             observeRes = serverF.observeGame(gameNumberString);
             if (observeRes == null){
                 observeRes = "Success";
-                new BoardPrinter().printWhite();
+                int gameId = serverF.getGameId(Integer.parseInt(gameNumberString));
+                new GameObserverMenu(gameId, authToken).run();
             }
             observeRes = checkForServerErrors(observeRes);
         }
