@@ -136,13 +136,13 @@ public class PostLoginMenu implements Menu{
             }
             if (joinRes == null){
                 System.out.printf("Successfully joined game #%s \n", gameNumberString);
-                joinRes = "Success";
-                if (teamColor.equals("WHITE")){
-                    new BoardPrinter().printWhite();
-                }
-                else{
-                    new BoardPrinter().printBlack();
-                }
+//                joinRes = "Success";
+//                if (teamColor.equals("WHITE")){
+//                    new BoardPrinter().printWhite();
+//                }
+//                else{
+//                    new BoardPrinter().printBlack();
+//                }
             }
             joinRes = checkForServerErrors(joinRes);
         }
