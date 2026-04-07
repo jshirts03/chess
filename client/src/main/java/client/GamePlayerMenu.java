@@ -1,9 +1,11 @@
 package client;
 
+import ui.BoardPrinter;
+
 import java.util.Scanner;
 
 public class GamePlayerMenu {
-    NotificationHandler notificationHandler;
+    BoardPrinter boardPrinter;
     WebSocketFacade webSocketF;
     int gameId;
     String authToken;
@@ -14,14 +16,15 @@ public class GamePlayerMenu {
         this.isInGame = true;
         this.gameId = gameId;
         this.authToken = authToken;
-        this.notificationHandler = new NotificationHandler();
-        this.webSocketF = new WebSocketFacade(notificationHandler);
+        this.boardPrinter = new BoardPrinter();
+        this.webSocketF = new WebSocketFacade(new NotificationHandler(boardPrinter));
     }
 
     public void run() {
         try {
             webSocketF.joinGame(gameId, authToken);
         } catch (Exception e) {
+            System.out.print("There was an error establishing a connection");
             return;
         }
 
@@ -40,6 +43,7 @@ public class GamePlayerMenu {
                     4) Make Move
                     5) Resign
                     6) Leave
+                    Select an option >>> 
                     """);
             Scanner scanner = new Scanner(System.in);
             String selection = scanner.nextLine();
@@ -66,7 +70,7 @@ public class GamePlayerMenu {
                     Valid inputs are (1,2,3,4,5,or 6)""");
                 break;
             case 2:
-                redrawBoard();
+                drawBoard();
                 break;
             case 3:
                 highlightLegalMoves();
@@ -86,6 +90,14 @@ public class GamePlayerMenu {
         }
 
     }
+
+    public void printInputError(){
+        System.out.print("""
+                Error: Invalid Input
+                Please enter a valid number (1,2,3,4,5,6)
+                """);
+    }
+
         //help
         //prints help instructions
 
