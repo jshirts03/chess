@@ -2,6 +2,9 @@ package client;
 
 
 import ui.BoardPrinter;
+import websocket.messages.ErrorMessage;
+import websocket.messages.LoadGameMessage;
+import websocket.messages.NotificationMessage;
 
 // this class is in charge of printing out notifications or errors to the console
 public class NotificationHandler {
@@ -10,6 +13,18 @@ public class NotificationHandler {
 
     public NotificationHandler(BoardPrinter boardPrinter){
         this.boardPrinter = boardPrinter;
+    }
+
+    public void loadGame(LoadGameMessage message){
+        return;
+    }
+
+    public void printError(ErrorMessage message){
+        return;
+    }
+
+    public void notify(NotificationMessage message){
+        return;
     }
 
     //when a notification is received, this class will decide if it's a load_game, error, or notification

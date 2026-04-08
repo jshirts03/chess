@@ -5,6 +5,7 @@ import jakarta.websocket.*;
 import websocket.commands.UserGameCommand;
 import websocket.messages.ErrorMessage;
 import websocket.messages.LoadGameMessage;
+import websocket.messages.NotificationMessage;
 import websocket.messages.ServerMessage;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class WebSocketFacade extends Endpoint{
     public WebSocketFacade(NotificationHandler nf) throws ResponseException{
         try{
             notificationHandler = nf;
-            URI socketURI = new URI("ws://localhost:8080/ws");
+            URI socketURI = new URI("ws://localhost:8080/ws"); //take in hostname and port as parameter
 
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             this.session = container.connectToServer(this, socketURI);
@@ -27,18 +28,22 @@ public class WebSocketFacade extends Endpoint{
             this.session.addMessageHandler(new MessageHandler.Whole<String>() {
                 @Override
                 public void onMessage(String message) {
-                    ServerMessage notification = new Gson().fromJson(message, ServerMessage.class);
-                    switch (notification.getServerMessageType()){
+                    ServerMessage serverMessage = new Gson().fromJson(message, ServerMessage.class);
+                    switch (serverMessage.getServerMessageType()){
                         case ServerMessage.ServerMessageType.LOAD_GAME:
-                           var specializedNotification = new Gson().fromJson(message, LoadGameMessage.class);
-                           break;
+                            var loadGameMessage = new Gson().fromJson(message, LoadGameMessage.class);
+                            notificationHandler.loadGame(loadGameMessage);
+                            break;
                         case ServerMessage.ServerMessageType.ERROR:
-                            var specializedNotification = new Gson().fromJson(message, ErrorMessage.class);
+                            var errorMessage = new Gson().fromJson(message, ErrorMessage.class);
+                            notificationHandler.printError(errorMessage);
                             break;
                         case ServerMessage.ServerMessageType.NOTIFICATION:
-                            var specializedNotification = new Gson().fromJson(message, NotificationMessage.class);
+                            var notification = new Gson().fromJson(message, NotificationMessage.class);
+                            notificationHandler.notify(notification);
+                            break;
                     }
-                    notificationHandler.notify(notification);
+
                 }
             });
         } catch (DeploymentException | IOException | URISyntaxException ex) {
@@ -51,7 +56,7 @@ public class WebSocketFacade extends Endpoint{
     }
 
 
-    public void connectToGame(String authToken, int gameID){
+    public void connectToGame(String authToken, int gameID) throws ResponseException{
         try {
             var connectReq = new UserGameCommand(UserGameCommand.CommandType.CONNECT, authToken, gameID);
             this.session.getBasicRemote().sendText(new Gson().toJson(connectReq));

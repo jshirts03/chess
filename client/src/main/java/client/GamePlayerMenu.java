@@ -22,9 +22,9 @@ public class GamePlayerMenu {
 
     public void run() {
         try {
-            webSocketF.joinGame(gameId, authToken);
-        } catch (Exception e) {
-            System.out.print("There was an error establishing a connection");
+            webSocketF.connectToGame(authToken, gameId);
+        } catch (ResponseException e) {
+            System.out.print(e.getMessage());
             return;
         }
 
@@ -117,6 +117,13 @@ public class GamePlayerMenu {
         //leave
         //calls the websocketFacade to leave the game, closes websocket connection
         //exit gamePlayer menu
+
+
+    //Questions for TA
+    //what is the onConnect method for??? if theres a connect message sent by the client?
+    //how to debug websocket connections
+    //look over my setup in WebsocketFacade and WebsocketHandler
+    //look over my sessions hashmap data structure
 
 
     }
