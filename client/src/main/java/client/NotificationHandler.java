@@ -16,7 +16,9 @@ public class NotificationHandler {
     }
 
     public void loadGame(LoadGameMessage message){
-        return;
+        boardPrinter.setCurrentGame(message.getGame());
+        boardPrinter.setTeamColor(message.getTeamColor());
+        boardPrinter.loadBoard();
     }
 
     public void printError(ErrorMessage message){

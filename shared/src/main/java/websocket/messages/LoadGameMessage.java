@@ -5,13 +5,19 @@ import chess.ChessGame;
 public class LoadGameMessage extends ServerMessage{
 
     ChessGame game;
+    ChessGame.TeamColor teamColor;
 
-    public LoadGameMessage(ChessGame game){
+    public LoadGameMessage(ChessGame game, ChessGame.TeamColor teamColor){
         super(ServerMessageType.LOAD_GAME);
         this.game = game;
+        this.teamColor = teamColor;
     }
 
     public ChessGame getGame(){
         return this.game;
+    }
+
+    public ChessGame.TeamColor getTeamColor(){
+        return this.teamColor;
     }
 }

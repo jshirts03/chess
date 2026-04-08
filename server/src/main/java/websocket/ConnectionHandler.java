@@ -33,10 +33,10 @@ public class ConnectionHandler {
 
     }
 
-    public void sendLoadGame(Session session, int gameId){
+    public void sendLoadGame(Session session, int gameId, ChessGame.TeamColor teamColor){
         try {
             ChessGame game = gameDAO.getGameWithId(gameId);
-            LoadGameMessage message = new LoadGameMessage(game);
+            LoadGameMessage message = new LoadGameMessage(game, teamColor);
             session.getRemote().sendString(new Gson().toJson(message));
         } catch (DataAccessException | IOException e) {
             sendError(session, e.getMessage());
@@ -84,7 +84,7 @@ public class ConnectionHandler {
 
         String notification = String.format("%s joined the game.", username);
         sendNotification(session, notification, gameId);
-        sendLoadGame(session, gameId);
+        sendLoadGame(session, gameId, teamColor);
 
     }
 }
