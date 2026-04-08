@@ -7,6 +7,7 @@ import dataaccess.*;
 import org.eclipse.jetty.websocket.api.Session;
 import websocket.commands.UserGameCommand;
 import websocket.messages.ErrorMessage;
+import websocket.messages.LoadGameMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +33,16 @@ public class ConnectionHandler {
 
     }
 
+    public void sendLoadGame(Session session, int gameId){
+        try {
+            ChessGame game = gameDAO.getGameWithId(gameId);
+            LoadGameMessage message = new LoadGameMessage(game);
+            session.getRemote().sendString(new Gson().toJson(message));
+        } catch (DataAccessException | IOException e) {
+            sendError(session, e.getMessage());
+        }
+    }
+
     public void sendNotification(Session excluded, String message, int gameId){
         ArrayList<ConnectionInfo> connections = sessions.get(gameId);
         try{
@@ -46,8 +57,8 @@ public class ConnectionHandler {
         } catch (IOException e){
             System.out.print("Tried to broadcast message but an error ocurred");
         }
-
     }
+
     public void sendError(Session session, String message){
         ErrorMessage errorMessage = new ErrorMessage(message);
         try{
@@ -73,7 +84,7 @@ public class ConnectionHandler {
 
         String notification = String.format("%s joined the game.", username);
         sendNotification(session, notification, gameId);
-
+        sendLoadGame(session, gameId);
 
     }
 }
