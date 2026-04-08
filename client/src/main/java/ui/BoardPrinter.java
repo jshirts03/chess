@@ -1,27 +1,57 @@
 package ui;
 
+import chess.ChessBoard;
+import chess.ChessGame;
+import chess.ChessPiece;
+import chess.ChessPosition;
+
 import static ui.EscapeSequences.*;
 
 public class BoardPrinter {
 
     private String bw = SET_BG_COLOR_WHITE;
+    private ChessGame currentGame;
+    private ChessBoard board;
+    private ChessGame.TeamColor teamColor;
+    private String newRow = RESET_BG_COLOR + "\n" + SET_BG_COLOR_DARK_GREY;
 
     public static void main(String[] args){
-        new BoardPrinter().printWhite();
-        new BoardPrinter().printBlack();
+        BoardPrinter printer = new BoardPrinter();
+        printer.setCurrentGame(new ChessGame());
+        printer.setTeamColor(ChessGame.TeamColor.WHITE);
+        printer.loadBoard();
+        printer.setTeamColor(ChessGame.TeamColor.BLACK);
+        printer.loadBoard();
     }
+
+    public void setCurrentGame(ChessGame game){
+        currentGame = game;
+        board = currentGame.getBoard();
+    }
+
+    public void setTeamColor(ChessGame.TeamColor teamColor){
+        this.teamColor = teamColor;
+    }
+
+    public void loadBoard(){
+        if (teamColor.equals(ChessGame.TeamColor.BLACK)){
+            printBlack();
+        }
+        else{
+            printWhite();
+        }
+    }
+
     public void printWhite(){
         String[] letters = {"a", "b", "c", "d", "e", "f", "g", "h"};
         String[] numbers = {"8", "7", "6", "5", "4", "3", "2", "1"};
-        String[] royalty = {"Q", "K"};
-        printBoard(letters, numbers, royalty, "white");
+        printBoard(letters, numbers);
     }
 
     public void printBlack(){
         String[] letters = {"h", "g", "f", "e", "d", "c", "b", "a"};
         String[] numbers = {"1", "2", "3", "4", "5", "6", "7", "8"};
-        String[] royalty = {"K", "Q"};
-        printBoard(letters, numbers, royalty, "black");
+        printBoard(letters, numbers);
     }
 
     public String bwBackground(){
@@ -35,103 +65,118 @@ public class BoardPrinter {
         return currentBw;
     }
 
-    public void printBoard(String[] letters, String[] numbers, String[] royalty, String color){
+    public void printBoard(String[] letters, String[] numbers) {
         StringBuilder builder = new StringBuilder();
-        int numberTracker = 0;
-        String[] toppieces = {"R", "N", "B", royalty[0], royalty[1], "B", "N", "R"};
-        String[] bottompieces = {"R", "N", "B", royalty[0], royalty[1], "B", "N", "R"};
-        String newRow = RESET_BG_COLOR + "\n" + SET_BG_COLOR_DARK_GREY;
         builder.append(SET_BG_COLOR_DARK_GREY + SET_TEXT_COLOR_BLACK + SET_TEXT_BOLD);
 
-        //topRow
         builder.append("   ");
-        for (int i=0; i<8; i++){
+        for (int i = 0; i < 8; i++) {
             builder.append(" ").append(letters[i]).append(" ");
         }
         builder.append("   ");
         builder.append(newRow);
 
-        //first row
-        builder.append(" ").append(numbers[numberTracker]).append(" ");
-        if (color.equals("white")){
-            builder.append(SET_TEXT_COLOR_BLUE);
-        } else {
-            builder.append(SET_TEXT_COLOR_RED);
+        if (teamColor.equals(ChessGame.TeamColor.BLACK)){
+            builder.append(blackHelper(numbers));
         }
-        for (int i=0; i<8; i++){
-            builder.append(bwBackground()).append(" ").append(toppieces[i]).append(" ");
+        else{
+            builder.append(whiteHelper(numbers));
         }
-        builder.append(SET_BG_COLOR_DARK_GREY).append(SET_TEXT_COLOR_BLACK).append(" ").append(numbers[numberTracker]).append(" ");
-        builder.append(newRow);
-
-        //pawn row top
-        bwBackground();
-        numberTracker++;
-        builder.append(" ").append(numbers[numberTracker]).append(" ");
-        if (color.equals("white")){
-            builder.append(SET_TEXT_COLOR_BLUE);
-        } else {
-            builder.append(SET_TEXT_COLOR_RED);
-        }
-        for (int i=0; i<8; i++){
-            builder.append(bwBackground()).append(" ").append("P").append(" ");
-        }
-        builder.append(SET_BG_COLOR_DARK_GREY).append(SET_TEXT_COLOR_BLACK).append(" ").append(numbers[numberTracker]).append(" ");
-        builder.append(newRow);
-
-        //blank middles
-        while (numberTracker < 5){
-            bwBackground();
-            numberTracker++;
-            builder.append(" ").append(numbers[numberTracker]).append(" ");
-            for (int i=0; i<8; i++){
-                builder.append(bwBackground()).append("   ");
-            }
-            builder.append(SET_BG_COLOR_DARK_GREY).append(SET_TEXT_COLOR_BLACK).append(" ").append(numbers[numberTracker]).append(" ");
-            builder.append(newRow);
-        }
-
-        bwBackground();
-        numberTracker++;
-        builder.append(" ").append(numbers[numberTracker]).append(" ");
-        if (color.equals("black")){
-            builder.append(SET_TEXT_COLOR_BLUE);
-        } else {
-            builder.append(SET_TEXT_COLOR_RED);
-        }
-        for (int i=0; i<8; i++){
-            builder.append(bwBackground()).append(" ").append("P").append(" ");
-        }
-        builder.append(SET_BG_COLOR_DARK_GREY).append(SET_TEXT_COLOR_BLACK).append(" ").append(numbers[numberTracker]).append(" ");
-        builder.append(newRow);
-
-        bwBackground();
-        numberTracker++;
-        builder.append(" ").append(numbers[numberTracker]).append(" ");
-        if (color.equals("black")){
-            builder.append(SET_TEXT_COLOR_BLUE);
-        } else {
-            builder.append(SET_TEXT_COLOR_RED);
-        }
-        for (int i=0; i<8; i++){
-            builder.append(bwBackground()).append(" ").append(bottompieces[i]).append(" ");
-        }
-        builder.append(SET_BG_COLOR_DARK_GREY).append(SET_TEXT_COLOR_BLACK).append(" ").append(numbers[numberTracker]).append(" ");
-        builder.append(newRow);
 
         builder.append("   ");
-        for (int i=0; i<8; i++){
+        for (int i = 0; i < 8; i++) {
             builder.append(" ").append(letters[i]).append(" ");
         }
         builder.append("   ");
         builder.append(newRow);
 
         builder.append(RESET_BG_COLOR).append(RESET_TEXT_COLOR).append(RESET_TEXT_BOLD_FAINT);
+
+        if (currentGame.getTeamTurn().equals(ChessGame.TeamColor.WHITE)){
+            builder.append("It is WHITE player's turn");
+        }
+        else{
+            builder.append("It is BLACK player's turn");
+        }
         builder.append("\n");
+        builder.append("------------------------------");
+        builder.append("\n");
+
+
         System.out.print(builder.toString());
     }
 
-    //pawn row top
 
+    public String evaluateSpace(int x, int y){
+        ChessPosition position = new ChessPosition(x,y);
+        ChessPiece piece = board.getPiece(position);
+        if (piece != null){
+            return evaluatePieceColor(piece) + evaluatePieceType(piece);
+        }
+        else{
+            return "   ";
+        }
+    }
+
+    public String evaluatePieceType(ChessPiece piece){
+        switch (piece.getPieceType()){
+            case ChessPiece.PieceType.KING:
+                return " K ";
+            case ChessPiece.PieceType.QUEEN:
+                return " Q ";
+            case ChessPiece.PieceType.BISHOP:
+                return " B ";
+            case ChessPiece.PieceType.ROOK:
+                return " R ";
+            case ChessPiece.PieceType.KNIGHT:
+                return " N ";
+            case ChessPiece.PieceType.PAWN:
+                return " P ";
+        }
+        return "   ";
+    }
+
+    public String evaluatePieceColor(ChessPiece piece){
+        ChessGame.TeamColor color = piece.getTeamColor();
+        if (color.equals(ChessGame.TeamColor.BLACK)){
+            return SET_TEXT_COLOR_BLUE;
+        } else {
+            return SET_TEXT_COLOR_RED;
+        }
+    }
+
+    public String blackHelper(String[] numbers){
+        StringBuilder builder = new StringBuilder();
+        int numberTracker = 0;
+        for (int x = 1; x < 9; x++) {
+            builder.append(" ").append(numbers[numberTracker]).append(" ");
+            for (int y = 1; y < 9; y++) {
+                builder.append(bwBackground());
+                builder.append(evaluateSpace(x, y));
+            }
+            builder.append(SET_BG_COLOR_DARK_GREY).append(SET_TEXT_COLOR_BLACK).append(" ").append(numbers[numberTracker]).append(" ");
+            builder.append(newRow);
+            numberTracker++;
+            bwBackground();
+        }
+        return builder.toString();
+    }
+
+    public String whiteHelper(String[] numbers){
+        StringBuilder builder = new StringBuilder();
+        int numberTracker = 0;
+        for (int x = 8; x > 0; x--) {
+            builder.append(" ").append(numbers[numberTracker]).append(" ");
+            for (int y = 8; y > 0; y--) {
+                builder.append(bwBackground());
+                builder.append(evaluateSpace(x, y));
+            }
+            builder.append(SET_BG_COLOR_DARK_GREY).append(SET_TEXT_COLOR_BLACK).append(" ").append(numbers[numberTracker]).append(" ");
+            builder.append(newRow);
+            numberTracker++;
+            bwBackground();
+        }
+        return builder.toString();
+    }
 
 }
