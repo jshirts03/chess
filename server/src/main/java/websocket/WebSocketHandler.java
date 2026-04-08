@@ -72,14 +72,13 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
         //remove message context from hashmap
     }
 
-    public void handleConnect(WsMessageContext ctx, UserGameCommand gameCommand){
+    public void handleConnection(WsMessageContext ctx, UserGameCommand gameCommand){
         try{
             authDAO.verifyAuth(gameCommand.getAuthToken());
+            connectionHandler.addConnection(ctx.session, gameCommand);
         } catch (DataAccessException e){
-            connectionHandler.sendError(ctx.session, "Error: unauthorized");
+            connectionHandler.sendError(ctx.session, e.getMessage());
         }
-        //if there is an error
-        //call connection handler to send error message to the root user
 
         //else
         //call connection handler to add person to connections
