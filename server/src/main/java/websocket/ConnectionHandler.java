@@ -32,6 +32,22 @@ public class ConnectionHandler {
 
     }
 
+    public void sendNotification(Session excluded, String message, int gameId){
+        ArrayList<ConnectionInfo> connections = sessions.get(gameId);
+        try{
+            for (ConnectionInfo info : connections){
+                Session c = info.session();
+                if (c.isOpen()){
+                    if (!c.equals(excluded)){
+                        c.getRemote().sendString(message);
+                    }
+                }
+            }
+        } catch (IOException e){
+            System.out.print("Tried to broadcast message but an error ocurred");
+        }
+
+    }
     public void sendError(Session session, String message){
         ErrorMessage errorMessage = new ErrorMessage(message);
         try{
@@ -46,6 +62,7 @@ public class ConnectionHandler {
         String username = authDAO.getUserWithAuth(gameCommand.getAuthToken());
         ChessGame.TeamColor teamColor = gameDAO.getTeamColor(gameId, username);
         ConnectionInfo info = new ConnectionInfo(session, username, teamColor);
+
         if (sessions.containsKey(gameId)){
             sessions.get(gameId).add(info);
         }
@@ -53,12 +70,10 @@ public class ConnectionHandler {
             sessions.put(gameId, new ArrayList<ConnectionInfo>());
             sessions.get(gameId).add(info);
         }
-        //tries to get the username with authToken
-        //gets the user's teamColor with the gameId // check for valid gameID
 
-        //creates a Connection Info object with those 3 values, session, username, and teamColor
-        //adds to the HashSet
-        //notifies everyone that a player has joined
+        String notification = String.format("%s joined the game.", username);
+        sendNotification(session, notification, gameId);
+
 
     }
 }

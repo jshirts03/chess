@@ -47,13 +47,13 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 break;
             case UserGameCommand.CommandType.MAKE_MOVE:
                 MakeMoveCommand makeMoveCommand = new Gson().fromJson(ctx.message(), MakeMoveCommand.class);
-                handleMakeMove(makeMoveCommand);
+                //handleMakeMove(makeMoveCommand);
                 break;
             case UserGameCommand.CommandType.RESIGN:
-                handleResign(gameCommand);
+                //handleResign(gameCommand);
                 break;
             case UserGameCommand.CommandType.LEAVE:
-                handleLeave(gameCommand);
+                //handleLeave(gameCommand);
                 break;
             default:
                 ErrorMessage message = new ErrorMessage("Error: invalid command type");
