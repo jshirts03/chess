@@ -70,19 +70,19 @@ public class GamePlayerMenu {
                     Valid inputs are (1,2,3,4,5,or 6)""");
                 break;
             case 2:
-                drawBoard();
+                //drawBoard();
                 break;
             case 3:
-                highlightLegalMoves();
+                //highlightLegalMoves();
                 break;
             case 4:
-                makeMove();
+                //makeMove();
                 break;
             case 5:
-                resign();
+                //resign();
                 break;
             case 6:
-                leave();
+                //leave();
                 isInGame = false;
                 break;
             default:
@@ -125,6 +125,4 @@ public class GamePlayerMenu {
     //look over my setup in WebsocketFacade and WebsocketHandler
     //look over my sessions hashmap data structure
 
-
-    }
 }
