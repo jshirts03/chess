@@ -1,5 +1,6 @@
 package dataaccess;
 
+import chess.ChessGame;
 import datatypes.GameData;
 import service.requests.JoinGameRequest;
 
@@ -10,6 +11,7 @@ public interface GameDAO {
     int createGame(String gameName) throws DataAccessException;
     ArrayList<GameData> getGames() throws DataAccessException;
     void joinGame(JoinGameRequest request) throws DataAccessException;
+    ChessGame getGameWithId(int gameId) throws DataAccessException;
 
     default void checkGameAlreadyTaken(JoinGameRequest request, GameData game) throws DataAccessException{
         if (request.playerColor().equals("WHITE") && game.whiteUsername() != null){

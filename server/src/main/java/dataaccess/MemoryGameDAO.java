@@ -61,6 +61,14 @@ public class MemoryGameDAO implements GameDAO{
             GameData joinedGame = new GameData(game.gameID(), game.whiteUsername(), request.username() , game.gameName(), game.game());
             games.add(joinedGame);
         }
+    }
 
+    public ChessGame getGameWithId(int id) throws DataAccessException{
+        for (GameData game : games){
+            if (game.gameID() == id){
+                return game.game();
+            }
+        }
+        throw new DataAccessException("Error: invalid game ID");
     }
 }

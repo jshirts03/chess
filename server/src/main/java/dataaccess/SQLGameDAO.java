@@ -137,6 +137,24 @@ public class SQLGameDAO implements GameDAO{
 
     }
 
+    public ChessGame getGameWithId(int id) throws DataAccessException{
+        String statement = String.format("SELECT * from games WHERE gameid = %d", id);
+        try (Connection conn = DatabaseManager.getConnection()) {
+            try (PreparedStatement ps = conn.prepareStatement(statement)) {
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()){
+                        String gameString = rs.getString("game");
+                        return new Gson().fromJson(gameString, ChessGame.class);
+
+                    }
+                    throw new DataAccessException("Error: invalid game id");
+                }
+            }
+        } catch (Exception e) {
+            throw new DataAccessException("Error: server error");
+        }
+    }
+
 
 
 
