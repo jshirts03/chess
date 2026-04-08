@@ -3,13 +3,17 @@ package websocket;
 import com.google.gson.Gson;
 import io.javalin.websocket.*;
 import org.jetbrains.annotations.NotNull;
+import websocket.commands.MakeMoveCommand;
 import websocket.commands.UserGameCommand;
+import websocket.messages.ErrorMessage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsCloseHandler {
 
+    public ConnectionHandler connectionHandler;
     public ConcurrentHashMap<Integer, ArrayList<ConnectionInfo>> sessions;
     //need gameId, username, and connection
     //make a map from gameId to a connection info record class that I can create
@@ -33,7 +37,22 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 break;
             case UserGameCommand.CommandType.MAKE_MOVE:
                 MakeMoveCommand makeMoveCommand = new Gson().fromJson(ctx.message(), MakeMoveCommand.class);
-                handleMakeMove()
+                handleMakeMove(makeMoveCommand);
+                break;
+            case UserGameCommand.CommandType.RESIGN:
+                handleResign(gameCommand);
+                break;
+            case UserGameCommand.CommandType.LEAVE:
+                handleLeave(gameCommand);
+                break;
+            default:
+                ErrorMessage message = new ErrorMessage("Error: invalid command type");
+                try{
+                    ctx.session.getRemote().sendString(new Gson().toJson(message));
+                } catch (IOException e){
+                    System.out.print("error");
+                }
+
         }
     }
 
