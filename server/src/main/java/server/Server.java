@@ -13,6 +13,7 @@ import service.requests.JoinGameRequest;
 import service.requests.LoginRequest;
 import service.responses.*;
 import service.requests.RegisterRequest;
+import websocket.WebSocketHandler;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class Server {
     private final GameService gameService;
     private final UserService userService;
     private final AuthService authService;
+    private final WebSocketHandler webSocketHandler;
 
     public Server() {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
@@ -30,6 +32,7 @@ public class Server {
         gameService = new GameService();
         userService = new UserService();
         authService = new AuthService();
+        webSocketHandler = new WebSocketHandler();
 
         // Register your endpoints and exception handlers here
         javalin.delete("/db", this::clearApplication);
@@ -39,6 +42,11 @@ public class Server {
         javalin.post("/game", this::createGame);
         javalin.get("/game", this::listGames);
         javalin.put("/game", this::joinGame);
+        javalin.ws("/ws", ws -> {
+            ws.onConnect(webSocketHandler);
+            ws.onMessage(webSocketHandler);
+            ws.onClose(webSocketHandler);
+        });
         javalin.exception(Exception.class, this::generalExceptionHandler);
         javalin.error(404, this::notFound);
     }
