@@ -100,4 +100,13 @@ public class MemoryGameDAO implements GameDAO{
             }
         }
     }
+
+    public void updateGame(int id, ChessGame chessGame){
+        for (GameData game : games){
+            if (game.gameID() == id){
+                games.add(new GameData(game.gameID(), game.whiteUsername(), game.blackUsername(), game.gameName(), chessGame));
+                games.remove(game);
+            }
+        }
+    }
 }
