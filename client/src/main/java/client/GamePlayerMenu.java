@@ -126,7 +126,7 @@ public class GamePlayerMenu {
             isValidCoordinates = (verifyCoords(pieceCoords) && verifyCoords(moveCoords));
         }
         ChessMove move = createChessMove(pieceCoords, moveCoords);
-        webSocketF.makeMove(new MakeMoveCommand(authToken, gameId, move));
+        webSocketF.makeMove(authToken, gameId, move);
     }
 
 
