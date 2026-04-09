@@ -41,14 +41,7 @@ public class GamePlayerMenu {
 
         while (isInGame) {
             System.out.print("""
-                    [ACTIONS]
-                    1) Help
-                    2) Redraw Board
-                    3) Highlight Legal Moves
-                    4) Make Move
-                    5) Resign
-                    6) Leave
-                    Select an option >>> 
+                    Select an option (enter 1 for menu) >>> 
                     """);
             Scanner scanner = new Scanner(System.in);
             String selection = scanner.nextLine();
@@ -67,13 +60,13 @@ public class GamePlayerMenu {
         switch (menuNumber){
             case 1:
                 System.out.print("""
-                    1) Draw Board: allows you to redraw the current chess board
-                    2) Highlight Legal Moves: prompts for a location on the chess board and
+                    2) Draw Board: allows you to redraw the current chess board
+                    3) Highlight Legal Moves: prompts for a location on the chess board and
                     will print a new board with that piece's legal moves highlighted
-                    3) Make Move: prompts for a piece location and the desired move location
+                    4) Make Move: prompts for a piece location and the desired move location
                     will make that move if it's your turn and the move is valid
-                    4) Resign: allows you to forfeit the game
-                    5) Leave: leaves the game and sends you back to the menu""");
+                    5) Resign: allows you to forfeit the game
+                    6) Leave: leaves the game and sends you back to the menu""");
                 break;
             case 2:
                 drawBoard();
