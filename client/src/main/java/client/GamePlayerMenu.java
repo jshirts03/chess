@@ -79,7 +79,7 @@ public class GamePlayerMenu {
                 drawBoard();
                 break;
             case 3:
-                //highlightLegalMoves();
+                highlightLegalMoves();
                 break;
             case 4:
                 makeMove();
@@ -175,6 +175,20 @@ public class GamePlayerMenu {
         if (selection.equals("Y")){
             webSocketF.resign(authToken, gameId);
         }
+    }
+
+    public void highlightLegalMoves(){
+        boolean isValidCoordinates = false;
+        String pieceCoords = null;
+        Scanner scanner = new Scanner(System.in);
+        while (!isValidCoordinates) {
+            System.out.print("""
+                    Enter coordinates of piece >>> """);
+            pieceCoords = scanner.nextLine();
+            isValidCoordinates = verifyCoords(pieceCoords);
+        }
+        ChessMove move = createChessMove(pieceCoords, "a1");
+        boardPrinter.printHighlighted(move.getStartPosition());
     }
 
         //help

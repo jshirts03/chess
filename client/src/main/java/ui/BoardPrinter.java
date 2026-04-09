@@ -1,9 +1,9 @@
 package ui;
 
-import chess.ChessBoard;
-import chess.ChessGame;
-import chess.ChessPiece;
-import chess.ChessPosition;
+import chess.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 import static ui.EscapeSequences.*;
 
@@ -14,6 +14,7 @@ public class BoardPrinter {
     private ChessBoard board;
     private ChessGame.TeamColor teamColor;
     private String newRow = RESET_BG_COLOR + "\n" + SET_BG_COLOR_DARK_GREY;
+    private Collection<ChessMove> validMoves;
 
     public static void main(String[] args){
         BoardPrinter printer = new BoardPrinter();
@@ -40,6 +41,19 @@ public class BoardPrinter {
         else{
             printWhite();
         }
+    }
+
+    public void printHighlighted(ChessPosition startPos){
+        ChessPiece movingPiece = board.getPiece(startPos);
+        if (movingPiece != null){
+            validMoves = currentGame.validMoves(startPos);
+            loadBoard();
+            validMoves = null;
+        }
+        else{
+            System.out.print("Error: no piece can be found");
+        }
+
     }
 
     public void printWhite(){
