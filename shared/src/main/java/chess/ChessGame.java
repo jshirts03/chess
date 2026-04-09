@@ -85,12 +85,15 @@ public class ChessGame {
     //throws exception if it is not valid, else moves the specified piece to the specified location
     public void makeMove(ChessMove move) throws InvalidMoveException {
         if (board.getPiece(move.getStartPosition()) == null){
-            throw new InvalidMoveException();
+            throw new InvalidMoveException("Error: cannot find piece");
         }
         Collection<ChessMove> validMoves = validMoves(move.getStartPosition());
         ChessGame.TeamColor targetColor = board.getPiece(move.getStartPosition()).getTeamColor();
-        if (!validMoves.contains(move) || targetColor != teamTurn){
-            throw new InvalidMoveException();
+        if (!validMoves.contains(move)){
+            throw new InvalidMoveException("Error: invalid move");
+        }
+        if (targetColor != teamTurn){
+            throw new InvalidMoveException("Error: cannot move opponent piece");
         }
         ChessPiece targetPiece = null;
         if (move.getPromotionPiece() != null){
