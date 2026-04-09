@@ -10,9 +10,16 @@ import websocket.messages.NotificationMessage;
 public class NotificationHandler {
 
     BoardPrinter boardPrinter;
+    boolean isObserver;
+
+    public NotificationHandler(BoardPrinter boardPrinter, boolean isObserver){
+        this.boardPrinter = boardPrinter;
+        this.isObserver = isObserver;
+    }
 
     public NotificationHandler(BoardPrinter boardPrinter){
         this.boardPrinter = boardPrinter;
+        isObserver = false;
     }
 
     public void loadGame(LoadGameMessage message){
@@ -27,6 +34,10 @@ public class NotificationHandler {
 
     public void notify(NotificationMessage message){
         System.out.println(message.getMessage());
+        if (isObserver){
+            System.out.println();
+            System.out.print("Type QUIT to stop observing");
+        }
     }
 
     //when a notification is received, this class will decide if it's a load_game, error, or notification
