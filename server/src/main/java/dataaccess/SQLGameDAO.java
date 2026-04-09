@@ -119,10 +119,16 @@ public class SQLGameDAO implements GameDAO{
     };
 
     public void updateGame(int id, ChessGame game) throws DataAccessException{
-        String statement;
-        String jsonGame = new Gson().toJson(game);
-        statement = String.format("UPDATE games SET game = %s WHERE gameid = '%d'", jsonGame, id);
-        DatabaseManager.executeStatement(statement);
+        String gameJson = new Gson().toJson(game);
+        String statement = "UPDATE games SET game = ? WHERE gameid = ?";
+        try (var conn = DatabaseManager.getConnection();
+             var preparedStatement = conn.prepareStatement(statement)) {
+            preparedStatement.setString(1, gameJson);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        } catch (Exception e){
+            throw new DataAccessException("Error: server error");
+        }
     }
 
     public void leaveGame(int id, ChessGame.TeamColor teamColor) throws DataAccessException{
