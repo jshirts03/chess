@@ -53,7 +53,7 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 //handleResign(gameCommand);
                 break;
             case UserGameCommand.CommandType.LEAVE:
-                //handleLeave(gameCommand);
+                handleLeave(ctx, gameCommand);
                 break;
             default:
                 ErrorMessage message = new ErrorMessage("Error: invalid command type");
@@ -79,11 +79,15 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
         } catch (DataAccessException e){
             connectionHandler.sendError(ctx.session, e.getMessage());
         }
+    }
 
-        //else
-        //call connection handler to add person to connections
-            //called internally
-            //calls connection handler to notify everyone else in the game that someone joined
+    public void handleLeave(WsMessageContext ctx, UserGameCommand gameCommand){
+        try{
+            authDAO.verifyAuth(gameCommand.getAuthToken());
+            connectionHandler.removeConnection(ctx.session, gameCommand);
+        } catch (DataAccessException e){
+            connectionHandler.sendError(ctx.session, e.getMessage());
+        }
     }
 
 }
