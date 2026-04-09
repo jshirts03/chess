@@ -188,6 +188,22 @@ public class ConnectionHandler {
         } catch (DataAccessException | InvalidMoveException e){
             sendError(session, e.getMessage());
         }
+    }
+
+    public void resign(Session session, UserGameCommand gameCommand){
+        int gameId = gameCommand.getGameID();
+        try{
+            ChessGame game = gameDAO.getGameWithId(gameId);
+            String username = authDAO.getUserWithAuth(gameCommand.getAuthToken());
+            ChessGame.TeamColor teamColor = gameDAO.getTeamColor(gameId, username);
+            game.resign(teamColor);
+            String message = String.format("%s has resigned", username);
+            sendNotification(null, message, gameId);
+            sendGameOverNotification(game, gameId);
+
+        } catch (DataAccessException e){
+            sendError(session, e.getMessage());
+        }
 
     }
 }

@@ -50,7 +50,7 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 handleMakeMove(ctx, makeMoveCommand);
                 break;
             case UserGameCommand.CommandType.RESIGN:
-                //handleResign(gameCommand);
+                handleResign(gameCommand);
                 break;
             case UserGameCommand.CommandType.LEAVE:
                 handleLeave(ctx, gameCommand);
@@ -94,6 +94,15 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
         try{
             authDAO.verifyAuth(makeMoveCommand.getAuthToken());
             connectionHandler.makeMove(ctx.session, makeMoveCommand);
+        } catch (DataAccessException e){
+            connectionHandler.sendError(ctx.session, e.getMessage());
+        }
+    }
+
+    public void handleResign(WsMessageContext ctx, UserGameCommand gameCommand){
+        try{
+            authDAO.verifyAuth(gameCommand.getAuthToken());
+            connectionHandler.resign(ctx.session, gameCommand);
         } catch (DataAccessException e){
             connectionHandler.sendError(ctx.session, e.getMessage());
         }
