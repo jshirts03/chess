@@ -84,20 +84,14 @@ public class ConnectionHandler {
 
     public void sendIsInCheckNotification(int gameId, ChessGame.TeamColor teamColor){
         var playersInfo = sessions.get(gameId);
-        String inCheckUser = "";
+        String inCheckUser = " ";
         String color;
         for (ConnectionInfo info: playersInfo){
             if (info.teamColor().equals(teamColor)){
                 inCheckUser = info.username();
             }
         }
-        if (teamColor.equals(ChessGame.TeamColor.WHITE)){
-            color = "WHITE";
-        }
-        else{
-            color = "BLACK";
-        }
-        String message = String.format("%s (%s) is in CHECK", inCheckUser, color);
+        String message = String.format("%s (%s) is in CHECK", inCheckUser, teamColor);
         sendNotification(null, message, gameId);
     }
 
@@ -205,10 +199,14 @@ public class ConnectionHandler {
             sendAllLoadGame(gameId);
             sendMoveNotification(move, username, gameId, session);
             if (game.isInCheck(ChessGame.TeamColor.WHITE)){
-                sendIsInCheckNotification(gameId, ChessGame.TeamColor.WHITE);
+                if (!game.getGameIsOver()){
+                    sendIsInCheckNotification(gameId, ChessGame.TeamColor.WHITE);
+                }
             }
             if (game.isInCheck(ChessGame.TeamColor.BLACK)){
-                sendIsInCheckNotification(gameId, ChessGame.TeamColor.BLACK);
+                if (!game.getGameIsOver()){
+                    sendIsInCheckNotification(gameId, ChessGame.TeamColor.BLACK);
+                }
             }
             if (game.getGameIsOver()){
                 sendGameOverNotification(game, gameId);

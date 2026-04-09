@@ -50,14 +50,14 @@ public class GamePlayerMenu {
     }
 
     public void selectionHandler(String selection){
-        int menuNumber = 0;
+        int selectionNumber = 0;
         try{
-            menuNumber = Integer.parseInt(selection);
+            selectionNumber = Integer.parseInt(selection);
         } catch (Exception e){
             printInputError();
             return;
         }
-        switch (menuNumber){
+        switch (selectionNumber){
             case 1:
                 System.out.print("""
                     2) Draw Board: allows you to redraw the current chess board

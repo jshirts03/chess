@@ -173,7 +173,10 @@ public class ChessGame {
     }
 
     public void evaluateGameOver(){
-        if (isInCheckmate(teamTurn) || isInStalemate(teamTurn)){
+        if (isInCheckmate(TeamColor.WHITE) || isInStalemate(TeamColor.WHITE)){
+            gameIsOver = true;
+        }
+        if (isInCheckmate(TeamColor.BLACK) || isInStalemate(TeamColor.BLACK)){
             gameIsOver = true;
         }
     }
