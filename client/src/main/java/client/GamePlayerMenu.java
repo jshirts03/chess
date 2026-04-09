@@ -159,10 +159,10 @@ public class GamePlayerMenu {
         letterToNumber.put("h", 8);
         int coord1 = letterToNumber.get(pieceCoords.substring(0,1));
         int coord2 = Integer.parseInt(pieceCoords.substring(1,2));
-        ChessPosition startPos = new ChessPosition(coord1, coord2);
+        ChessPosition startPos = new ChessPosition(coord2, coord1);
         coord1 = letterToNumber.get(moveCoords.substring(0,1));
-        coord2 = Integer.parseInt(pieceCoords.substring(1,2));
-        ChessPosition endPos = new ChessPosition(coord1, coord2);
+        coord2 = Integer.parseInt(moveCoords.substring(1,2));
+        ChessPosition endPos = new ChessPosition(coord2, coord1);
         return new ChessMove(startPos, endPos);
     }
 

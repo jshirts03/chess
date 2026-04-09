@@ -70,8 +70,8 @@ public class ConnectionHandler {
 
         ChessPosition startPos = move.getStartPosition();
         ChessPosition endPos = move.getEndPosition();
-        String location1 = numberToLetter.get(startPos.getRow()) + startPos.getColumn();
-        String location2 = numberToLetter.get(endPos.getRow()) + endPos.getColumn();
+        String location1 = numberToLetter.get(startPos.getColumn()) + startPos.getRow();
+        String location2 = numberToLetter.get(endPos.getColumn()) + endPos.getRow();
 
         builder.append(username);
         builder.append(" moved a piece from ");
@@ -168,9 +168,11 @@ public class ConnectionHandler {
             ChessGame.TeamColor teamColor = gameDAO.getTeamColor(gameId, username);
             if (game.getTeamTurn() != teamColor){
                 sendError(session, "Error: it is your opponent's turn");
+                return;
             }
             if (game.getGameIsOver()){
                 sendError(session, "Error: game has ended");
+                return;
             }
 
             game.makeMove(move);

@@ -121,7 +121,7 @@ public class SQLGameDAO implements GameDAO{
     public void updateGame(int id, ChessGame game) throws DataAccessException{
         String statement;
         String jsonGame = new Gson().toJson(game);
-        statement = String.format("UPDATE games SET game = %s WHERE gameid = '%d'" ,jsonGame, id);
+        statement = String.format("UPDATE games SET game = %s WHERE gameid = '%d'", jsonGame, id);
         DatabaseManager.executeStatement(statement);
     }
 
