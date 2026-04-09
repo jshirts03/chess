@@ -54,6 +54,12 @@ public class BoardPrinter {
         ChessPiece movingPiece = board.getPiece(startPos);
         if (movingPiece != null){
             validMoves = currentGame.validMoves(startPos);
+            for (ChessMove move : validMoves){
+                if (move.getPromotionPiece() != null){
+                    eliminateDuplicates(move.getEndPosition());
+                    validMoves.add(move);
+                }
+            }
             loadBoard();
             validMoves = null;
         }
@@ -61,6 +67,14 @@ public class BoardPrinter {
             System.out.print("Error: no piece can be found");
         }
 
+    }
+
+    public void eliminateDuplicates(ChessPosition position){
+        for (ChessMove move: validMoves){
+            if (move.getEndPosition().equals(position)){
+                validMoves.remove(move);
+            }
+        }
     }
 
     public void printWhite(){
