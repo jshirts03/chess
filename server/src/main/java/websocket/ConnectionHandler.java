@@ -3,6 +3,7 @@ package websocket;
 
 import chess.ChessGame;
 import chess.ChessMove;
+import chess.ChessPosition;
 import chess.InvalidMoveException;
 import com.google.gson.Gson;
 import dataaccess.*;
@@ -15,6 +16,7 @@ import websocket.messages.NotificationMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -45,6 +47,39 @@ public class ConnectionHandler {
         } catch (DataAccessException | IOException e) {
             sendError(session, e.getMessage());
         }
+    }
+
+    public void sendAllLoadGame(int gameId){
+        var users = sessions.get(gameId);
+        for (ConnectionInfo info : users){
+            sendOneLoadGame(info.session(), gameId, info.teamColor());
+        }
+    }
+
+    public void sendMoveNotification(ChessMove move, String username, int gameId){
+        HashMap<Integer, String> numberToLetter = new HashMap<>();
+        numberToLetter.put(1, "a");
+        numberToLetter.put(2, "b");
+        numberToLetter.put(3, "c");
+        numberToLetter.put(4, "d");
+        numberToLetter.put(5, "e");
+        numberToLetter.put(6, "f");
+        numberToLetter.put(7, "g");
+        numberToLetter.put(8, "h");
+        StringBuilder builder = new StringBuilder();
+
+        ChessPosition startPos = move.getStartPosition();
+        ChessPosition endPos = move.getEndPosition();
+        String location1 = numberToLetter.get(startPos.getRow()) + startPos.getColumn();
+        String location2 = numberToLetter.get(endPos.getRow()) + endPos.getColumn();
+
+        builder.append(username);
+        builder.append(" moved a piece from ");
+        builder.append(location1);
+        builder.append(" to ");
+        builder.append(location2);
+
+        sendNotification(null, builder.toString(), gameId);
     }
 
     public void sendNotification(Session excluded, String message, int gameId){
@@ -125,13 +160,16 @@ public class ConnectionHandler {
             if (game.getGameIsOver()){
                 sendError(session, "Error: game has ended");
             }
-            //if the person reaches here, then it is their turn, so makeMove method should handle
-            //trying to move opponent piece or a nonexisting piece
+
             game.makeMove(move);
-            gameDAO.updateGame(game);
-            send
+            gameDAO.updateGame(gameId, game);
 
             //notify users
+            sendAllLoadGame(gameId);
+            sendMoveNotification(move, username, gameId);
+            if (game.getGameIsOver()){
+                sendGameOverNotification(game);
+            }
 
         } catch (DataAccessException | InvalidMoveException e){
             sendError(session, e.getMessage());
