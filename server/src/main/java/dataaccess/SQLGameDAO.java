@@ -118,6 +118,18 @@ public class SQLGameDAO implements GameDAO{
 
     };
 
+    public void leaveGame(int id, ChessGame.TeamColor teamColor) throws DataAccessException{
+        String statement;
+        if (teamColor == ChessGame.TeamColor.WHITE){
+            statement = String.format("UPDATE games SET whiteusername = NULL WHERE gameid = '%d'" ,id);
+        }
+        else{
+            statement = String.format("UPDATE games SET blackusername = NULL WHERE gameid = '%d'" ,id);
+        }
+        DatabaseManager.executeStatement(statement);
+
+    }
+
 
     void insertJoinedPlayer(JoinGameRequest request, GameData game) throws DataAccessException{
         checkGameAlreadyTaken(request, game);

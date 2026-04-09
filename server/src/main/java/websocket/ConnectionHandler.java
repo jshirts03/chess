@@ -8,6 +8,7 @@ import org.eclipse.jetty.websocket.api.Session;
 import websocket.commands.UserGameCommand;
 import websocket.messages.ErrorMessage;
 import websocket.messages.LoadGameMessage;
+import websocket.messages.NotificationMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,7 +51,8 @@ public class ConnectionHandler {
                 Session c = info.session();
                 if (c.isOpen()){
                     if (!c.equals(excluded)){
-                        c.getRemote().sendString(message);
+                        NotificationMessage notification = new NotificationMessage(message);
+                        c.getRemote().sendString(new Gson().toJson(notification));
                     }
                 }
             }
@@ -85,6 +87,20 @@ public class ConnectionHandler {
         String notification = String.format("%s joined the game.", username);
         sendNotification(session, notification, gameId);
         sendLoadGame(session, gameId, teamColor);
+    }
 
+    public void removeConnection(Session session, UserGameCommand gameCommand) throws DataAccessException{
+        int gameId = gameCommand.getGameID();
+        var gameInfo = sessions.get(gameId);
+        for (ConnectionInfo info : gameInfo) {
+            if (info.session().equals(session)) {
+                gameDAO.leaveGame(gameId, info.teamColor());
+                String notification = String.format("%s left the game.", info.username());
+                sendNotification(session, notification, gameId);
+                gameInfo.remove(info);
+                return;
+            }
+        }
+        throw new DataAccessException("Error: player has already left game");
     }
 }

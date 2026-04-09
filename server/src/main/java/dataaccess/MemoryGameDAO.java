@@ -86,4 +86,18 @@ public class MemoryGameDAO implements GameDAO{
         }
         throw new DataAccessException("Error: invalid game ID");
     }
+
+    public void leaveGame(int id, ChessGame.TeamColor teamColor){
+        for (GameData game : games){
+            if (game.gameID() == id){
+                if (teamColor == ChessGame.TeamColor.WHITE){
+                    games.add(new GameData(game.gameID(), null, game.blackUsername(), game.gameName(), game.game()));
+                }
+                else{
+                    games.add(new GameData(game.gameID(), game.whiteUsername(), null, game.gameName(), game.game()));
+                }
+                games.remove(game);
+            }
+        }
+    }
 }

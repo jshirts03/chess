@@ -13,6 +13,7 @@ public interface GameDAO {
     void joinGame(JoinGameRequest request) throws DataAccessException;
     ChessGame getGameWithId(int gameId) throws DataAccessException;
     ChessGame.TeamColor getTeamColor(int gameId, String username) throws DataAccessException;
+    void leaveGame(int gameId, ChessGame.TeamColor teamColor) throws DataAccessException;
 
     default void checkGameAlreadyTaken(JoinGameRequest request, GameData game) throws DataAccessException{
         if (request.playerColor().equals("WHITE") && game.whiteUsername() != null){
