@@ -34,6 +34,13 @@ public class BoardPrinter {
         this.teamColor = teamColor;
     }
 
+    public ChessGame.TeamColor getTeamColor(){
+        return teamColor;
+    };
+
+    public ChessPiece getChessPiece(ChessPosition position){
+        return board.getPiece(position);
+    }
     public void loadBoard(){
         if (teamColor.equals(ChessGame.TeamColor.BLACK)){
             printBlack();

@@ -1,6 +1,7 @@
 package client;
 
 import chess.ChessMove;
+import chess.ChessPiece;
 import chess.ChessPosition;
 
 import java.util.HashMap;

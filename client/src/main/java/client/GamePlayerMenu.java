@@ -1,6 +1,8 @@
 package client;
 
+import chess.ChessGame;
 import chess.ChessMove;
+import chess.ChessPiece;
 import chess.ChessPosition;
 import ui.BoardPrinter;
 import websocket.commands.MakeMoveCommand;
@@ -121,9 +123,48 @@ public class GamePlayerMenu implements GameMenu{
             isValidCoordinates = (verifyCoords(pieceCoords) && verifyCoords(moveCoords));
         }
         ChessMove move = createChessMove(pieceCoords, moveCoords);
+        move = checkPromotion(move);
         webSocketF.makeMove(authToken, gameId, move);
     }
 
+    public ChessMove checkPromotion(ChessMove move){
+        ChessPosition startPos = move.getStartPosition();
+        ChessPosition endPos = move.getEndPosition();
+        ChessPiece piece = boardPrinter.getChessPiece(startPos);
+        if (piece != null){
+            if (piece.getPieceType().equals(ChessPiece.PieceType.PAWN)){
+                if (piece.getTeamColor().equals(ChessGame.TeamColor.WHITE) && endPos.getRow() == 8){
+                    return new ChessMove(startPos, endPos, promptForPromotionPiece());
+                }
+                if(piece.getTeamColor().equals(ChessGame.TeamColor.BLACK) && endPos.getRow() == 1){
+                    return new ChessMove(startPos, endPos, promptForPromotionPiece());
+                }
+            }
+        }
+        return move;
+    }
+
+    public ChessPiece.PieceType promptForPromotionPiece(){
+        Scanner scanner = new Scanner(System.in);
+        boolean shouldReturn = false;
+        while(!shouldReturn){
+            System.out.print("Promotion Piece (Q,R,N,B) >>> ");
+            String response = scanner.nextLine();
+            switch (response){
+                case "Q":
+                    return ChessPiece.PieceType.QUEEN;
+                case "R":
+                    return ChessPiece.PieceType.ROOK;
+                case "N":
+                    return ChessPiece.PieceType.KNIGHT;
+                case "B":
+                    return ChessPiece.PieceType.BISHOP;
+                default:
+                    System.out.print("Please enter a valid promotion piece type");
+            }
+        }
+        return null;
+    }
 
     public void resign(){
         System.out.print("Are you sure you want to resign? (Y or N) >>>   ");
