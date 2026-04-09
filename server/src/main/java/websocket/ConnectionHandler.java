@@ -52,7 +52,13 @@ public class ConnectionHandler {
     public void sendAllLoadGame(int gameId){
         var users = sessions.get(gameId);
         for (ConnectionInfo info : users){
-            sendOneLoadGame(info.session(), gameId, info.teamColor());
+            if (info.teamColor() != null){
+                sendOneLoadGame(info.session(), gameId, info.teamColor());
+            }
+            else{
+                sendOneLoadGame(info.session(), gameId, ChessGame.TeamColor.WHITE);
+            }
+
         }
     }
 
