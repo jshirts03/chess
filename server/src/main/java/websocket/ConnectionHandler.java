@@ -102,15 +102,27 @@ public class ConnectionHandler {
         sendNotification(null, message, gameId);
     }
 
-    public void sendGameOverNotification(ChessGame game, int gameId){
-        String winner;
+    public void sendGameOverNotification(ChessGame game, int gameId, String endType){
+        ChessGame.TeamColor winner;
+        ChessGame.TeamColor loser;
         if (game.getTeamTurn() == ChessGame.TeamColor.BLACK){
-            winner = "WHITE";
+            winner = ChessGame.TeamColor.WHITE;
+            loser = ChessGame.TeamColor.BLACK;
         }
         else{
-            winner = "BLACK";
+            winner = ChessGame.TeamColor.BLACK;
+            loser = ChessGame.TeamColor.WHITE;
         }
-        String notification = String.format("Game is over! %s has won the game", winner);
+        String loserUser = " ";
+        var playersInfo = sessions.get(gameId);
+        for (ConnectionInfo info: playersInfo){
+            if (info.teamColor() != null){
+                if (info.teamColor().equals(loser)){
+                    loserUser = info.username();
+                }
+            }
+        }
+        String notification = String.format("%s is in %s. Game is over! %s has won the game", loserUser, endType, winner);
         sendNotification(null, notification, gameId);
     }
 
@@ -227,7 +239,7 @@ public class ConnectionHandler {
                 }
             }
             if (game.getGameIsOver()){
-                sendGameOverNotification(game, gameId);
+                sendGameOverNotification(game, gameId, "checkmate");
             }
 
         } catch (DataAccessException | InvalidMoveException e){
