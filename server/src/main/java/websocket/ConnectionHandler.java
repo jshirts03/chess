@@ -148,7 +148,13 @@ public class ConnectionHandler {
 
         String notification = String.format("%s joined the game.", username);
         sendNotification(session, notification, gameId);
-        sendOneLoadGame(session, gameId, teamColor);
+        if (teamColor != null){
+            sendOneLoadGame(session, gameId, teamColor);
+        }
+        else{
+            sendOneLoadGame(session, gameId, ChessGame.TeamColor.WHITE);
+        }
+
     }
 
     public void removeConnection(Session session, UserGameCommand gameCommand) throws DataAccessException{
