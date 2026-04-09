@@ -3,6 +3,7 @@ package client;
 import chess.ChessMove;
 import chess.ChessPosition;
 import ui.BoardPrinter;
+import websocket.commands.MakeMoveCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -125,6 +126,7 @@ public class GamePlayerMenu {
             isValidCoordinates = (verifyCoords(pieceCoords) && verifyCoords(moveCoords));
         }
         ChessMove move = createChessMove(pieceCoords, moveCoords);
+        webSocketF.makeMove(new MakeMoveCommand(authToken, gameId, move));
     }
 
 
@@ -158,6 +160,10 @@ public class GamePlayerMenu {
         int coord1 = letterToNumber.get(pieceCoords.substring(0,1));
         int coord2 = Integer.parseInt(pieceCoords.substring(1,2));
         ChessPosition startPos = new ChessPosition(coord1, coord2);
+        coord1 = letterToNumber.get(moveCoords.substring(0,1));
+        coord2 = Integer.parseInt(pieceCoords.substring(1,2));
+        ChessPosition endPos = new ChessPosition(coord1, coord2);
+        return new ChessMove(startPos, endPos);
     }
 
 
