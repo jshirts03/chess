@@ -85,7 +85,6 @@ public class ConnectionHandler {
     public void sendIsInCheckNotification(int gameId, ChessGame.TeamColor teamColor){
         var playersInfo = sessions.get(gameId);
         String inCheckUser = " ";
-        String color;
         for (ConnectionInfo info: playersInfo){
             if (info.teamColor().equals(teamColor)){
                 inCheckUser = info.username();
@@ -179,6 +178,8 @@ public class ConnectionHandler {
             ChessGame game = gameDAO.getGameWithId(gameId);
             String username = authDAO.getUserWithAuth(makeMoveCommand.getAuthToken());
             ChessGame.TeamColor teamColor = gameDAO.getTeamColor(gameId, username);
+
+            //verify error cases
             if (teamColor == null){
                 sendError(session, "Error: observers cannot make moves");
                 return;
@@ -192,8 +193,10 @@ public class ConnectionHandler {
                 return;
             }
 
+            //make the move
             game.makeMove(move);
             gameDAO.updateGame(gameId, game);
+
 
             //notify users
             sendAllLoadGame(gameId);
@@ -223,6 +226,7 @@ public class ConnectionHandler {
             ChessGame game = gameDAO.getGameWithId(gameId);
             String username = authDAO.getUserWithAuth(gameCommand.getAuthToken());
             ChessGame.TeamColor teamColor = gameDAO.getTeamColor(gameId, username);
+            //verify error cases
             if (teamColor == null){
                 sendError(session, "Error: observers cannot resign");
                 return;
@@ -231,8 +235,11 @@ public class ConnectionHandler {
                 sendError(session, "Error: game is over");
                 return;
             }
+            //mark resignation on game object
             game.resign(teamColor);
             gameDAO.updateGame(gameId, game);
+
+            //notify users
             String message = String.format("%s (%s) has resigned", username, teamColor);
             sendNotification(null, message, gameId);
 
