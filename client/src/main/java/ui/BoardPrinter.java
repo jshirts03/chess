@@ -56,8 +56,7 @@ public class BoardPrinter {
             validMoves = currentGame.validMoves(startPos);
             for (ChessMove move : validMoves){
                 if (move.getPromotionPiece() != null){
-                    eliminateDuplicates(move.getEndPosition());
-                    validMoves.add(move);
+                    validMoves = editValidMoves();
                 }
             }
             loadBoard();
@@ -66,7 +65,25 @@ public class BoardPrinter {
         else{
             System.out.print("Error: no piece can be found");
         }
+    }
 
+    public ArrayList<ChessMove> editValidMoves(){
+        ArrayList<ChessMove> newValidMoves = new ArrayList<>();
+        for (ChessMove move : validMoves){
+            if (!containsMove(newValidMoves, move)){
+                newValidMoves.add(move);
+            }
+        }
+        return newValidMoves;
+    }
+
+    public boolean containsMove(ArrayList<ChessMove> moves, ChessMove targetMove){
+        for (ChessMove move: moves){
+            if (move.getEndPosition() == targetMove.getEndPosition()){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void eliminateDuplicates(ChessPosition position){
