@@ -92,8 +92,10 @@ public class ConnectionHandler {
         var playersInfo = sessions.get(gameId);
         String inCheckUser = " ";
         for (ConnectionInfo info: playersInfo){
-            if (info.teamColor().equals(teamColor)){
-                inCheckUser = info.username();
+            if (info.teamColor() != null){
+                if (info.teamColor().equals(teamColor)){
+                    inCheckUser = info.username();
+                }
             }
         }
         String message = String.format("%s (%s) is in CHECK", inCheckUser, teamColor);
