@@ -70,7 +70,7 @@ public class GamePlayerMenu {
                     Valid inputs are (1,2,3,4,5,or 6)""");
                 break;
             case 2:
-                //drawBoard();
+                drawBoard();
                 break;
             case 3:
                 //highlightLegalMoves();
@@ -82,7 +82,7 @@ public class GamePlayerMenu {
                 //resign();
                 break;
             case 6:
-                //leave();
+                leave();
                 isInGame = false;
                 break;
             default:
@@ -96,6 +96,15 @@ public class GamePlayerMenu {
                 Error: Invalid Input
                 Please enter a valid number (1,2,3,4,5,6)
                 """);
+    }
+
+
+    public void drawBoard(){
+        boardPrinter.loadBoard();
+    }
+
+    public void leave(){
+        webSocketF.leaveGame(authToken, gameId);
     }
 
         //help
