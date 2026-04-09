@@ -14,13 +14,18 @@ public class ChessGame {
 
     private TeamColor teamTurn;
     private ChessBoard board;
+    private boolean gameIsOver;
 
     public ChessGame() {
         board = new ChessBoard();
         board.resetBoard();
         teamTurn = TeamColor.WHITE;
+        gameIsOver = false;
     }
 
+    public boolean getGameIsOver(){
+        return gameIsOver;
+    }
     /**
      * @return Which team's turn it is
      */
@@ -200,6 +205,7 @@ public class ChessGame {
                 }
             }
         }
+        gameIsOver = true;
         return true;
     }
 
