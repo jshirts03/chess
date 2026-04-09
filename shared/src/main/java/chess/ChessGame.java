@@ -105,6 +105,7 @@ public class ChessGame {
         board.addPiece(move.getEndPosition(), targetPiece);
         board.addPiece(move.getStartPosition(), null);
         teamTurn = (teamTurn == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
+        evaluateGameOver();
     }
 
 
@@ -125,7 +126,6 @@ public class ChessGame {
         }
         return false;
     }
-
 
     /**
      * Determines if the given team is in check
@@ -167,6 +167,13 @@ public class ChessGame {
         }
         return true;
     }
+
+    public void evaluateGameOver(){
+        if (isInCheckmate(teamTurn) || isInStalemate(teamTurn)){
+            gameIsOver = true;
+        }
+    }
+
     /**
      * Determines if the given team is in checkmate
      *
@@ -208,7 +215,6 @@ public class ChessGame {
                 }
             }
         }
-        gameIsOver = true;
         return true;
     }
 
