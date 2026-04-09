@@ -22,11 +22,11 @@ public class NotificationHandler {
     }
 
     public void printError(ErrorMessage message){
-        System.out.println(message);
+        System.out.println(message.getErrorMessage());
     }
 
     public void notify(NotificationMessage message){
-        System.out.println(message);
+        System.out.println(message.getMessage());
     }
 
     //when a notification is received, this class will decide if it's a load_game, error, or notification

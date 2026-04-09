@@ -150,7 +150,7 @@ public class BoardPrinter {
         int numberTracker = 0;
         for (int x = 1; x < 9; x++) {
             builder.append(" ").append(numbers[numberTracker]).append(" ");
-            for (int y = 1; y < 9; y++) {
+            for (int y = 8; y > 0; y--) {
                 builder.append(bwBackground());
                 builder.append(evaluateSpace(x, y));
             }
@@ -167,7 +167,7 @@ public class BoardPrinter {
         int numberTracker = 0;
         for (int x = 8; x > 0; x--) {
             builder.append(" ").append(numbers[numberTracker]).append(" ");
-            for (int y = 8; y > 0; y--) {
+            for (int y = 1; y < 9; y++) {
                 builder.append(bwBackground());
                 builder.append(evaluateSpace(x, y));
             }
