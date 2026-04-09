@@ -166,6 +166,10 @@ public class ConnectionHandler {
             ChessGame game = gameDAO.getGameWithId(gameId);
             String username = authDAO.getUserWithAuth(makeMoveCommand.getAuthToken());
             ChessGame.TeamColor teamColor = gameDAO.getTeamColor(gameId, username);
+            if (teamColor == null){
+                sendError(session, "Error: observers cannot make moves");
+                return;
+            }
             if (game.getTeamTurn() != teamColor){
                 sendError(session, "Error: it is your opponent's turn");
                 return;
@@ -196,10 +200,18 @@ public class ConnectionHandler {
             ChessGame game = gameDAO.getGameWithId(gameId);
             String username = authDAO.getUserWithAuth(gameCommand.getAuthToken());
             ChessGame.TeamColor teamColor = gameDAO.getTeamColor(gameId, username);
+            if (teamColor == null){
+                sendError(session, "Error: observers cannot resign");
+                return;
+            }
+            if (game.getGameIsOver()){
+                sendError(session, "Error: game is over");
+                return;
+            }
             game.resign(teamColor);
-            String message = String.format("%s has resigned", username);
+            gameDAO.updateGame(gameId, game);
+            String message = String.format("%s (%s) has resigned", username, teamColor);
             sendNotification(null, message, gameId);
-            sendGameOverNotification(game, gameId);
 
         } catch (DataAccessException e){
             sendError(session, e.getMessage());

@@ -50,7 +50,7 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 handleMakeMove(ctx, makeMoveCommand);
                 break;
             case UserGameCommand.CommandType.RESIGN:
-                handleResign(gameCommand);
+                handleResign(ctx, gameCommand);
                 break;
             case UserGameCommand.CommandType.LEAVE:
                 handleLeave(ctx, gameCommand);
