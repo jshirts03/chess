@@ -56,7 +56,7 @@ public class ConnectionHandler {
         }
     }
 
-    public void sendMoveNotification(ChessMove move, String username, int gameId){
+    public void sendMoveNotification(ChessMove move, String username, int gameId, Session session){
         HashMap<Integer, String> numberToLetter = new HashMap<>();
         numberToLetter.put(1, "a");
         numberToLetter.put(2, "b");
@@ -79,7 +79,19 @@ public class ConnectionHandler {
         builder.append(" to ");
         builder.append(location2);
 
-        sendNotification(null, builder.toString(), gameId);
+        sendNotification(session, builder.toString(), gameId);
+    }
+
+    public void sendGameOverNotification(ChessGame game, int gameId){
+        String winner;
+        if (game.getTeamTurn() == ChessGame.TeamColor.BLACK){
+            winner = "WHITE";
+        }
+        else{
+            winner = "BLACK";
+        }
+        String notification = String.format("Game is over! %s has won the game", winner);
+        sendNotification(null, notification, gameId);
     }
 
     public void sendNotification(Session excluded, String message, int gameId){
@@ -166,9 +178,9 @@ public class ConnectionHandler {
 
             //notify users
             sendAllLoadGame(gameId);
-            sendMoveNotification(move, username, gameId);
+            sendMoveNotification(move, username, gameId, session);
             if (game.getGameIsOver()){
-                sendGameOverNotification(game);
+                sendGameOverNotification(game, gameId);
             }
 
         } catch (DataAccessException | InvalidMoveException e){
