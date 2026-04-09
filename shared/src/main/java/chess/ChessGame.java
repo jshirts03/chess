@@ -108,6 +108,10 @@ public class ChessGame {
         evaluateGameOver();
     }
 
+    public void resign(ChessGame.TeamColor teamColor){
+        teamTurn = teamColor;
+        gameIsOver = true;
+    }
 
 
 
