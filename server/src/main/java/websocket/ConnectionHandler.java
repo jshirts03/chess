@@ -2,9 +2,12 @@ package websocket;
 
 
 import chess.ChessGame;
+import chess.ChessMove;
+import chess.InvalidMoveException;
 import com.google.gson.Gson;
 import dataaccess.*;
 import org.eclipse.jetty.websocket.api.Session;
+import websocket.commands.MakeMoveCommand;
 import websocket.commands.UserGameCommand;
 import websocket.messages.ErrorMessage;
 import websocket.messages.LoadGameMessage;
@@ -34,7 +37,7 @@ public class ConnectionHandler {
 
     }
 
-    public void sendLoadGame(Session session, int gameId, ChessGame.TeamColor teamColor){
+    public void sendOneLoadGame(Session session, int gameId, ChessGame.TeamColor teamColor){
         try {
             ChessGame game = gameDAO.getGameWithId(gameId);
             LoadGameMessage message = new LoadGameMessage(game, teamColor);
@@ -86,7 +89,7 @@ public class ConnectionHandler {
 
         String notification = String.format("%s joined the game.", username);
         sendNotification(session, notification, gameId);
-        sendLoadGame(session, gameId, teamColor);
+        sendOneLoadGame(session, gameId, teamColor);
     }
 
     public void removeConnection(Session session, UserGameCommand gameCommand) throws DataAccessException{
@@ -102,5 +105,37 @@ public class ConnectionHandler {
             }
         }
         throw new DataAccessException("Error: player has already left game");
+    }
+
+    //this will get the game from the DB with the game ID
+    //get the player's team color from the DB
+    //if it can't, then the person is an observer, error
+    //check if it's the person's turn
+    // make move should throw and exception
+    public void makeMove(Session session, MakeMoveCommand makeMoveCommand){
+        int gameId = makeMoveCommand.getGameID();
+        ChessMove move = makeMoveCommand.getMove();
+        try{
+            ChessGame game = gameDAO.getGameWithId(gameId);
+            String username = authDAO.getUserWithAuth(makeMoveCommand.getAuthToken());
+            ChessGame.TeamColor teamColor = gameDAO.getTeamColor(gameId, username);
+            if (game.getTeamTurn() != teamColor){
+                sendError(session, "Error: it is your opponent's turn");
+            }
+            if (game.getGameIsOver()){
+                sendError(session, "Error: game has ended");
+            }
+            //if the person reaches here, then it is their turn, so makeMove method should handle
+            //trying to move opponent piece or a nonexisting piece
+            game.makeMove(move);
+            gameDAO.updateGame(game);
+            send
+
+            //notify users
+
+        } catch (DataAccessException | InvalidMoveException e){
+            sendError(session, e.getMessage());
+        }
+
     }
 }

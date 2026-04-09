@@ -47,7 +47,7 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
                 break;
             case UserGameCommand.CommandType.MAKE_MOVE:
                 MakeMoveCommand makeMoveCommand = new Gson().fromJson(ctx.message(), MakeMoveCommand.class);
-                //handleMakeMove(makeMoveCommand);
+                handleMakeMove(ctx, makeMoveCommand);
                 break;
             case UserGameCommand.CommandType.RESIGN:
                 //handleResign(gameCommand);
@@ -85,6 +85,15 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
         try{
             authDAO.verifyAuth(gameCommand.getAuthToken());
             connectionHandler.removeConnection(ctx.session, gameCommand);
+        } catch (DataAccessException e){
+            connectionHandler.sendError(ctx.session, e.getMessage());
+        }
+    }
+
+    public void handleMakeMove(WsMessageContext ctx, MakeMoveCommand makeMoveCommand){
+        try{
+            authDAO.verifyAuth(makeMoveCommand.getAuthToken());
+            connectionHandler.makeMove(ctx.session, makeMoveCommand);
         } catch (DataAccessException e){
             connectionHandler.sendError(ctx.session, e.getMessage());
         }
