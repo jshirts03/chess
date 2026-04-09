@@ -140,10 +140,10 @@ public class BoardPrinter {
         for (ChessMove move : validMoves){
             if (position.equals(move.getEndPosition())){
                 if (bw.equals(SET_BG_COLOR_WHITE)){
-                    pieceBuilder.append(SET_BG_COLOR_GREEN);
+                    pieceBuilder.append(SET_BG_COLOR_DARK_GREEN);
                 }
                 else {
-                    pieceBuilder.append(SET_BG_COLOR_DARK_GREEN);
+                    pieceBuilder.append(SET_BG_COLOR_GREEN);
                 }
                 if (piece != null){
                     pieceBuilder.append(SET_TEXT_COLOR_BLACK);

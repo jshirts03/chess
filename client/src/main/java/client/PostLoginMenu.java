@@ -157,7 +157,7 @@ public class PostLoginMenu implements Menu{
             if (observeRes == null){
                 observeRes = "Success";
                 int gameId = serverF.getGameId(Integer.parseInt(gameNumberString));
-                new GameObserverMenu(gameId, authToken);
+                new GameObserverMenu(gameId, authToken).run();
             }
             observeRes = checkForServerErrors(observeRes);
         }
