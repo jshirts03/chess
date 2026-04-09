@@ -67,12 +67,13 @@ public class GamePlayerMenu {
         switch (menuNumber){
             case 1:
                 System.out.print("""
-                    Create game: makes a new chess game for you to join
-                    List games: displays a list of all active games
-                    Play game: allows you to join an existing game (see list games menu for game number)
-                    Observe game: allows you to spectate an existing game (see list games menu for game number)
-                    Logout: return to the login menu
-                    Valid inputs are (1,2,3,4,5,or 6)""");
+                    1) Draw Board: allows you to redraw the current chess board
+                    2) Highlight Legal Moves: prompts for a location on the chess board and
+                    will print a new board with that piece's legal moves highlighted
+                    3) Make Move: prompts for a piece location and the desired move location
+                    will make that move if it's your turn and the move is valid
+                    4) Resign: allows you to forfeit the game
+                    5) Leave: leaves the game and sends you back to the menu""");
                 break;
             case 2:
                 drawBoard();
@@ -84,7 +85,7 @@ public class GamePlayerMenu {
                 makeMove();
                 break;
             case 5:
-                //resign();
+                resign();
                 break;
             case 6:
                 leave();
@@ -167,6 +168,14 @@ public class GamePlayerMenu {
     }
 
 
+    public void resign(){
+        System.out.print("Are you sure you want to resign? (Y or N) >>>   ");
+        Scanner scanner = new Scanner(System.in);
+        String selection = scanner.nextLine();
+        if (selection.equals("Y")){
+            webSocketF.resign(authToken, gameId);
+        }
+    }
 
         //help
         //prints help instructions
