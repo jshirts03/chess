@@ -124,6 +124,18 @@ public class BoardPrinter {
     public String evaluateSpace(int x, int y){
         ChessPosition position = new ChessPosition(x,y);
         ChessPiece piece = board.getPiece(position);
+        if (validMoves != null){
+            return evaluateHighlight(position, piece);
+        }
+        if (piece != null){
+            return evaluatePieceColor(piece) + evaluatePieceType(piece);
+        }
+        else{
+            return "   ";
+        }
+    }
+
+    public String evaluateHighlight(ChessPosition position, ChessPiece piece){
         StringBuilder pieceBuilder = new StringBuilder();
         for (ChessMove move : validMoves){
             if (position.equals(move.getEndPosition())){
@@ -133,16 +145,22 @@ public class BoardPrinter {
                 else {
                     pieceBuilder.append(SET_BG_COLOR_DARK_GREEN);
                 }
-                pieceBuilder.append(SET_TEXT_COLOR_BLACK);
-                pieceBuilder.append(evaluatePieceType(piece));
+                if (piece != null){
+                    pieceBuilder.append(SET_TEXT_COLOR_BLACK);
+                    pieceBuilder.append(evaluatePieceType(piece));
+                }
+                else{
+                    pieceBuilder.append("   ");
+                }
             }
             if (position.equals(move.getStartPosition())){
                 pieceBuilder.append(SET_BG_COLOR_YELLOW);
                 pieceBuilder.append(SET_TEXT_COLOR_BLACK);
                 pieceBuilder.append(evaluatePieceType(piece));
+                break;
             }
         }
-        if (piece != null && !pieceBuilder.isEmpty()){
+        if (pieceBuilder.isEmpty() && piece != null){
             pieceBuilder.append(evaluatePieceColor(piece));
             pieceBuilder.append(evaluatePieceType(piece));
         }
