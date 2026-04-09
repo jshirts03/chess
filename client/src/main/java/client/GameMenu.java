@@ -10,6 +10,10 @@ public interface GameMenu {
 
 
     default boolean verifyCoords(String coords) {
+        if (coords.length() != 2){
+            System.out.println("Error: invalid coordinates (be sure to do letter first)");
+            return false;
+        }
         String[] letters = {"a","b","c","d","e","f","g","h"};
         String[] numbers = {"1","2","3","4","5","6","7","8"};
         for (var letter : letters) {
