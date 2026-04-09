@@ -196,14 +196,15 @@ public class ConnectionHandler {
                 sendError(session, "Error: observers cannot make moves");
                 return;
             }
-            if (game.getTeamTurn() != teamColor){
-                sendError(session, "Error: it is your opponent's turn");
-                return;
-            }
             if (game.getGameIsOver()){
                 sendError(session, "Error: game has ended");
                 return;
             }
+            if (game.getTeamTurn() != teamColor){
+                sendError(session, "Error: it is your opponent's turn");
+                return;
+            }
+
 
             //make the move
             game.makeMove(move);

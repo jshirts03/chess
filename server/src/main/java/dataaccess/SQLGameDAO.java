@@ -200,11 +200,15 @@ public class SQLGameDAO implements GameDAO{
     }
 
     private ChessGame.TeamColor evaluateUsername(String whiteUser, String blackUser, String username){
-        if (whiteUser.equals(username)){
-            return ChessGame.TeamColor.WHITE;
+        if (whiteUser != null){
+            if (whiteUser.equals(username)){
+                return ChessGame.TeamColor.WHITE;
+            }
         }
-        if (blackUser.equals(username)){
-            return ChessGame.TeamColor.BLACK;
+        if (blackUser != null){
+            if (blackUser.equals(username)){
+                return ChessGame.TeamColor.BLACK;
+            }
         }
         return null;
     }
